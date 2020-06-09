@@ -57,8 +57,8 @@ are shared among the AUTOSAR CAN modules Can, CanIf and CanTrcv.
 #define     BASIC     1
 
 /*  Can_ObjectTypeValues  */
-#define     RECEIVE       0
-#define     TRANSMIT      1  
+#define     CAN_OBJECT_TYPE_RECEIVE       0
+#define     CAN_OBJECT_TYPE_TRANSMIT      1  
 
 /*  StateTransition  */
 #define     CAN_T_START     0
@@ -129,7 +129,7 @@ typedef struct
 typedef struct 
 {
   Can_IdType        CanId;          /*uint32_t*/
-  Can_HwHandleType  Hoh;             /*uint32_t*/
+  Can_HwHandleType  Ho;             /*uint32_t*/
   uint8_t           controllerlId;
 
 }Can_HwType;
@@ -241,7 +241,7 @@ typedef struct CanControllerBaudrateConfig
 /*
  * This container contains the configuration (parameters) of CAN Hardware Objects.
  */
-typedef struct CanHardwareObject
+typedef struct 
 {
 /*
  * Specifies the type (Full-CAN or Basic-CAN) of a hardware object.
