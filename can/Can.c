@@ -33,7 +33,7 @@ CanController_s CanController[NUM_OF_CAN_CONTROLLERS];
  /*
  * This container contains the configuration (parameters) of CAN Hardware Objects.
  */
-CanHardwareObject_s CanHardwareObject[NUM_OF_CAN_CONTROLLERS][ MAX_NUM_OF_HO ];
+CanHardwareObject_s CanHardwareObject[ MAX_NUM_OF_HO ];
 
 /*[SWS_Can_00401] Several transmit hardware objects (defined by "CanHwObjectCount")
 shall be assigned by one HTH to represent one transmit entity to the upper layer.*/
@@ -268,6 +268,7 @@ a limited time until the CAN controller is really switched off. Compare to SWS_C
 
 return toBeReturned;
 }
+}
 
   /*[SWS_Can_91015] The service Can_GetControllerMode shall return the mode of the requested CAN controller.*/
 Std_ReturnType Can_GetControllerMode( uint8_t Controller, Can_ControllerStateType* ControllerModePtr)
@@ -314,7 +315,30 @@ Std_ReturnType Can_GetControllerMode( uint8_t Controller, Can_ControllerStateTyp
 
 void  Can_MainFunction_Read(void)
 {
-	uint8_t ControllerId, HOIndex;
+	uint8_t HOIndex, mailBoxIndex ;
+	for ( mailBoxIndex = 0 ; mailBoxIndex < MAX_NUM_OF_HO; mailBoxIndex ++)
+	{
+		if(CanHardwareObject[HOIndex].CanObjectType == CAN_OBJECT_TYPE_RECEIVE)
+		{
+			u8 HwObjectIndex = Can_MailBoxLookUpTables[Controller][mailBoxIndex].HwObject;
+			if( CanHardwareObject[Controller][HwObjectIndex].CanObjectType == CAN_OBJECT_TYPE_RECEIVE )
+			{
+				CANMessageGet(CanController[Controller].CanControllerBaseAddress, mailBoxIndex, &CANMsgObject, 0U);
+
+				Rx_Mailbox.Ho = HwObjectIndex;
+				Rx_Mailbox.CanId = CANMsgObject.ui32MsgID ;
+				Rx_Mailbox.controllerlId = Controller;
+            /* [SWS_Can_00060] Data mapping by CAN to memory is defined in a way that the CAN data byte
+            which is received first is array element 0 the CAN data byte which is received last is array element 7*/
+				rxPduInfo.SduLength  = CANMsgObject.ui32MsgLen;
+				rxPduInfo.SduDataPtr = CANMsgObject.pui8MsgData;
+
+			/*******************************	How to give back the pdu id?	*******************************/
+				CanIf_RxIndication(&Rx_Mailbox,&rxPduInfo);
+			}
+
+		}
+	}
 	
 }
 #endif
@@ -329,8 +353,6 @@ void  Can_MainFunction_Read(void)
 	PduInfoType rx_PduInfo;
 	Can_HwType Rx_Mailbox;
 	received_CANMessage.pui8MsgData=rx_MsgData0;
-/*    while(1)
-        {*/
 
 	CAN0_IF1CMSK_R&=((uint32_t)(~(uint32_t)0x80U));
 	CAN1_IF1CMSK_R&=((uint32_t)(~(uint32_t)0x80U));
@@ -469,34 +491,6 @@ void Can_MainFunction_Mode( void )
 	}
 
 }
-#if (CanBusoffProcessing0==POLLING || CanBusoffProcessing1==POLLING )
-void Can_MainFunction_BusOff(void)
-{
-	uint32_t status;
-	while(1)
-	{
-#if CanBusoffProcessing0==POLLING
-		status= CANStatusGet(CAN0_BASE, CAN_STS_CONTROL);
-		status&=0x80U;
-		if(status==CAN_STS_BOFF)
-		{
-			Can_ControllerMode [0U]=CAN_CS_STOPPED;
-                      /*CanIf_ControllerBusOff(0U)*/
-		}else{}
-#endif
-#if CanBusoffProcessing1==POLLING
-		status= CANStatusGet(CAN1_BASE, CAN_STS_CONTROL);
-		status&=0x80U;
-		if(status==CAN_STS_BOFF)
-		{
-			Can_ControllerMode [1U]=CAN_CS_STOPPED;
-                                      /*CanIf_ControllerBusOff(1U)*/
-		}else{}
-#endif
-	}
-}
-#endif
-
 
 
 void  Can_DisableControllerInterrupts(uint8_t Controller)
