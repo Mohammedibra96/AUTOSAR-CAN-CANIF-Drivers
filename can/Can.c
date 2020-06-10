@@ -311,7 +311,7 @@ Std_ReturnType Can_GetControllerMode( uint8_t Controller, Can_ControllerStateTyp
 
 
 
-#if (CanRxProcessing0==POLLING) || (CanRxProcessing1==POLLING)
+#if (CanRxProcessing==POLLING) 
 
 void  Can_MainFunction_Read(void)
 {
@@ -342,108 +342,11 @@ void  Can_MainFunction_Read(void)
 	
 }
 #endif
-
-
-void  Can_MainFunction_Read(void)
-{
-	uint8_t index6,index7;
-	uint16_t POLLING_Register;
-	tCANMsgObject received_CANMessage;
-	uint8_t rx_MsgData0[8U];
-	PduInfoType rx_PduInfo;
-	Can_HwType Rx_Mailbox;
-	received_CANMessage.pui8MsgData=rx_MsgData0;
-
-	CAN0_IF1CMSK_R&=((uint32_t)(~(uint32_t)0x80U));
-	CAN1_IF1CMSK_R&=((uint32_t)(~(uint32_t)0x80U));
-
-	for(index6=0U; index6< NUM_OF_HOH;index6++)
-	{
-
-		if(MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].CanObjectType==receive)
-		{
-
-			if(MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].CanControllerRef==&CanContainer
-				.CanConfigSet.CanController[0])
-			{
-				for(index7=0U;index7<MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].CanHwObjectCount;index7++)
-				{
-
-					CAN1_IF1CRQ_R=  Message_Confirmation[index6][index7].mail_box;
-					POLLING_Register=((uint16_t)((uint16_t)CAN0_IF1MCTL_R));
-					POLLING_Register|=0x7FFFU;
-					if( POLLING_Register==0xFFFFU)
-					{
-
-                            /*[SWS_Can_00279] On L-PDU reception, the Can module shall call the RX indication callback
-                             function CanIf_RxIndication with ID ,Hoh, abstract CanIf ControllerId in parameter Mailbox,
-                             and the Data Lengthand pointer to the L-SDU buffer in parameter PduInfoPtr.*/
-
-						CANMessageGet(MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].
-							CanControllerRef->CanControllerBaseAddress,
-							Message_Confirmation[index6][index7].mail_box
-							, &received_CANMessage, 0U);
-/*                                    UARTprintf("Msg ID=0x%08X len=%u data=0x",
-                                               received_CANMessage.ui32MsgID, received_CANMessage.ui32MsgLen);*/
-
-						UARTprintf("%02X \n",received_CANMessage.pui8MsgData[0]);
-
-						Rx_Mailbox.hoh=index6 ;
-						Rx_Mailbox.id= received_CANMessage.ui32MsgID ;
-						Rx_Mailbox.controllerlId =MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6]
-						.CanControllerRef->CanControllerId;
-						rx_PduInfo.SduLength  = received_CANMessage.ui32MsgLen;
-						rx_PduInfo.SduDataptr = received_CANMessage.pui8MsgData;
-						// TOBEASKED : where is the pduid???
-						CanIf_RxIndication(&Rx_Mailbox,&rx_PduInfo);
-					}
-					else{}
-				}
-		}
-		else{
-			for(index7=0U;index7<MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].CanHwObjectCount;index7++)
-			{
-
-				CAN1_IF1CRQ_R=  Message_Confirmation[index6][index7].mail_box;
-				POLLING_Register=((uint16_t)((uint16_t)CAN0_IF1MCTL_R));
-				POLLING_Register|=0x7FFFU;
-				if( POLLING_Register==0xFFFFU)
-				{
-
-                                         /*[SWS_Can_00279] On L-PDU reception, the Can module shall call the RX indication callback
-                                          function CanIf_RxIndication with ID ,Hoh, abstract CanIf ControllerId in parameter Mailbox,
-                                          and the Data Lengthand pointer to the L-SDU buffer in parameter PduInfoPtr.*/
-					PduInfoType received_PduInfo;
-					CANMessageGet(MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6].
-						CanControllerRef->CanControllerBaseAddress,
-						Message_Confirmation[index6][index7].mail_box
-						,&received_CANMessage, 0U);
-					UARTprintf("Msg ID=0x%08X len=%u data=0x",
-						received_CANMessage.ui32MsgID, received_CANMessage.ui32MsgLen);
-
-					UARTprintf("%02X \n",received_CANMessage.pui8MsgData[0]);
-
-					Rx_Mailbox.hoh=index6 ;
-					Rx_Mailbox.id= received_CANMessage.ui32MsgID ;
-					Rx_Mailbox.controllerlId =MailboxCfg_MAP.CanConfigSet.CanHardwareObject[index6]
-					.CanControllerRef->CanControllerId;
-					received_PduInfo.SduLength  = received_CANMessage.ui32MsgLen;
-					received_PduInfo.SduDataptr = received_CANMessage.pui8MsgData;
-
-                                                         /*CanIf_RxIndication(&Rx_Mailbox,&received_PduInfo);*/
-				} else{}
-			}
-		}
-	}else{}
-}
- /*  }*/
-}
-#endif
-
 /*************************************************************************************************************************/
 void Can_MainFunction_Mode( void )
 {
 
+		//TOBEASKED: EH EL KALAM DA???
     /*[SWS_Can_00369]  The function Can_MainFunction_Mode shall implement the polling
         of CAN status register flags to detect transition of CAN Controller state. Compare to chapter 7.3.2.*/
 	static   Can_ControllerStateType previous_state_0=CAN_CS_STOPPED;
@@ -460,6 +363,7 @@ void Can_MainFunction_Mode( void )
 
 			{   
 				state_transition_flag[controller]=0U;
+				/*	0 Normal operation 	1 Initialization started	*/
 				Register_Check=((uint8_t)(CAN0_CTL_R & CAN0_CTL_R_INIT_BIT));
 
 				if(Can_ControllerMode [controller]== CAN_CS_STARTED)
@@ -469,7 +373,9 @@ void Can_MainFunction_Mode( void )
                     /*void CanIf_ControllerModeIndication(0U,Can_ControllerMode [0U])*/
 						previous_state_0=Can_ControllerMode[controller];
 					}
+					else{}
 				}
+				else{}
 			}
 			else if(Can_ControllerMode [controller]== CAN_CS_STOPPED || Can_ControllerMode [controller]== CAN_CS_SLEEP)
 			{
@@ -478,6 +384,7 @@ void Can_MainFunction_Mode( void )
             		/*void CanIf_ControllerModeIndication(0U,Can_ControllerMode [0U])*/
 					previous_state_0=Can_ControllerMode[0U];
 				}
+				else{}
 			}
 			else
 			{
