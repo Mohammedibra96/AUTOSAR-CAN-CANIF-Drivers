@@ -394,7 +394,7 @@ void  Can_MainFunction_Read(void)
 						.CanControllerRef->CanControllerId;
 						rx_PduInfo.SduLength  = received_CANMessage.ui32MsgLen;
 						rx_PduInfo.SduDataptr = received_CANMessage.pui8MsgData;
-
+						// TOBEASKED : where is the pduid???
 						CanIf_RxIndication(&Rx_Mailbox,&rx_PduInfo);
 					}
 					else{}

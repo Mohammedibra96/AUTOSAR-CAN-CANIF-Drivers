@@ -194,6 +194,7 @@ typedef struct
 
 
 
+
 /* This container contains bit timing related configuration/
  * parameters of the CAN controller(s)./
  * This container is a Sub container of "CanController" container with/
