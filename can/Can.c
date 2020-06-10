@@ -687,7 +687,7 @@ static void Can_ConfigureHardwareObject(void)
 {
 	uint8_t canControllerRef,canHardwareObjectIndex;
 	tCANMsgObject CANMessage                       ;
-
+//TOBEASKED:shall we take cnfg parameter max_number_HO per cancontroller
 	for ( uint8_t HO_Index = 0 ; (HO_Index < MAX_NUM_OF_HO) && (CanHardwareObject[canHardwareObjectIndex]) ;HO_Index++ )
 	{
 		for( canHardwareObjectIndex = 0 ; canHardwareObjectIndex < CanHardwareObject[HO_Index].CanHwObjectCount; canHardwareObjectIndex++ )
@@ -996,8 +996,8 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 					ErrorStatus            = CAN_BUSY    ;/*add break here when u clear multi exit points of function*/
 					}
 				}/*End of for Loop */
-			}
-		
+				}
+
 		/*[SWS_Can_00011] The Can module shall directly copy the data from the upper
                       layer buffers. It is the responsibility of the upper layer to keep the buffer consistent until return
                       of function call*/
@@ -1007,7 +1007,7 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 		/* MISRA */
 			}
 			return ErrorStatus ;
-}
+		}
 
 
 
@@ -1098,7 +1098,7 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 				}
 				else 
 				{
-				ErrorStatus= E_NOT_OK;
+					ErrorStatus= E_NOT_OK;
 				}
 				return ErrorStatus ;
 			}
@@ -1122,11 +1122,11 @@ set to POLLING or mixed. In case of mixed processing only the hardware objects f
  to TRUE shall be polled (SRS_BSW_00432, SRS_BSW_00373, SRS_SPAL_00157)*/
 
 #if ( CAN_CONTROLLER_CAN_TX_PROCESSING == POLLING )
-void  Can_Main_Function_Write(void)
-{
-	uint8_t CanMailBoxIndex,mailBoxIndex;
-	uint16_t pollinRegister;
-	uint16_t * PtrToReg;
+			void  Can_Main_Function_Write(void)
+			{
+				uint8_t CanMailBoxIndex,mailBoxIndex;
+				uint16_t pollinRegister;
+				uint16_t * PtrToReg;
 
 	/*Check the busy flag */
 	// while(HWREG(ui32Base + CAN_O_IF1CRQ) & CAN_IF1CRQ_BUSY)
@@ -1134,43 +1134,43 @@ void  Can_Main_Function_Write(void)
 	//    }
 	/*Clear 7th bit in CANx_IF1CMSK_R */
 	/* Transfer the data in the CAN message object specified by the MNUM field in the CANIFnCRQ register into the CANIFn registers.*/
-	CAN0_IF1CMSK_R&=((uint32_t)(~0x80U));
-	CAN1_IF1CMSK_R&=((uint32_t)(~0x80U));
+				CAN0_IF1CMSK_R&=((uint32_t)(~0x80U));
+				CAN1_IF1CMSK_R&=((uint32_t)(~0x80U));
 	/* MISRA violation */
 	/*casting pointer to integral type unavoidable when addressing memory mapped registers
           or other hardware specific features.*/
-	for( CanMailBoxIndex = 0U ; CanMailBoxIndex < MAX_NUM_OF_MAILBOXES ; CanMailBoxIndex++ )
-	{
-		if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ].HwObject ] .CanObjectType==TRANSMIT )
-		{
+				for( CanMailBoxIndex = 0U ; CanMailBoxIndex < MAX_NUM_OF_MAILBOXES ; CanMailBoxIndex++ )
+				{
+					if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ].HwObject ] .CanObjectType==TRANSMIT )
+					{
 			//Can_MailBoxLookUpTables
-			if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ] ].CanControllerRef == CanController[0] )
-			{
-				PtrToReg = (uint16_t )&CAN0_IF1MCTL_R ;
-			}
-			else
-			{
-				PtrToReg = (uint16_t )&CAN1_IF1MCTL_R ;
-			}
-			if( Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation==un_confirmed)
-			{
+						if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ] ].CanControllerRef == CanController[0] )
+						{
+							PtrToReg = (uint16_t )&CAN0_IF1MCTL_R ;
+						}
+						else
+						{
+							PtrToReg = (uint16_t )&CAN1_IF1MCTL_R ;
+						}
+						if( Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation==un_confirmed)
+						{
 				/*A message transfer is started as soon as there is a write of the message object number to the MNUM
 										field when the TXRQST bit in the CANIF1MCTL register is set.*/
-				if ( CanMailBoxIndex > 32)
-				{
-					CAN0_IF1CRQ_R = CanMailBoxIndex - 32 ;
-				}
-				CAN0_IF1CRQ_R = CanMailBoxIndex ;
+							if ( CanMailBoxIndex > 32)
+							{
+								CAN0_IF1CRQ_R = CanMailBoxIndex - 32 ;
+							}
+							CAN0_IF1CRQ_R = CanMailBoxIndex ;
 				/*MISRA violation*/
 				/*Set Transmit Request bit in CANIF1MCTL register */
-				pollinRegister=((uint16_t)(*PtrToReg);
-				pollinRegister|=0xFEFFU;
+							pollinRegister=((uint16_t)(*PtrToReg);
+								pollinRegister|=0xFEFFU;
 				/*MISRA violation*/
 				/*casting pointer to integral type unavoidable when addressing memory mapped
                                            registers or other hardware specific features.*/
 				/*This message object is not waiting for transmission if this bit is cleared  */
 				if(pollinRegister == 0xFEFFU)/*Message_Confirmation[i][j]=un_confirmed*/
-				{
+								{
 					Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation = confirmed;/*when it comes to poll again it wouldn't find
                                         it un_confirmed except when another transmission was requested again*/
 					/*GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R ^0x04U;*/
@@ -1188,19 +1188,19 @@ void  Can_Main_Function_Write(void)
 					/*CanDrv must store the all in HTHs pending L-PDU Ids in an array
                                         organized perTH to avoid new search of the L-PDU ID for call of
                                        CanIf_TxConfirmation().*/
-				}
-			}
-			else
-			{
+								}
+							}
+							else
+							{
 
-			}
-		}
-		else
-		{
+							}
+						}
+						else
+						{
 
-		}
+						}
 	}/*End of For */
-}
+					}
 
 
 
@@ -1238,31 +1238,31 @@ void  Can_Main_Function_Write(void)
 
 
 
-Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr )
-{
-	Std_ReturnType RetuenValue =  E_OK ;	
-	static Can_ErrorStateType  ErrorState[ NUM_OF_CAN_CONTROLLERS];
-	uint8_t error_status;
-	if(CanUnitState==CAN_UNINIT)
-	{
+					Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr )
+					{
+						Std_ReturnType RetuenValue =  E_OK ;	
+						static Can_ErrorStateType  ErrorState[ NUM_OF_CAN_CONTROLLERS];
+						uint8_t error_status;
+						if(CanUnitState==CAN_UNINIT)
+						{
 		/*[SWS_Can_91005] ⌈If development error detection for the Can module is enabled: if the module is not yet initialized, 
 the function Can_GetControllerErrorState shall raise development error CAN_E_UNINIT and return E_NOT_OK.*/
-		CanDevolpmentErrorType=CAN_E_UNINIT;
-		RetuenValue = E_NOT_OK;
-	}
-	if( ControllerId >= NUM_OF_CAN_CONTROLLERS)
-	{
-		CanDevolpmentErrorType=CAN_E_PARAM_CONTROLLER;
-		RetuenValue = E_NOT_OK;
-	}
-	if( ErrorStatePtr == NULL )
-	{
-		CanDevolpmentErrorType = CAN_E_PARAM_POINTER ;
-		RetuenValue = E_NOT_OK                       ;
-	}
+							CanDevolpmentErrorType=CAN_E_UNINIT;
+							RetuenValue = E_NOT_OK;
+						}
+						if( ControllerId >= NUM_OF_CAN_CONTROLLERS)
+						{
+							CanDevolpmentErrorType=CAN_E_PARAM_CONTROLLER;
+							RetuenValue = E_NOT_OK;
+						}
+						if( ErrorStatePtr == NULL )
+						{
+							CanDevolpmentErrorType = CAN_E_PARAM_POINTER ;
+							RetuenValue = E_NOT_OK                       ;
+						}
 
-	if ( RetuenValue == E_NOT_OK )
-	{
+						if ( RetuenValue == E_NOT_OK )
+						{
 		/* Reads one of the controller status registers. (Tivaware)*/
 		/* - \b CAN_STATUS_BUS_OFF - controller is in bus-off condition
 //TOBEASKED : there are three types of error only that are defines 
@@ -1283,16 +1283,16 @@ the function Can_GetControllerErrorState shall raise development error CAN_E_UNI
 //!   dominant mode
 //! - \b CAN_STATUS_LEC_CRC - CRC error in received message
 //!*/		
-		*ErrorStatePtr  = CANStatusGet(CanController[ControllerId].CanControllerBaseAddress, CAN_STS_CONTROL) ;
-		error_status& = 0xE0U                                    ;
+							*ErrorStatePtr  = CANStatusGet(CanController[ControllerId].CanControllerBaseAddress, CAN_STS_CONTROL) ;
+							error_status& = 0xE0U                                    ;
 	    RetuenValue = E_OK;/*must be handled with os*/
-	}
-	else 
-	{
+						}
+						else 
+						{
 		/*MISRA*/
-	}
-	return RetuenValue ;
-}
+						}
+						return RetuenValue ;
+					}
 
 
 
