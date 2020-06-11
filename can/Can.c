@@ -60,6 +60,8 @@ static uint8_t state_transition_flag[2]={0U,0U};
 
 /*	TODO: change "static" to local	*/
 
+#define FIRST_MAIL_BOX			1
+#define LAST_MAIL_BOX			32
 
 /*[SWS_Can_00016] The Can module shall call CanIf_TxConfirmation to indicate a successful transmission.
 It shall either called by the TX-interrupt service routine of the corresponding HW resource or inside the
@@ -371,27 +373,27 @@ void Can_MainFunction_Mode( void )
 					}
 					else{}
 				}
-			else{}
-		}
-	else if(Can_ControllerMode [controller]== CAN_CS_STOPPED || Can_ControllerMode [controller]== CAN_CS_SLEEP)
-	{
-		if(Register_Check==1U )
-		{
+				else{}
+			}
+			else if(Can_ControllerMode [controller]== CAN_CS_STOPPED || Can_ControllerMode [controller]== CAN_CS_SLEEP)
+			{
+				if(Register_Check==1U )
+				{
             		/*void CanIf_ControllerModeIndication(0U,Can_ControllerMode [0U])*/
-			previous_state_0=Can_ControllerMode[0U];
+					previous_state_0=Can_ControllerMode[0U];
+				}
+				else{}
+			}
+			else
+			{
+
+			}
 		}
-		else{}
+		else
+		{
+
+		}
 	}
-else
-{
-
-}
-}
-else
-{
-
-}
-}
 
 }
 
@@ -407,7 +409,7 @@ void  Can_DisableControllerInterrupts(uint8_t Controller)
         	/*	in other words this counter increases everytime you call the disable function and to re-enable you need to
         		call this function with the same amount.  */
 
-			if( IntDisableCount[Controller] == CAN_DISABLE_INTERRUPT_NOT_CALLED )
+			if( OUT_CRITICAL_SECTION() )
 			{
 				CANIntDisable(CanController[Controller].CanControllerBaseAddress, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
 				IntDisable(CanController[Controller].CanInterruptId);
@@ -416,7 +418,7 @@ void  Can_DisableControllerInterrupts(uint8_t Controller)
 			{
 
 			}
-			IntDisableCount[Controller]++;
+			ENTER_CRITICAL_SECTION(Controller);
 		}	
 		else
 		{
@@ -445,17 +447,17 @@ void  Can_EnableControllerInterrupts(uint8_t Controller)
 
                     /* [SWS_Can_00208] The function Can_EnableControllerInterrupts shall perform no action when
                       Can_DisableControllerInterrupts has not been called before.*/
-				if(IntDisableCount[Controller] != CAN_DISABLE_INTERRUPT_NOT_CALLED)
+				if(IN_CRITICAL_SECTION())
 
 				{
 
-          /*[SWS_Can_00202] When Can_DisableControllerInterrupts has been called several times,
-         Can_EnableControllerInterrupts must be called as many times before the interrupts are re-enabled.*/
-        	/*	in other words this counter increases everytime you call the disable function and to re-enable you need to
-        		call this function with the same amount.  */
-					IntDisableCount[Controller]--;
-
-					if( IntDisableCount[Controller] == CAN_DISABLE_INTERRUPT_NOT_CALLED )
+        		 	/*[SWS_Can_00202] 	When Can_DisableControllerInterrupts has been called several times,
+        							Can_EnableControllerInterrupts must be called as many times before the interrupts are re-enabled.*/
+        			/*	in other words this counter increases everytime you call the disable function and to re-enable you need to
+        				call this function with the same amount.  */
+        			/*	this is a macro like function, you can find it in Can_interrupt.c	*/
+					EXIT_CRITICAL_SECTION(CONTROLLER);
+					if( OUT_CRITICAL_SECTION() )
 					{
                     /* set interrupt enable, status interrupt enable, error interrupt enable to disable interrupts."*/
 						CANIntEnable(CanController[Controller].CanControllerBaseAddress, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
@@ -508,12 +510,12 @@ void CAN_IRQHandler(u8 Controller)
 	/*	TODO: if zero report det	*/
 	/*	change those numbers to macros	*/
 
-	if( mailBoxIndex >= 1 && mailBoxIndex <= 32 )
+	if( mailBoxIndex >= FIRST_MAIL_BOX && mailBoxIndex <= LAST_MAIL_BOX )
 	{
 		u8 HwObjectIndex = Can_MailBoxLookUpTables[Controller][mailBoxIndex].HwObject;
 		if( CanHardwareObject[Controller][HwObjectIndex].CanObjectType == CAN_OBJECT_TYPE_RECEIVE )
 		{
-			CANMessageGet(CanController[Controller].CanControllerBaseAddress, mailBoxIndex, &CANMsgObject, 0U);
+			CANMessageGet(CanController[Controller].CanControllerBaseAddress, mailBoxIndex, &CANMsgObject, 0);
 			
 			Rx_Mailbox.Ho = HwObjectIndex;
 			Rx_Mailbox.CanId = CANMsgObject.ui32MsgID ;
@@ -536,8 +538,11 @@ void CAN_IRQHandler(u8 Controller)
 		}
 		else
 		{}
-}
-else{}
+	}
+	else
+	{
+		/*	report det	*/
+	}
 
 }
 
@@ -581,57 +586,46 @@ else{}
 
 
 
-#define START_INDEX			0
-#define NEW_HO 				1
-#define OLD_HO 				0
-#define MIN_DATA_SIZE		1
+
 
 static void Can_ConfigureHardwareObject(void)
 {
-	
-	uint8_t CanControllerId        	 						;
-	uint8_t canHardwareObjectIndex 	 						;
-	tCANMsgObject CANMessage       	 						;
-	uint8_t HO_Index                 						;
-	uint8_t MailBoxCounter[NUM_OF_CAN_CONTROLLERS] = {0}	;
-	uint8_t StartMailBoxFlag  		 						;
-	uint8_t NumberMailBoxes_PerHO						    ;
-
-	/* Loop for all max hardware object in the System */
-	for ( HO_Index = START_INDEX ; HO_Index < MAX_NUM_OF_HO;HO_Index++ )
+	/*	TODO: without Ref, also dont define two variables in the same line	*/
+	uint8_t canControllerRef,canHardwareObjectIndex;
+	tCANMsgObject CANMessage                       ;
+//TOBEASKED:shall we take cnfg parameter max_number_HO per cancontroller
+	for ( uint8_t HO_Index = 0 ; HO_Index < MAX_NUM_OF_HO;HO_Index++ )
 	{
-		StartMailBoxFlag = NEW_HO   ;	
-		CanControllerId  = CanHardwareObject[canHardwareObjectIndex].CanControllerId                                           ;
-		NumberMailBoxes_PerHO = CanHardwareObject[HO_Index].CanHwObjectCount                             ;
-		for( canHardwareObjectIndex = START_INDEX ; canHardwareObjectIndex < NumberMailBoxes_PerHO ; canHardwareObjectIndex++ )
+		for( canHardwareObjectIndex = 0 ; canHardwareObjectIndex < CanHardwareObject[HO_Index].CanHwObjectCount; canHardwareObjectIndex++ )
 		{
-			if ( StartMailBoxFlag == NEW_HO )
+			canControllerRef = CanHardwareObject[canHardwareObjectIndex].CanControllerRef                                           ;
+	//Can_MailBoxLookUpTables[canControllerRef][canHardwareObjectIndex].HwObject = CanHardwareObject[canHardwareObjectIndex].CanHwId    ;
+			if ( CanHardwareObject[canHardwareObjectIndex].CanObjectType == RECEIVE )
 			{
-				CanHardwareObject[HO_Index].CanMailBoxStart = MailBoxCounter[CanControllerId] ;
-				StartMailBoxFlag = OLD_HO 																						 ;
-			}
-			else 
-			{
-				Can_MailBoxLookUpTables[CanControllerId][canHardwareObjectIndex].HwObject = MailBoxCounter[CanControllerId];
-				if ( CanHardwareObject[canHardwareObjectIndex].CanObjectType == RECEIVE )
-				{
-				/*psMsgObject->ui32MsgIDMask bits that are used for masking during comparison.                   (TivaWare) */
 				/*Set psMsgObject->ui32MsgID to the full message ID, or a partial mask to use partial ID matching.(TivaWare)*/
 	//CANMessage.ui32MsgID     = CanHardwareObject[canHardwareObjectIndex]
 				/*Set psMsgObject->ui32MsgLen to the number of bytes in the expected data frame.         (TivaWare)          */
-					CANMessage.ui32MsgLen      = MAX_DATA_LENGTH                                                                   ;
-					if ( CanHardwareObject[HO_Index].CanIdType ==  EXTENDED )
+				CANMessage.ui32MsgLen      = MAX_DATA_LENGTH                                                                   ;
+				/*psMsgObject->ui32MsgIDMask bits that are used for masking during comparison.                   (TivaWare) */
+	//CANMessage.ui32MsgIDMask =
+				if ( CanHardwareObject[HO_Index].CanIdType ==  EXTENDED )
 				{/* \e psMsgObject->ui32Flags as follows: Set  MSG_OBJ_RX_INT_ENABLE flag to be interrupted when the data frame is received.
 														  Set  MSG_OBJ_USE_ID_FILTER flag to enable identifier-based filtering.(TivaWare)*/
-						CANMessage.ui32Flags= MSG_OBJ_RX_INT_ENABLE| MSG_OBJ_USE_ID_FILTER|MSG_OBJ_EXTENDED_ID                     ;
-				}
-				else
-				{
-					CANMessage.ui32Flags = MSG_OBJ_RX_INT_ENABLE|MSG_OBJ_USE_ID_FILTER                                          ;
-				}
+					CANMessage.ui32Flags= MSG_OBJ_RX_INT_ENABLE| MSG_OBJ_USE_ID_FILTER|MSG_OBJ_EXTENDED_ID                     ;
+			}
+			else
+			{
+				CANMessage.ui32Flags = MSG_OBJ_RX_INT_ENABLE|MSG_OBJ_USE_ID_FILTER                                          ;
+			}
+			if ( HO_Index < 32)
+			{
 				/*Configures a message object in the CAN controller.(TivaWare)                                                          */
-				CANMessageSet( CanController[CanControllerId].CanControllerBaseAddress,MailBoxCounter[CanControllerId],&CANMessage, MSG_OBJ_TYPE_RX )         ;
-				MailBoxCounter[CanControllerId]++   ;
+				CANMessageSet( CanController[canControllerRef].CanControllerBaseAddress,HO_Index,&CANMessage, MSG_OBJ_TYPE_RX )         ;
+			}
+			else 
+			{
+				/*Configures a message object in the CAN controller.(TivaWare)                                                          */
+				CANMessageSet( CanController[canControllerRef].CanControllerBaseAddress,HO_Index-32,&CANMessage, MSG_OBJ_TYPE_RX )      ;	
 			}
 		}
 		else 
@@ -654,54 +648,52 @@ static void Can_ConfigureHardwareObject(void)
 
 void Can_Init(Can_ConfigType* Config)
 {
-	
-	uint16_t 		Baudrate                 		;
-	uint8_t  		CanControllerBaseAddress  		;                                                                                                                  ;
-	uint8_t  		CanControllerIndex        		;
-	tCANBitClkParms Bit_Time_Parameters0	        ; /* structure containing bit time parameters                                                      */
-	
+	/*	TODO: rename this variable to just "BaudRate"	*/
+	uint16_t BaudrateRef    ;                                                                                                                ;
+	uint8_t canControllerIndex;
+	/*	TODO: put this ->   CanController[canControllerIndex].CanControllerBaseAddress in a local variable for simplecity	*/
+	tCANBitClkParms Bit_Time_Parameters0; /* structure containing bit time parameters                                                      */
 	if(CanUnitState == CAN_UNINIT)
 		/*[SWS_Can_00246]  The function Can_Init shall change the module state to CAN_READY, after initialising all controllers inside the HW Unit.*/
 	{
-		if  (( Can_ControllerMode[CAN_CONTROLLER_ZERO] == CAN_CS_UNINIT ) && ( Can_ControllerMode[CAN_CONTROLLER_ONE] == CAN_CS_UNINIT ))
+		if  ((Can_ControllerMode [CAN_CONTROLLER_ZERO]== CAN_CS_UNINIT) && ( Can_ControllerMode[CAN_CONTROLLER_ONE]== CAN_CS_UNINIT))
 		{
 			/*[SWS_Can_00245]  The function Can_Init shall initialize all CAN controllers according to their configuration                                             */
-			for (CanControllerIndex = CAN_CONTROLLER_ZERO ; CanControllerIndex < NUM_OF_CAN_CONTROLLERS ; CanControllerIndex++ )
+			for (canControllerIndex = 0U; canControllerIndex < NUM_OF_CAN_CONTROLLERS ; canControllerIndex++)
 			{
-				Baudrate = CanController[CanControllerIndex].CanControllerDefaultBaudrate                                                       ;
-				CanControllerBaseAddress = CanController[CanControllerIndex].CanControllerBaseAddress;
 				/* Initialize Can controller Registers     (TivaWare)                                                                                                      */
-				CANInit( CanControllerBaseAddress )                                                              ;
+				CANInit( CanController[canControllerIndex].CanControllerBaseAddress )                                                              ;
 				/* store the value of Baudrate refrence to simplify the access in the below lines 											*/
+				BaudrateRef = CanController[canControllerIndex].CanControllerDefaultBaudrate                                                       ;
 				/*Fill Bit_Time_Parameters0 with time parameter from the conifguration parameters 	                													    */
-				Bit_Time_Parameters0.ui32SyncPropPhase1Seg= ( CanControllerBaudrateConfig[ Baudrate ].CanControllerSeg1   ) +
-				( CanControllerBaudrateConfig[ Baudrate ].CanControllerPropSeg)                     ;
-				Bit_Time_Parameters0.ui32Phase2Seg        =   CanControllerBaudrateConfig[ Baudrate ].CanControllerSeg2                         ;
-				Bit_Time_Parameters0.ui32SJW              =   CanControllerBaudrateConfig[ Baudrate ].CanControllerSyncJumpWidth                ;
+				Bit_Time_Parameters0.ui32SyncPropPhase1Seg= ( CanControllerBaudrateConfig[ BaudrateRef ].CanControllerSeg1   ) +
+				( CanControllerBaudrateConfig[ BaudrateRef ].CanControllerPropSeg)                     ;
+				Bit_Time_Parameters0.ui32Phase2Seg        =   CanControllerBaudrateConfig[ BaudrateRef ].CanControllerSeg2                         ;
+				Bit_Time_Parameters0.ui32SJW              =   CanControllerBaudrateConfig[ BaudrateRef ].CanControllerSyncJumpWidth                ;
+				/*TOBEASKED: Shall I replace SysCtlClockGet with cnfg parameter ???*/ 
 				/*	TODO: add MCU function to get the clock speed (NOTE THAT: you should update this part if you have MCU module)	*/
-				Bit_Time_Parameters0.ui32QuantumPrescaler =   Mcu_GetSysCloock()/((Bit_Time_Parameters0.ui32SyncPropPhase1Seg +
-					Bit_Time_Parameters0.ui32Phase2Seg+1U) * CanControllerBaudrateConfig[ Baudrate ].CanControllerBaudRate*1000U);
+				Bit_Time_Parameters0.ui32QuantumPrescaler =   SysCtlClockGet()/((Bit_Time_Parameters0.ui32SyncPropPhase1Seg +
+					Bit_Time_Parameters0.ui32Phase2Seg+1U)*CanControllerBaudrateConfig[ BaudrateRef ].CanControllerBaudRate*1000U);
 				/* Configures the CAN controller bit timing      (TivaWare)                                                                                  */
-				CANBitTimingSet(CanControllerBaseAddress,&Bit_Time_Parameters0)        ;
+				CANBitTimingSet(CanContainer.CanConfigSet.CanController[canControllerIndex].CanControllerBaseAddress,&Bit_Time_Parameters0)        ;
 				/* Disable Can Controller (TivaWare)                                                                                                                          */
-			//	CANDisable(CanControllerBaseAddress)                                                             ;
+				CANDisable(CanController[canControllerIndex].CanControllerBaseAddress)                                                             ;
 				/*	TODO: ??	*/
 				/* One-time writable registers that require initialisation directly after reset shall be initialised by the startup code                                       */
 				/*This function registers the interrupt handler in the interrupt vector table, and enables CAN interrupts on the interrupt 
-				controller; specific CAN interrupt sources must be enabled using CANIntEnable().                                                              */
-				CANIntRegister(CanControllerBaseAddress,(&Can_InterruptHandler))            ;
+controller; specific CAN interrupt sources must be enabled using CANIntEnable().                                                              */
+				CANIntRegister(CanController[canControllerIndex].CanControllerBaseAddress,(&Can_InterruptHandler))            ;
 				/* only function can_Init can change controller state from uninit to stopped                                                                                     */
-				Can_ControllerMode [CanControllerIndex]=CAN_CS_STOPPED                                                                              ;
+				Can_ControllerMode [canControllerIndex]=CAN_CS_STOPPED                                                                              ;
 				/*[SWS_Can_00259]  The function Can_Init shall set all CAN controllers in the state STOPPED.                                                                     */
 				/*responsible for incrementing disable_interrupt so that can enable_interrupt can execute
 				/* after you have configured some/all the can controllers in your module set this general flag                                                                   */
-
 			}/* End Of the for loop */
 				CanUnitState = CAN_READY                                                                                                           ;
 			/* [SWS_Can_00250] The function Can_Init shall initialize:  static variables, including flags,Common setting for the complete CAN HW unitCAN  					*/
 			/* controller specific settings for each CAN controller                                                                                       					*/
 			/* [SWS_Can_00246] The function Can_Init shall change the module state to CAN_READY, after initialising all controllers inside the HW Unit.   					*/
-			/* Configure hardware Objects                                                                                                          					*/
+			/*        Configure hardware Objects                                                                                                          					*/
 				Can_ConfigureHardwareObject()                                                                                                       ;
 				CanController[CAN_CONTROLLER_ONE ].CanInterruptId = INT_CAN1                                                                       ;
 			/*            initialize the CanInterruptId parameter in the Can_controller struct that shall interrupt masks that uses in Can_EnableControllerInterrupts       */
@@ -791,13 +783,11 @@ void Can_Init(Can_ConfigType* Config)
 	Std_ReturnType Can_Write(Can_HwHandleType HTH , Can_PduType* PduInfo)
 	{ 
 
-		uint8_t 		CanDevolpmentErrorType      ;
-		tCANMsgObject   sCANMessage                 ;
-		uint32_t 	    REGISTER_1               	;
-		uint32_t 	    REGISTER_2               	;
-		Std_ReturnType 	ErrorStatus = E_OK          ;
-		uint8_t 		MailBoxIndex                ;
-		uint8_t 		CanControllerId             ;
+		tCANMsgObject  sCANMessage        ;
+		uint32_t REGISTER_1               ;
+		uint32_t REGISTER_2               ;
+		Std_ReturnType ErrorStatus = E_OK ;
+
 		/* [SWS_Can_00100] Several TX hardware objects with unique HTHs may be configured. The
     	CanIf module provides the HTH as parameter of the TX request.*/
 
@@ -810,10 +800,8 @@ void Can_Init(Can_ConfigType* Config)
 		{
 			/*[SWS_Can_00216] If development error detection for the Can module is enabled: The function
        		Can_Write shall raise the error CAN_E_UNINIT and shall return E_NOT_OK if the driver is not yet initia_lized.*/
-
-#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
 			CanDevolpmentErrorType = CAN_E_UNINIT ;
-#endif 
 			ErrorStatus            = E_NOT_OK     ;
 		}
 		if ( HTH >= MAX_NUM_OF_HOH  &&  CanHardwareObject[HTH].CanObjectType == RECEIVE )
@@ -821,9 +809,9 @@ void Can_Init(Can_ConfigType* Config)
 			/*[SWS_Can_00217] ⌈If development error detection for the Can module is enabled: The function Can_Write
     	    shall raise the errorCAN_E_PARAM_HANDLE and shall return E_NOT_OK if the parameter Hth is not a
         	configured Hardware transmit Handle.*/
-#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
+
 			CanDevolpmentErrorType = CAN_E_PARAM_HANDLE;
-#endif
 			ErrorStatus            = E_NOT_OK     ;
 
 		}
@@ -847,18 +835,18 @@ void Can_Init(Can_ConfigType* Config)
             API is disabled for this hardware object (CanTriggertransmitEnable = FALSE) and
             the SDU pointer inside PduInfo is a null pointer.*/
 
-#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
+
 			CanDevolpmentErrorType=CAN_E_PARAM_POINTER;
-#endif
 			ErrorStatus            = E_NOT_OK     ;
 		}
 
-		
-		if(PduInfo->length> MAX_DATA_LENGTH)
+		/*	TODO: 	no magic number	*/
+		if(PduInfo->length>8U)
 		{
-#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
+
 			CanDevolpmentErrorType=CAN_E_PARAM_DATA_LENGTH;
-#endif 
 			ErrorStatus            = E_NOT_OK     ;
 		/*[SWS_Can_00218] ⌈The function Can_Write shall return E_NOT_OK and if development error detection
                       for the CAN module is enabled shall raise the error CAN_E_PARAM_DATA_LENGTH,
@@ -866,17 +854,18 @@ void Can_Init(Can_ConfigType* Config)
 		}
 		if (ErrorStatus == E_OK )
 		{ 
+//		if(CanHard w ar eObject[HTH].CanHandleType==BASIC)   what is the functionality of CanHandleType
 			{
-				CanControllerId  = CanHardwareObject[canHardwareObjectIndex].CanControllerId ;
-				for( MailBoxIndex = CanHardwareObject[HTH].CanMailBoxStart ; MailBoxIndex < ( CanHardwareObject[HTH].CanHwObjectCount ) ; MailBoxIndex ++)
+				/*	TODO: change HTH & HRH TO HO, also add he lookUpTable	*/
+				for(HO_Index =0U ; HO_Index < ( CanHardwareObject[HTH].CanHwObjectCount ) ; HO_Index ++)
 				{
 				/* Check if the corresponde mailbox is empty or not                             */
-					if ( Can_MailBoxLookUpTables[ CanControllerId ][ MailBoxIndex ].Confirmation == CdONFIRMED )
+					if ( Can_MailBoxLookUpTables[ HTH + HO_Index ].Confirmation == CdONFIRMED )
 					{
 						/* Set confirmation to the correspond mailbox                           */
-						Can_MailBoxLookUpTables [ CanControllerId ][ MailBoxIndex ] .Confirmation = UN_CONFIRMED                ;
+						Can_MailBoxLookUpTables [ HTH + HO_Index ] .Confirmation = UN_CONFIRMED                ;
 						/* Map the mailboc to pdu for the Rxindation in the ISR 				*/
-						Can_MailBoxLookUpTables [ CanControllerId ][ MailBoxIndex ] .PduId        = PduInfo->swPduHandle        ;
+						Can_MailBoxLookUpTables [ HTH + HO_Index ] .PduId        = PduInfo->swPduHandle        ;
 
 						sCANMessage.ui32MsgID     =  PduInfo->id                                        ;
 						sCANMessage.ui32MsgLen    =  PduInfo->length                                    ;
@@ -886,9 +875,9 @@ void Can_Init(Can_ConfigType* Config)
                                             shall use the next higher valid DLC for transmission with initialisation of unused bytes
                                             to the value of the corresponding CanFdPaddingValue (see ECUC_Can_00485).*/
 
-						if( PduInfo->length < MIN_DATA_SIZE )
+						if( PduInfo->length < 1U )
 						{
-							sCANMessage.ui32MsgLen   =    MIN_DATA_SIZE                                                                      ;
+							sCANMessage.ui32MsgLen   =    1U                                                                      ;
 						}
 						else
 						{
@@ -909,9 +898,16 @@ void Can_Init(Can_ConfigType* Config)
 							sCANMessage.ui32Flags = MSG_OBJ_TX_INT_ENABLE                           ;
 						}
 						/*	TODO: hema 3aref xD	*/
-
+						if ( HO_Index < 32)
+						{
 						/*Configures a message object in the CAN controller.(TivaWare)                                                          */
-						CANMessageSet( CanController[canControllerRef].CanControllerBaseAddress, MailBoxIndex ,&sCANMessage, MSG_OBJ_TYPE_RX )         ;
+							CANMessageSet( CanController[canControllerRef].CanControllerBaseAddress,HO_Index,&sCANMessage, MSG_OBJ_TYPE_RX )         ;
+						}
+						else 
+						{
+						/*Configures a message object in the CAN controller.(TivaWare)                                                          */
+							CANMessageSet( CanController[canControllerRef].CanControllerBaseAddress,HO_Index-32,&sCANMessage, MSG_OBJ_TYPE_RX )      ;	
+						}
 						ErrorStatus            = E_NOT_OK     ;
 					}
 					else
@@ -931,6 +927,7 @@ void Can_Init(Can_ConfigType* Config)
 			}
 			return ErrorStatus ;
 		}
+
 
 
 
@@ -1043,11 +1040,11 @@ void Can_Init(Can_ConfigType* Config)
 set to POLLING or mixed. In case of mixed processing only the hardware objects for which CanHardwareObjectUsesPolling is set
  to TRUE shall be polled (SRS_BSW_00432, SRS_BSW_00373, SRS_SPAL_00157)*/
 #if ( CAN_CONTROLLER_CAN_TX_PROCESSING == POLLING )
-			void  Can_Main_Function_Write(void)
-			{
-				uint8_t CanMailBoxIndex,mailBoxIndex ;
-				uint16_t pollinRegister              ;
-				uint16_t * PtrToReg                  ;
+void  Can_Main_Function_Write(void)
+{
+	uint8_t CanMailBoxIndex,mailBoxIndex ;
+	uint16_t pollinRegister              ;
+	uint16_t * PtrToReg                  ;
 
 	/*Check the busy flag */
 	// while(HWREG(ui32Base + CAN_O_IF1CRQ) & CAN_IF1CRQ_BUSY)
@@ -1055,44 +1052,44 @@ set to POLLING or mixed. In case of mixed processing only the hardware objects f
 	//    }
 	/*Clear 7th bit in CANx_IF1CMSK_R */
 	/* Transfer the data in the CAN message object specified by the MNUM field in the CANIFnCRQ register into the CANIFn registers.*/
-				CAN0_IF1CMSK_R&= ((uint32_t)(~0x80U));
-				CAN1_IF1CMSK_R&= ((uint32_t)(~0x80U));
+	CAN0_IF1CMSK_R&= ((uint32_t)(~0x80U));
+	CAN1_IF1CMSK_R&= ((uint32_t)(~0x80U));
 	/* MISRA violation */
 	/*casting pointer to integral type unavoidable when addressing memory mapped registers
           or other hardware specific features.*/
-				for( CanMailBoxIndex = 0U ; CanMailBoxIndex < MAX_NUM_OF_MAILBOXES ; CanMailBoxIndex++ )
-				{
-					if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ].HwObject ] .CanObjectType==TRANSMIT )
-					{
+	for( CanMailBoxIndex = 0U ; CanMailBoxIndex < MAX_NUM_OF_MAILBOXES ; CanMailBoxIndex++ )
+	{
+		if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ].HwObject ] .CanObjectType==TRANSMIT )
+		{
 			//Can_MailBoxLookUpTables
-						if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ] ].CanControllerRef == CanController[0] )
-						{
-							PtrToReg = (uint16_t )&CAN0_IF1MCTL_R ;
-						}
-						else
-						{
-							PtrToReg = (uint16_t )&CAN1_IF1MCTL_R ;
-						}
-						if( Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation==un_confirmed)
-						{
+			if( CanHardwareObject[ Can_MailBoxLookUpTables[ CanMailBoxIndex ] ].CanControllerRef == CanController[0] )
+			{
+				PtrToReg = (uint16_t )&CAN0_IF1MCTL_R ;
+			}
+			else
+			{
+				PtrToReg = (uint16_t )&CAN1_IF1MCTL_R ;
+			}
+			if( Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation==un_confirmed)
+			{
 				/*A message transfer is started as soon as there is a write of the message object number to the MNUM
 										field when the TXRQST bit in the CANIF1MCTL register is set.*/
-							if ( CanMailBoxIndex > 32)
-							{
-								CAN0_IF1CRQ_R = CanMailBoxIndex - 32 ;
-							}
-							CAN0_IF1CRQ_R = CanMailBoxIndex ;
+				if ( CanMailBoxIndex > 32)
+				{
+					CAN0_IF1CRQ_R = CanMailBoxIndex - 32 ;
+				}
+				CAN0_IF1CRQ_R = CanMailBoxIndex ;
 				/*MISRA violation*/
 				/*Set Transmit Request bit in CANIF1MCTL register */
-							pollinRegister=((uint16_t)(*PtrToReg);
-								pollinRegister|=0xFEFFU;
+				pollinRegister=((uint16_t)(*PtrToReg);
+				pollinRegister|=0xFEFFU;
 				/*MISRA violation*/
 				/*casting pointer to integral type unavoidable when addressing memory mapped
                                            registers or other hardware specific features.*/
 				/*This message object is not waiting for transmission if this bit is cleared  */
 //TOBEASKED:shall it be while instade of if ??				
 				if( pollinRegister == 0xFEFFU)/*Message_Confirmation[i][j]=un_confirmed*/
-								{
+				{
 					Can_MailBoxLookUpTables[ CanMailBoxIndex ].Confirmation = confirmed;/*when it comes to poll again it wouldn't find
                                         it un_confirmed except when another transmission was requested again*/
 					/*GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R ^0x04U;*/
@@ -1110,19 +1107,19 @@ set to POLLING or mixed. In case of mixed processing only the hardware objects f
 					/*CanDrv must store the all in HTHs pending L-PDU Ids in an array
                                         organized perTH to avoid new search of the L-PDU ID for call of
                                        CanIf_TxConfirmation().*/
-								}
-							}
-							else
-							{
+				}
+			}
+			else
+			{
 
-							}
-						}
-						else
-						{
+			}
+		}
+		else
+		{
 
-						}
+		}
 	}/*End of For */
-					}
+}
 
 
 
@@ -1161,31 +1158,31 @@ set to POLLING or mixed. In case of mixed processing only the hardware objects f
 
 
 
-					Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr )
-					{
-						Std_ReturnType RetuenValue =  E_OK ;	
-						static Can_ErrorStateType  ErrorState[ NUM_OF_CAN_CONTROLLERS];
-						uint8_t error_status;
-						if(CanUnitState==CAN_UNINIT)
-						{
+Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr )
+{
+	Std_ReturnType RetuenValue =  E_OK ;	
+	static Can_ErrorStateType  ErrorState[ NUM_OF_CAN_CONTROLLERS];
+	uint8_t error_status;
+	if(CanUnitState==CAN_UNINIT)
+	{
 		/*[SWS_Can_91005] ⌈If development error detection for the Can module is enabled: if the module is not yet initialized, 
 the function Can_GetControllerErrorState shall raise development error CAN_E_UNINIT and return E_NOT_OK.*/
-							CanDevolpmentErrorType=CAN_E_UNINIT;
-							RetuenValue = E_NOT_OK;
-						}
-						if( ControllerId >= NUM_OF_CAN_CONTROLLERS)
-						{
-							CanDevolpmentErrorType=CAN_E_PARAM_CONTROLLER;
-							RetuenValue = E_NOT_OK;
-						}
-						if( ErrorStatePtr == NULL )
-						{
-							CanDevolpmentErrorType = CAN_E_PARAM_POINTER ;
-							RetuenValue = E_NOT_OK                       ;
-						}
+		CanDevolpmentErrorType=CAN_E_UNINIT;
+		RetuenValue = E_NOT_OK;
+	}
+	if( ControllerId >= NUM_OF_CAN_CONTROLLERS)
+	{
+		CanDevolpmentErrorType=CAN_E_PARAM_CONTROLLER;
+		RetuenValue = E_NOT_OK;
+	}
+	if( ErrorStatePtr == NULL )
+	{
+		CanDevolpmentErrorType = CAN_E_PARAM_POINTER ;
+		RetuenValue = E_NOT_OK                       ;
+	}
 
-						if ( RetuenValue == E_NOT_OK )
-						{
+	if ( RetuenValue == E_NOT_OK )
+	{
 		/* Reads one of the controller status registers. (Tivaware)*/
 		/* - \b CAN_STATUS_BUS_OFF - controller is in bus-off condition
 //TOBEASKED : there are three types of error only that are defines 
@@ -1206,16 +1203,16 @@ the function Can_GetControllerErrorState shall raise development error CAN_E_UNI
 //!   dominant mode
 //! - \b CAN_STATUS_LEC_CRC - CRC error in received message
 //!*/		
-							*ErrorStatePtr  = CANStatusGet(CanController[ControllerId].CanControllerBaseAddress, CAN_STS_CONTROL) ;
-							error_status& = 0xE0U                                                                                 ;
+		*ErrorStatePtr  = CANStatusGet(CanController[ControllerId].CanControllerBaseAddress, CAN_STS_CONTROL) ;
+		error_status& = 0xE0U                                                                                 ;
 		RetuenValue = E_OK;/*must be handled with os*/
-						}
-						else 
-						{
+	}
+	else 
+	{
 		/*MISRA*/
-						}
-						return RetuenValue ;
-					}
+	}
+	return RetuenValue ;
+}
 
 
 
