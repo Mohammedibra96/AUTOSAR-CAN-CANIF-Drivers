@@ -8,6 +8,9 @@
 #pragma RESET_MISRA("all")
 
 
+
+/*	TODO: move all the variable definitions to the can_lcfg.c		*/
+
 /****************************************************** Jemmy & Hema **********************************************************/
 /* 
  *
@@ -35,6 +38,8 @@ CanController_s CanController[NUM_OF_CAN_CONTROLLERS];
  */
 CanHardwareObject_s CanHardwareObject[ MAX_NUM_OF_HO ];
 
+
+/*		this is not part of the lcfg		*/
 /*[SWS_Can_00401] Several transmit hardware objects (defined by "CanHwObjectCount")
 shall be assigned by one HTH to represent one transmit entity to the upper layer.*/
 
@@ -47,16 +52,13 @@ Can_MailBoxLookUpTables_s Can_MailBoxLookUpTables[NUM_OF_CAN_CONTROLLERS][MAX_NU
 
 static void config_transmit_objects(void);
 static void Recieve_objects_config (void);
-void Can0_InterruptHandler(void);
-void Can1_InterruptHandler(void);
-
 
 
 static uint8_t state_transition_flag[2]={0U,0U};
 
 
 
-
+/*	TODO: change "static" to local	*/
 
 
 /*[SWS_Can_00016] The Can module shall call CanIf_TxConfirmation to indicate a successful transmission.
@@ -65,8 +67,8 @@ Can_MainFunction_Write  in case of polling mode.*/
 
 static Can_ControllerStateType Can_ControllerMode [NUM_OF_CAN_CONTROLLERS];
 
-static uint8_t CanDevolpmentErrorType;
 
+/*	TODO: ENTER & EXIT CRITICAL SECTION	*/
 static uint8_t IntDisableCount[NUM_OF_CAN_CONTROLLERS];
 
 static Can_StateType CanUnitState = CAN_UNINIT ;
@@ -77,12 +79,6 @@ static Can_StateType CanUnitState = CAN_UNINIT ;
 CAN_UNINIT.*/
 
 /*All global data with read purpose only should be declared constant.[SRS_BSW_309] */
-
-const Mcu_PerClockConfigType McuPerClockConfigData [NUM_OF_CAN_CONTROLLERS]= SYSCTL_PERIPH;
-const Can_ConfigType MailboxCfg_MAP = hohMap;
-const Can_ConfigType CanContainer= UserCANCfg;
-
-
 
 
 /*  SWS_Can_00230: This function performs software triggered state transitions of the CAN controller State machine  
@@ -492,7 +488,7 @@ void CAN_IRQHandler(u8 Controller)
 	uint32_t mailBoxIndex;
 	/*	Buffer to recieve data in	*/
 	uint8_t rx_MsgData1[8U]={0U};
-	/*	TI struct to use in data reception	*/
+	/*	TI struct to use in data reception		(Tivaware)*/
 	tCANMsgObject CANMsgObject;
 	/*	Point at the buffer defined above	*/
 	CANMsgObject.pui8MsgData=rx_MsgData1;
@@ -505,9 +501,13 @@ void CAN_IRQHandler(u8 Controller)
 	 *	If the value of the interrupt register is in the range 1-32, then this indicates the number of the 
 	 *	highest priority message object that has an interrupt pending.
 	 *	Otherwise, there is an error.
+	 *	(tivaware)
 	 */
 
 	mailBoxIndex = CANIntStatus(CanController[Controller].CanControllerBaseAddress, CAN_INT_STS_CAUSE);
+	/*	TODO: if zero report det	*/
+	/*	change those numbers to macros	*/
+
 	if( mailBoxIndex >= 1 && mailBoxIndex <= 32 )
 	{
 		u8 HwObjectIndex = Can_MailBoxLookUpTables[Controller][mailBoxIndex].HwObject;
@@ -524,30 +524,23 @@ void CAN_IRQHandler(u8 Controller)
 			rxPduInfo.SduDataPtr = CANMsgObject.pui8MsgData;
 			
 			/*******************************	How to give back the pdu id?	*******************************/
+			/*	not here in the confirmation only	*/
 			CanIf_RxIndication(&Rx_Mailbox,&rxPduInfo);
 
 
 		}
 		else if ( CanHardwareObject[Controller][HwObjectIndex].CanObjectType == CAN_OBJECT_TYPE_TRANSMIT )
 		{
+			/*	TODO: call canif_confirmation	*/
 			Can_MailBoxLookUpTables[Controller][mailBoxIndex].Confirmation = CAN_MSG_CONFIRMED;
 		}
+		else
+		{}
 	}
+	else{}
 
 }
 
-
-void Can0_InterruptHandler(void)
-{
-	CAN_IRQHandler(CAN_CONTROLLER_ZERO);
-	
-}
-
-void Can1_InterruptHandler(void) 
-{
-	CAN_IRQHandler(CAN_CONTROLLER_ONE);
-
-}
 
 
 
@@ -592,15 +585,16 @@ void Can1_InterruptHandler(void)
 
 static void Can_ConfigureHardwareObject(void)
 {
+	/*	TODO: without Ref, also dont define two variables in the same line	*/
 	uint8_t canControllerRef,canHardwareObjectIndex;
 	tCANMsgObject CANMessage                       ;
 //TOBEASKED:shall we take cnfg parameter max_number_HO per cancontroller
-	for ( uint8_t HO_Index = 0 ; (HO_Index < MAX_NUM_OF_HO) && (CanHardwareObject[canHardwareObjectIndex]) ;HO_Index++ )
+	for ( uint8_t HO_Index = 0 ; HO_Index < MAX_NUM_OF_HO;HO_Index++ )
 	{
 		for( canHardwareObjectIndex = 0 ; canHardwareObjectIndex < CanHardwareObject[HO_Index].CanHwObjectCount; canHardwareObjectIndex++ )
 		{
 			canControllerRef = CanHardwareObject[canHardwareObjectIndex].CanControllerRef                                           ;
-	//Can_MailBoxLookUpTables[canControllerRef][canHardwareObjectIndex].HwObject = HO_Index    ;
+	//Can_MailBoxLookUpTables[canControllerRef][canHardwareObjectIndex].HwObject = CanHardwareObject[canHardwareObjectIndex].CanHwId    ;
 			if ( CanHardwareObject[canHardwareObjectIndex].CanObjectType == RECEIVE )
 			{
 				/*Set psMsgObject->ui32MsgID to the full message ID, or a partial mask to use partial ID matching.(TivaWare)*/
@@ -649,14 +643,16 @@ static void Can_ConfigureHardwareObject(void)
 
 void Can_Init(Can_ConfigType* Config)
 {
-	uint16_t BaudrateRef                                                                                                                    ;
+	/*	TODO: rename this variable to just "BaudRate"	*/
+	uint16_t BaudrateRef    ;                                                                                                                ;
+	uint8_t canControllerIndex;
+	/*	TODO: put this ->   CanController[canControllerIndex].CanControllerBaseAddress in a local variable for simplecity	*/
 	tCANBitClkParms Bit_Time_Parameters0; /* structure containing bit time parameters                                                      */
 	if(CanUnitState == CAN_UNINIT)
 		/*[SWS_Can_00246]  The function Can_Init shall change the module state to CAN_READY, after initialising all controllers inside the HW Unit.*/
 	{
 		if  ((Can_ControllerMode [CAN_CONTROLLER_ZERO]== CAN_CS_UNINIT) && ( Can_ControllerMode[CAN_CONTROLLER_ONE]== CAN_CS_UNINIT))
 		{
-			uint8_t canControllerIndex;
 			/*[SWS_Can_00245]  The function Can_Init shall initialize all CAN controllers according to their configuration                                             */
 			for (canControllerIndex = 0U; canControllerIndex < NUM_OF_CAN_CONTROLLERS ; canControllerIndex++)
 			{
@@ -670,12 +666,14 @@ void Can_Init(Can_ConfigType* Config)
 				Bit_Time_Parameters0.ui32Phase2Seg        =   CanControllerBaudrateConfig[ BaudrateRef ].CanControllerSeg2                         ;
 				Bit_Time_Parameters0.ui32SJW              =   CanControllerBaudrateConfig[ BaudrateRef ].CanControllerSyncJumpWidth                ;
 				/*TOBEASKED: Shall I replace SysCtlClockGet with cnfg parameter ???*/ 
+				/*	TODO: add MCU function to get the clock speed (NOTE THAT: you should update this part if you have MCU module)	*/
 				Bit_Time_Parameters0.ui32QuantumPrescaler =   SysCtlClockGet()/((Bit_Time_Parameters0.ui32SyncPropPhase1Seg +
 					Bit_Time_Parameters0.ui32Phase2Seg+1U)*CanControllerBaudrateConfig[ BaudrateRef ].CanControllerBaudRate*1000U);
 				/* Configures the CAN controller bit timing      (TivaWare)                                                                                  */
 				CANBitTimingSet(CanContainer.CanConfigSet.CanController[canControllerIndex].CanControllerBaseAddress,&Bit_Time_Parameters0)        ;
 				/* Disable Can Controller (TivaWare)                                                                                                                          */
 				CANDisable(CanController[canControllerIndex].CanControllerBaseAddress)                                                             ;
+				/*	TODO: ??	*/
 				/* One-time writable registers that require initialisation directly after reset shall be initialised by the startup code                                       */
 				/*This function registers the interrupt handler in the interrupt vector table, and enables CAN interrupts on the interrupt 
 controller; specific CAN interrupt sources must be enabled using CANIntEnable().                                                              */
@@ -692,24 +690,24 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 			/* [SWS_Can_00246] The function Can_Init shall change the module state to CAN_READY, after initialising all controllers inside the HW Unit.   					*/
 			/*        Configure hardware Objects                                                                                                          					*/
 				Can_ConfigureHardwareObject()                                                                                                       ;
-				CanInterruptId[CAN_CONTROLLER_ONE ].CanInterruptId = INT_CAN1                                                                       ;
+				CanController[CAN_CONTROLLER_ONE ].CanInterruptId = INT_CAN1                                                                       ;
 			/*            initialize the CanInterruptId parameter in the Can_controller struct that shall interrupt masks that uses in Can_EnableControllerInterrupts       */
-				CanInterruptId[CAN_CONTROLLER_ZERO].CanInterruptId = INT_CAN0                                                                       ;
+				CanController[CAN_CONTROLLER_ZERO].CanInterruptId = INT_CAN0                                                                       ;
 			}
 			else
 			{
 			/*[SWS_Can_00408] ⌈If development error detection for the Can module is enabled: The function Can_Init shall raise the error CAN_E_TRANSITION*/ 
 			/*if the CAN controllers are not in state UNINIT*/
-				CanDevolpmentErrorType=CAN_E_TRANSITION;
 #if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+				CanDevolpmentErrorType = CAN_E_TRANSITION;
 			/*Det_ReportError(CAN_MODULE_ID,CAN_INSTANCE_ID,CAN_INIT_SID,CAN_E_TRANSITION);*/
 #endif
 			}
 		}
 		else
 		{
-			CanDevolpmentErrorType=CAN_E_TRANSITION;
 #if CAN_GENERAL_CAN_DEV_ERROR_DETECT == TRUE
+			CanDevolpmentErrorType = CAN_E_TRANSITION;
 		/*Det_ReportError(CAN_MODULE_ID,CAN_INSTANCE_ID,CAN_INIT_SID,CAN_E_TRANSITION);*/
 #endif
 		/* [SWS_Can_00174] If development error detection for the Can module is enabled The function Can_Init shall raise                                                */
@@ -785,57 +783,64 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 		uint32_t REGISTER_2               ;
 		Std_ReturnType ErrorStatus = E_OK ;
 
-	/* [SWS_Can_00100] Several TX hardware objects with unique HTHs may be configured. The
-    CanIf module provides the HTH as parameter of the TX request.*/
+		/* [SWS_Can_00100] Several TX hardware objects with unique HTHs may be configured. The
+    	CanIf module provides the HTH as parameter of the TX request.*/
 
-	/*[SWS_Can_00276] The function Can_Write shall store the swPduHandle that is given
-    inside the parameter PduInfo until the Can module calls the CanIf_TxConfirmation
-    for this request where the swPduHandle is given as parameter.*/
-	/*canTxPDUid_confirmation[pdu_id]=un_sent;*/
+		/*[SWS_Can_00276] The function Can_Write shall store the swPduHandle that is given
+    	inside the parameter PduInfo until the Can module calls the CanIf_TxConfirmation
+    	for this request where the swPduHandle is given as parameter.*/
+		/*canTxPDUid_confirmation[pdu_id]=un_sent;*/
+
 		if(CanUnitState==CAN_UNINIT)
-
 		{
-		/*[SWS_Can_00216] If development error detection for the Can module is enabled: The function
-       Can_Write shall raise the error CAN_E_UNINIT and shall return E_NOT_OK if the driver is not yet initia_lized.*/
+			/*[SWS_Can_00216] If development error detection for the Can module is enabled: The function
+       		Can_Write shall raise the error CAN_E_UNINIT and shall return E_NOT_OK if the driver is not yet initia_lized.*/
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
 			CanDevolpmentErrorType = CAN_E_UNINIT ;
 			ErrorStatus            = E_NOT_OK     ;
 		}
 		if ( HTH >= MAX_NUM_OF_HOH  &&  CanHardwareObject[HTH].CanObjectType == RECEIVE )
 		{
-		/*[SWS_Can_00217] ⌈If development error detection for the Can module is enabled: The function Can_Write
-        shall raise the errorCAN_E_PARAM_HANDLE and shall return E_NOT_OK if the parameter Hth is not a
-        configured Hardware transmit Handle.*/
-			CanDevolpmentErrorType=CAN_E_PARAM_HANDLE;
+			/*[SWS_Can_00217] ⌈If development error detection for the Can module is enabled: The function Can_Write
+    	    shall raise the errorCAN_E_PARAM_HANDLE and shall return E_NOT_OK if the parameter Hth is not a
+        	configured Hardware transmit Handle.*/
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
+
+			CanDevolpmentErrorType = CAN_E_PARAM_HANDLE;
 			ErrorStatus            = E_NOT_OK     ;
 
 		}
 		if(PduInfo==NULL  || PduInfo->sdu==NULL)
 		{
 
-		/*([SWS_CAN_00503] ⌈Can_Write() shall accept a null pointer as SDU (Can_PduType.Can_SduPtrType = NULL) 
-		if the trigger transmit API is enabled for this hardware object (CanTriggerTransmitEnable = TRUE).*/
+			/*([SWS_CAN_00503] ⌈Can_Write() shall accept a null pointer as SDU (Can_PduType.Can_SduPtrType = NULL) 
+			if the trigger transmit API is enabled for this hardware object (CanTriggerTransmitEnable = TRUE).*/
 
-		/*[SWS_CAN_00504] If the trigger transmit API is enabled for the hardware object, Can_Write() shall interpret a null pointer as 
-		SDU (Can_PduType.Can_SduPtrType = NULL) as request for using the trigger transmit interface. 
-		If so and the hardware object is free, Can_Write() shall call CanIf_TriggerTransmit() with the maximum size of the message buffer
-		 to acquire the PDU’s data. NOT SUPPORTED */
+			/*[SWS_CAN_00504] If the trigger transmit API is enabled for the hardware object, Can_Write() shall interpret a null pointer as 
+			SDU (Can_PduType.Can_SduPtrType = NULL) as request for using the trigger transmit interface. 
+			If so and the hardware object is free, Can_Write() shall call CanIf_TriggerTransmit() with the maximum size of the message buffer
+			 to acquire the PDU’s data. NOT SUPPORTED */
 
-		/*[SWS_CAN_00219] ⌈If development error detection for CanDrv is enabled: Can_Write()
-                  shall raise CAN_E_PARAM_POINTER and shall return E_NOT_OK if the parameter PduInfo
-                  is a null pointer.*/
+			/*[SWS_CAN_00219] ⌈If development error detection for CanDrv is enabled: Can_Write()
+            shall raise CAN_E_PARAM_POINTER and shall return E_NOT_OK if the parameter PduInfo
+            is a null pointer.*/
 
-		/*[SWS_CAN_00505] ⌈If development error detection for CanDrv is enabled: Can_Write()
-                   shall raise CAN_E_PARAM_POINTER and shall return E_NOT_OK if the trigger transmit
-                   API is disabled for this hardware object (CanTriggertransmitEnable = FALSE) and
-                   the SDU pointer inside PduInfo is a null pointer.*/
+			/*[SWS_CAN_00505] ⌈If development error detection for CanDrv is enabled: Can_Write()
+            shall raise CAN_E_PARAM_POINTER and shall return E_NOT_OK if the trigger transmit
+            API is disabled for this hardware object (CanTriggertransmitEnable = FALSE) and
+            the SDU pointer inside PduInfo is a null pointer.*/
 
-		/* NB:CanTriggertransmitEnable is not supported so it is always = FALSE       */
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
 
 			CanDevolpmentErrorType=CAN_E_PARAM_POINTER;
 			ErrorStatus            = E_NOT_OK     ;
 		}
+
+		/*	TODO: 	no magic number	*/
 		if(PduInfo->length>8U)
 		{
+			/*	TODO: make the upcoming variable local in each function, and also put #ifdef	*/
+
 			CanDevolpmentErrorType=CAN_E_PARAM_DATA_LENGTH;
 			ErrorStatus            = E_NOT_OK     ;
 		/*[SWS_Can_00218] ⌈The function Can_Write shall return E_NOT_OK and if development error detection
@@ -846,6 +851,7 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 		{ 
 //		if(CanHard w ar eObject[HTH].CanHandleType==BASIC)   what is the functionality of CanHandleType
 			{
+				/*	TODO: change HTH & HRH TO HO, also add he lookUpTable	*/
 				for(HO_Index =0U ; HO_Index < ( CanHardwareObject[HTH].CanHwObjectCount ) ; HO_Index ++)
 				{
 				/* Check if the corresponde mailbox is empty or not                             */
@@ -886,6 +892,7 @@ controller; specific CAN interrupt sources must be enabled using CANIntEnable().
 						{    
 							sCANMessage.ui32Flags = MSG_OBJ_TX_INT_ENABLE                           ;
 						}
+						/*	TODO: hema 3aref xD	*/
 						if ( HO_Index < 32)
 						{
 						/*Configures a message object in the CAN controller.(TivaWare)                                                          */
