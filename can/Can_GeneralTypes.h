@@ -57,8 +57,8 @@ are shared among the AUTOSAR CAN modules Can, CanIf and CanTrcv.
 #define     BASIC     1
 
 /*  Can_ObjectTypeValues  */
-#define     CAN_OBJECT_TYPE_RECEIVE       0
-#define     CAN_OBJECT_TYPE_TRANSMIT      1  
+#define     RECEIVE       0
+#define     TRANSMIT      1  
 
 /*  StateTransition  */
 #define     CAN_T_START     0
@@ -129,7 +129,7 @@ typedef struct
 typedef struct 
 {
   Can_IdType        CanId;          /*uint32_t*/
-  Can_HwHandleType  Ho;             /*uint32_t*/
+  Can_HwHandleType  Hoh;             /*uint32_t*/
   uint8_t           controllerlId;
 
 }Can_HwType;
@@ -145,10 +145,10 @@ typedef struct
 
 typedef struct 
 {
- confirmation   Confirmation;
- uint8_t        pduId;
- uint8_t        HwObject;
-}Can_MailBoxLookUpTables_s;
+ confirmation   Confirmation ;
+ uint8_t        pduId        ;
+ uint8_t        HwObject     ;
+}Can_MailBoxLookUpTables_s   ;
 
 /*****************************************  CAN CONFIGURATION TYPES ******************************************************/
 
@@ -190,7 +190,6 @@ typedef struct
  uint16_t  CanControllerDefaultBaudrate;
 
 }CanController_s;
-
 
 
 
@@ -242,7 +241,7 @@ typedef struct CanControllerBaudrateConfig
 /*
  * This container contains the configuration (parameters) of CAN Hardware Objects.
  */
-typedef struct 
+typedef struct CanHardwareObject
 {
 /*
  * Specifies the type (Full-CAN or Basic-CAN) of a hardware object.
@@ -273,7 +272,7 @@ typedef struct
  * Example: HRH0-0, HRH1-1, HTH0-2, HTH1-3
  *
  */
- uint16_t CanObjectId;
+ uint16_t CanMailBoxStart;
 
 /*
  * Specifies if the HardwareObject is used as Transmit or as Receive object
