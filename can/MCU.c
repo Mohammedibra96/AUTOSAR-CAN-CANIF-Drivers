@@ -1,5 +1,4 @@
-const Mcu_PerClockConfigType McuPerClockConfigData [NUM_OF_CAN_CONTROLLERS]= SYSCTL_PERIPH;
-
+#include"MCU.h"
 
 
 
