@@ -13,15 +13,13 @@ Can_lcfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/mac
 Can_lcfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 Can_lcfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
 Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/ComStack_Types.h
-Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Com_Types.h
 Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h
-Can_lcfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
 Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Platform_Types.h
+Can_lcfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
 Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h
+Can_lcfg.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Compiler.h
 Can_lcfg.obj: ../include/Can.h
-Can_lcfg.obj: ../include/Std_Types.h
 Can_lcfg.obj: ../include/Modules.h
-Can_lcfg.obj: ../include/Std_Types.h
 
 ../Can_lcfg.c: 
 ../include/Can_GeneralTypes.h: 
@@ -36,12 +34,10 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 
 D:/ITI/AUTO//\ SAR/projects/CANTx4/include/ComStack_Types.h: 
-D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Com_Types.h: 
 D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h: 
-C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
 D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Platform_Types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
 D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h: 
+D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Compiler.h: 
 ../include/Can.h: 
-../include/Std_Types.h: 
 ../include/Modules.h: 
-../include/Std_Types.h: 

@@ -22,17 +22,16 @@ main.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driver
 main.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
 main.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
 main.obj: ../include/Can.h
-main.obj: ../include/ComStack_Types.h
-main.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Com_Types.h
-main.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h
-main.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Platform_Types.h
-main.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h
+main.obj: ../include/Compiler.h
 main.obj: ../include/Std_Types.h
+main.obj: ../include/Platform_Types.h
+main.obj: ../include/Std_Types.h
+main.obj: ../include/Compiler.h
+main.obj: ../include/ComStack_Types.h
 main.obj: ../include/Mcu_Cfg.h
 main.obj: ../include/Can_GeneralTypes.h
 main.obj: D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Can_Cfg.h
 main.obj: ../include/Modules.h
-main.obj: ../include/Std_Types.h
 main.obj: ../include/MCU.h
 
 ../main.c: 
@@ -57,15 +56,14 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
 ../include/Can.h: 
-../include/ComStack_Types.h: 
-D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Com_Types.h: 
-D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h: 
-D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Platform_Types.h: 
-D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Std_Types.h: 
+../include/Compiler.h: 
 ../include/Std_Types.h: 
+../include/Platform_Types.h: 
+../include/Std_Types.h: 
+../include/Compiler.h: 
+../include/ComStack_Types.h: 
 ../include/Mcu_Cfg.h: 
 ../include/Can_GeneralTypes.h: 
 D:/ITI/AUTO//\ SAR/projects/CANTx4/include/Can_Cfg.h: 
 ../include/Modules.h: 
-../include/Std_Types.h: 
 ../include/MCU.h: 
