@@ -79,6 +79,8 @@
 /*****************************************************************************/
 #define CONSTP2VAR(ptrtype, memclass, ptrclass) ptrtype * const
 
+
+
 /*****************************************************************************/
 /* Macro name: CONSTP2CONST                                                  */
 /* Parameters: ptrtype     type of the referenced constant                   */
@@ -111,6 +113,8 @@
 /*             memclass    classification of the variable itself             */
 /*****************************************************************************/
 #define VAR(vartype, memclass) vartype
+
+
 
 
 #endif /* _COMPILER_H_ */

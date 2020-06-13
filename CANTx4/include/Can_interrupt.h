@@ -10,7 +10,7 @@
 #define OUT_CRITICAL_SECTION()							(IntDisableCount[Controller] == CAN_DISABLE_INTERRUPT_NOT_CALLED)
 
 
-void CAN_IRQHandler(uint8_t );
+FUNC(void,CAN_CODE) CAN_IRQHandler(VAR(uint8_t, AUTOMATIC) Controller);
 
 void Can0_InterruptHandler(void);
 void Can1_InterruptHandler(void);

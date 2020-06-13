@@ -6,7 +6,8 @@
 
 
 
-CanControllerBaudrateConfig_s  CanControllerBaudrateConfig[MAX_NUM_OF_BAUDRATES ] = {
+
+CONST(CanControllerBaudrateConfig_s ,AUTOMATIC )  CanControllerBaudrateConfig[MAX_NUM_OF_BAUDRATES ] = {
                                                                                      {
                                                                                       .CanControllerBaudRate = 500U,
                                                                                       .CanControllerPropSeg = 2U,
@@ -66,12 +67,12 @@ CanControllerBaudrateConfig_s  CanControllerBaudrateConfig[MAX_NUM_OF_BAUDRATES 
  * The mask shall be build by filling with leading 0./
  * The In case of CanIdType EXTENDED or MIXED a 29 bit mask shall
  */
-uint32_t CanHwFilterMask[MAX_NUM_FILTERS]  = { 0 };
+CONST( uint32_t ,AUTOMATIC ) CanHwFilterMask[MAX_NUM_FILTERS]  = { 0 };
 
 /*
  * This container contains the configuration parameters of the CAN controller(s).
  */
-CanController_s CanController[MAX_NUM_OF_CAN_CONTROLLERS] =
+VAR(CanController_s ,AUTOMATIC ) CanController[MAX_NUM_OF_CAN_CONTROLLERS] =
 {
  {
   .CanControllerId              = 0U,
@@ -88,7 +89,7 @@ CanController_s CanController[MAX_NUM_OF_CAN_CONTROLLERS] =
 /*
  * This container contains the configuration (parameters) of CAN Hardware Objects.
  */
-CanHardwareObject_s CanHardwareObject[ MAX_NUM_OF_HO ] =
+VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
 {
  {
   .CanHandleType    = FULL,

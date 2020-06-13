@@ -39,12 +39,23 @@ int main(void)
     Can_Mcu_Init();
     Can_Init(0);
 
+    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+
+
+    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+
     Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_T_START );
+
 
     while(1)
     {
         LED_ON();
-        Can_Write( 0 , &Can_Pdu);
+        Can_Write( CAN_CONTROLLER_ZERO , &Can_Pdu);
 
         //        for(ui32Loop = 0; ui32Loop < 200000; ui32Loop++)
         //        {
