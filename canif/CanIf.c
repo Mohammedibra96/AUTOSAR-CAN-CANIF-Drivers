@@ -23,12 +23,35 @@
 #include "Com.h"
 #endif
 
-#define CanIfPrivateSoftwareFilterType MASK
-#define CanIfPrivateDataLengthCheck FALSE
+/********************************************************************************************************/
+/********************************************************************************************************/
+/************************************************** MACROS **********************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
 
-uint8 canif_cantp_value [] =  {canIf_Cantp_rx};
-uint8 canif_PduR_Value[]   =   {vcanf};
-uint8 canif_Comfrimation_Value[] = {canIf_Comfrimation_Value} ;
+
+#define CANIF_CODE                       1
+#define CanIfPrivateSoftwareFilterType   MASK
+#define CanIfPrivateDataLengthCheck      FALSE
+
+
+
+
+
+/********************************************************************************************************/
+/********************************************************************************************************/
+/************************************************** Global Variable *************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
+
+
+
+
+uint8_t canif_cantp_value [] =  {canIf_Cantp_rx};
+uint8_t canif_PduR_Value[]   =   {vcanf};
+uint8_t canif_Comfrimation_Value[] = {canIf_Comfrimation_Value} ;
 
 CanIf_ConfigType *CanIf_ConfigPtr;
 
@@ -52,7 +75,7 @@ typedef struct
 CanIf_GlobalType CanIf_Global;
 
 /*Array with the size of amount of all the buffers to indicate how much of the buffer is full*/
-//uint8 CanIf_Pdu_BufferIndex[NUM_OF_HTHS];
+//uint8_t CanIf_Pdu_BufferIndex[NUM_OF_HTHS];
 
 
 CanIfInitCfg CanIF_UnInitConfig = {0,0,0,0,0,NULL,NULL,NULL};
@@ -60,23 +83,36 @@ CanIfInitCfg CanIF_UnInitConfig = {0,0,0,0,0,NULL,NULL,NULL};
 
 CanIfRxPduCfg *CanIfRxPduCfg_Arr;
 
-void CanIf_Init(const CanIf_ConfigType* ConfigPtr)
-{
-     CanIf_ConfigPtr = ConfigPtr;
-     uint8 i = (uint8)0;
 
-    for ( i = (uint8)0; i <  CANIF_CHANNEL_CNT; i++)
+
+
+/********************************************************************************************************/
+/********************************************************************************************************/
+/************************************************** Function*********************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
+/********************************************************************************************************/
+
+
+
+
+
+FUNC(void,CANIF_CODE) CanIf_Init(const CanIf_ConfigType* ConfigPtr)
+{
+     CanIf_ConfigPtr = ConfigPtr    ;
+     uint8_t i = (uint8_t)0             ;
+
+    for ( i = (uint8_t)0; i <  CANIF_CHANNEL_CNT; i++)
     {
-        CanIf_Global.channelData[i].Controller_Mode = CAN_CS_STOPPED;
-        CanIf_Global.channelData[i].PduMode = CANIF_OFFLINE;
+        CanIf_Global.channelData[i].Controller_Mode = CAN_CS_STOPPED       ;
+        CanIf_Global.channelData[i].PduMode         = CANIF_OFFLINE        ;
     }
 
-    CanIf_Global.initRun = (uint8)TRUE;
-
+    CanIf_Global.initRun = (uint8_t)TRUE;
 }
 
 
-Std_ReturnType CanIf_SetControllerMode(uint8 ControllerId, Can_ControllerStateType ControllerMode)
+FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(uint8_t ControllerId, Can_ControllerStateType ControllerMode)
 {
 	/************************************	To be done	********************************/
 
@@ -113,7 +149,7 @@ Std_ReturnType CanIf_SetControllerMode(uint8 ControllerId, Can_ControllerStateTy
        return E_OK;
  }
 
-Std_ReturnType CanIf_GetControllerMode(uint8 ControllerId, Can_ControllerStateType* ControllerModePtr)
+FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(uint8_t ControllerId, Can_ControllerStateType* ControllerModePtr)
 {
     Std_ReturnType toRet = E_OK;
 
@@ -144,7 +180,7 @@ Std_ReturnType CanIf_GetControllerMode(uint8 ControllerId, Can_ControllerStateTy
 }
 
 
-Std_ReturnType CanIf_GetControllerErrorState(uint8 ControllerId, Can_ErrorStateType* ErrorStatePtr)
+FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr)
 {
 
 	/************************************	To be done	********************************/
@@ -157,7 +193,7 @@ Std_ReturnType CanIf_GetControllerErrorState(uint8 ControllerId, Can_ErrorStateT
 
 
 
-Std_ReturnType CanIf_Transmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
+FUNC(Std_ReturnType,CANIF) CanIf_Transmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
 
 	/************************************	To be done	********************************/
@@ -208,7 +244,7 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 }
 
 
-Std_ReturnType CanIf_SetPduMode(uint8 ControllerId, CanIf_PduModeType PduModeRequest)
+FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(uint8_t ControllerId, CanIf_PduModeType PduModeRequest)
 {
 
 	/************************************	To be done	********************************
@@ -248,7 +284,7 @@ Std_ReturnType CanIf_SetPduMode(uint8 ControllerId, CanIf_PduModeType PduModeReq
     return toRet;
 }
 
-Std_ReturnType CanIf_GetPduMode(uint8 ControllerId, CanIf_PduModeType* PduModePtr)
+FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduModeType* PduModePtr)
 {
     Std_ReturnType toRet;
     CanIf_ChannelIdType CanIf_GetPduMode_local = (CanIf_ChannelIdType)ControllerId;
@@ -287,11 +323,11 @@ CanIf_ChannelIdType CanIf_FindHrhChannel (Can_HRHType HRH)
     CanIfHrhCfg* HRHCfg;
     sint8 HRHCfg_Counter = 0;
     CanIf_ChannelIdType To_Return;
-    uint8 check = 0;
+    uint8_t check = 0;
 
 
     HRHCfg = CanIf_ConfigPtr->InitConfig->CanIfHohConfigPtr->CanIfHrhCfgPrt;
-    uint8 len = sizeof(HRHCfg)/sizeof(HRHCfg[0]);
+    uint8_t len = sizeof(HRHCfg)/sizeof(HRHCfg[0]);
 
     do
     {
@@ -304,15 +340,15 @@ CanIf_ChannelIdType CanIf_FindHrhChannel (Can_HRHType HRH)
         }
         HRHCfg_Counter++;
 
-    }while((check==(uint8) 0) && HRHCfg_Counter<len);
+    }while((check==(uint8_t) 0) && HRHCfg_Counter<len);
 
     return To_Return;
 }
 
 
-sint8 CanIf_FindRxPduEntry(const Can_HwType* Mailbox)
+FUNC(sint8_t,CANIF) CanIf_FindRxPduEntry(const Can_HwType* Mailbox)
 {
-     uint8 i ;
+     uint8_t i ;
      sint8 to_return = -1;
      for(i=0;i< CanIf_ConfigPtr->InitConfig->CanIfMaxRxPduCfg;i++)
      {
@@ -332,7 +368,7 @@ CanIfRxPduUserRxConfirmationUL Get_User_RxIndication_Name(sint8 i)
 }
 
 
-void Get_User_RxIndication(CanIfRxPduUserRxConfirmationUL user,uint16 i)
+FUNC(void , CANIF) Get_User_RxIndication(CanIfRxPduUserRxConfirmationUL user,uint16 i)
 {
     CanIfRxPduCfg_Arr = CanIf_ConfigPtr->InitConfig->CanIfRxPduConfigPtr;
 
@@ -351,8 +387,7 @@ void Get_User_RxIndication(CanIfRxPduUserRxConfirmationUL user,uint16 i)
 
 
 
-void
-CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
+FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
 {
 
 	/************************************	To be done	********************************/
@@ -363,12 +398,12 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
 
 	/***********************************************************************************/
 	
-    uint8 cont = 0;
-    uint8 check_t = 0;
+    uint8_t cont = 0;
+    uint8_t check_t = 0;
     CanIf_PduModeType mode_CanIf_RxIndication = (CanIf_PduModeType) 0;
-    uint8 index;
+    uint8_t index;
 
-    uint8 CanIfRxPduCfg_index = 0;
+    uint8_t CanIfRxPduCfg_index = 0;
     CanIf_ChannelIdType channel_CanIf_RxIndication = (CanIf_ChannelIdType) CanIf_FindHrhChannel(Mailbox->hoh);
 
     sint8 RxPdu_Index = CanIf_FindRxPduEntry(Mailbox);
@@ -380,10 +415,10 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
 
     if ((signed)channel_CanIf_RxIndication == -1)
    {
-       check_t =(uint8)1;
+       check_t =(uint8_t)1;
    }
 
-    while (check_t==(uint8)0)
+    while (check_t==(uint8_t)0)
     {
         if((CanIf_GetPduMode(channel_CanIf_RxIndication,&mode_CanIf_RxIndication))==E_OK)
         {
@@ -391,11 +426,11 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
                     (mode_CanIf_RxIndication == CANIF_TX_OFFLINE_ACTIVE)))
             {
                 {
-                    check_t =(uint8)1;
+                    check_t =(uint8_t)1;
                 }
             }
         }
-        for (index =(uint16) 0;(  (check_t==(uint8)0) && (index < (uint16)CanIf_ConfigPtr->InitConfig->CanIfMaxRxPduCfg) ); index++)
+        for (index =(uint16) 0;(  (check_t==(uint8_t)0) && (index < (uint16)CanIf_ConfigPtr->InitConfig->CanIfMaxRxPduCfg) ); index++)
         {
             if(((&canifArr[index])->CanIfRxPduHrhIdRef->CanIfHrhIdSymRef->CanHandleType) == BASIC)
 
@@ -406,11 +441,11 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
                     if ((Mailbox->id & (&canifArr[index])->CanIfRxPduCanIdMask ) ==
                             ( (&canifArr[index])->CanIfRxPduCanId & (&canifArr[index])->CanIfRxPduCanIdMask))
                     {
-                        cont = (uint8) 0;
+                        cont = (uint8_t) 0;
                     }
                     else
                     {
-                        cont=(uint8)1;
+                        cont=(uint8_t)1;
                     }
                 }
 
@@ -425,7 +460,7 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
                 if (PduInfoPtr->SduLength < (&canifArr[RxPdu_Index])->CanIfRxPduDataLength)
                 {
 
-                    check_t = (uint8) 1;
+                    check_t = (uint8_t) 1;
                 }
             }
 
@@ -440,7 +475,7 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
                 {
                     PduInfoType CanTpRxPdu;
                     CanTpRxPdu.SduLength = PduInfoPtr->SduLength;
-                    CanTpRxPdu.SduDataPtr = (uint8 *)PduInfoPtr->SduDataPtr;
+                    CanTpRxPdu.SduDataPtr = (uint8_t *)PduInfoPtr->SduDataPtr;
 
                     /*if(*(CanTpRxPdu.SduDataPtr)==2)
                     {
@@ -461,7 +496,7 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
                     PduInfoType pduInfo;
                     pduInfo.SduLength = PduInfoPtr->SduLength;
                     pduInfo.SduDataPtr = PduInfoPtr->SduDataPtr;
-                    uint8 arr[8] = pduInfo.SduDataPtr;
+                    uint8_t arr[8] = pduInfo.SduDataPtr;
 
                     PduR_CanIfRxIndication(canif_PduR_Value[RxPdu_Index],&pduInfo);
 
@@ -476,12 +511,10 @@ CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
         }
 
     }
-
-    check_t = (uint8)1;
-
+    check_t = (uint8_t)1;
 }
 
-void CanIf_TxConfirmation(PduIdType CanTxPduId)
+CANIF(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId)
 {
 
 	/************************************	To be done	********************************/
