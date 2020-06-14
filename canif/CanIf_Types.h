@@ -51,7 +51,6 @@ The PduMode of a channel defines its transmit or receive activity.
 Communication direction (transmission and/or reception) of the channel can
 be controlled separately or together by upper layers.
 */
-//Transmit and receive path of the corresponding channel are disabled => no communicationmode
 #define CANIF_OFFLINE                             1
 
 //Transmit path of the corresponding channel is disabled. The receive path is enabled.
@@ -68,11 +67,19 @@ be controlled separately or together by upper layers.
 
 /********************************************************************************************************/
 /********************************************************************************************************/
-/**************************************************     Statnadrd types in SWS  *************************/
-/********************************************************************************************************/
+/************************************     Statnadrd types in SWS     ************************************/
 /********************************************************************************************************/
 /********************************************************************************************************/
 
+
+typedef enum
+{
+    CANIF_OFFLINE,                  /*Transmit and receive path of the corresponding channel are disabled => no communicationmode*/
+    CANIF_TX_OFFLINE,               /* Transmit path of the corresponding channel is disabled. The receive path is enabled */
+    CANIF_TX_OFFLINE_ACTIVE,        /* Transmit path of the corresponding channel is in offline active mode. 
+                                       The receive path is disabled. This mode requires CanIfTxOfflineActiveSupport = TRUE */
+    CANIF_ONLINE                    /* Transmit and receive path of the corresponding channel are enabled => full operation mode */
+}CanIf_PduModeType;
 
 
 typedef struct{
