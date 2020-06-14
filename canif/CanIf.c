@@ -49,6 +49,7 @@
 #define CanIfPrivateDataLengthCheck      FALSE
 
 
+#define CAN_GET_CONTROLLER_ERROR_STATE_SID    0x4B
 
 
 #define CANIF_INIT_ID                0x01
@@ -98,36 +99,23 @@ uint8_t canif_cantp_value [] =  {canIf_Cantp_rx};
 uint8_t canif_PduR_Value[]   =   {vcanf};
 uint8_t canif_Comfrimation_Value[] = {canIf_Comfrimation_Value} ;
 
-CanIf_ConfigType *CanIf_ConfigPtr;
-
-CanIfPrivateCfg *CanIfPrivateCfgInst;
-
-//sint8 RxPdu_Index;
-
-/* typedef struct
-{
-    Can_ControllerStateType  Controller_Mode;
-    CanIf_PduModeType  PduMode;
-}CanIf_ChannelPrivateType; //CanIf_ChannelModesType
-
-typedef struct
-{
-    boolean initRun;
-    CanIf_ChannelPrivateType channelData[CANIF_CHANNEL_CNT];
-}CanIf_GlobalType;
- */
-
-CanIf_GlobalType CanIf_Global;
-
-/*Array with the size of amount of all the buffers to indicate how much of the buffer is full*/
-//uint8_t CanIf_Pdu_BufferIndex[NUM_OF_HTHS];
+VAR(CanIf_ConfigType ,AUTOMATIC) *CanIf_ConfigPtr;
 
 
-CanIfInitCfg CanIF_UnInitConfig = {0,0,0,0,0,NULL,NULL,NULL};
-//CanIf_ConfigType*   Config_UnInit = {NULL,&CanIF_UnInitConfig,NULL,NULL};
 
-CanIfRxPduCfg *CanIfRxPduCfg_Arr;
 
+VAR(CanIf_GlobalType ,AUTOMATIC) CanIf_Global;
+
+
+
+
+extern VAR(CanIfRxPduCfg_s ,AUTOMATIC) CanIfRxPduCfg[MAX_NUM_RX_PDU];
+extern VAR(CanIfTxPduCfg_s ,AUTOMATIC) CanIfTxPduCfg[MAX_NUM_TX_PDU];
+
+
+
+extern VAR(CanIfHthCfg_s ,AUTOMATIC) CanIfHthCfg[MAX_NUM_HTH];
+extern VAR(CanIfHrhCfg_s ,AUTOMATIC) CanIfHrhCfg[MAX_NUM_HRH];
 
 
 
@@ -141,6 +129,9 @@ CanIfRxPduCfg *CanIfRxPduCfg_Arr;
 #define CAN_INIT_SID  0x01
 #define CAN_SET_CONTROLLER_MODE_SID 0x03
 #define CAN_GET_CONTROLLER_MODE_SID 0x04
+
+
+
 
 
 FUNC(void,CANIF_CODE) CanIf_Init(const CanIf_ConfigType* ConfigPtr)
@@ -305,7 +296,6 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) 
 }
 
 
-#define CAN_GET_CONTROLLER_ERROR_STATE_SID    0x4B
 
 FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr)
 {

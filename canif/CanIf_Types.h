@@ -46,23 +46,6 @@
 
 
 
-/*
-The PduMode of a channel defines its transmit or receive activity.
-Communication direction (transmission and/or reception) of the channel can
-be controlled separately or together by upper layers.
-*/
-#define CANIF_OFFLINE                             1
-
-//Transmit path of the corresponding channel is disabled. The receive path is enabled.
-#define CANIF_TX_OFFLINE                          2
-
-//Transmit path of the corresponding channel is in offline active mode
-//The receive path is disabled. This mode requires CanIfTxOfflineActiveSupport = TRUE.
-#define CANIF_TX_OFFLINE_ACTIVE                    3
-
-//Transmit and receive path of the corresponding channel are enabled => full operation mode
-#define CANIF_ONLINE                               4
-
 
 
 /********************************************************************************************************/
@@ -123,25 +106,17 @@ typedef struct{
 
 }CanIfHthCfg_s;
 
-/*CanIfHthCfg_s  CanIfHthCfg[MAX_HTH_OBJECTS];   */
 
 
 
 typedef struct {
-  /** CAN Identifier of Receive CAN L-PDUs used by the CAN Interface.
-    * Exa: Software Filtering. This parameter is used if exactly one Can
-    * Identifier is assigned to the Pdu. If a range is assigned then the
-    * CanIfRxPduCanIdRange parameter shall be used.
-    * Range: 11 Bit For Standard CAN Identifier ... 29 Bit For Extended CAN identifier */
-    uint32_t CanIfRxPduCanId;  //
-
 
 
   /** CAN Identifier of receive CAN L-PDUs used by the CAN Driver for CAN L-
    *  PDU transmission.
      *  EXTENDED_CAN  The CANID is of type Extended (29 bits)
    *  STANDARD_CAN  The CANID is of type Standard (11 bits) */
-    CanIfTxPduCanIdType CanIfRxPduCanIdType; //
+    CanIfRxPduCanIdType CanIfRxPduCanId; //
 
 
   /** Data Length code of received CAN L-PDUs used by the CAN Interface.
@@ -149,11 +124,6 @@ typedef struct {
    *  from 0 to 8 bytes.*/
     uint16_t CanIfRxPduDataLength;  //
 
-
-
-  /** Enables and disables the Rx buffering for reading of received L-PDU data.
-   *  True: Enabled False: Disabled */
-    bool CanIfRxPduReadData;  //
 
 
     /*This parameter defines the upper layer (UL) module to which the
@@ -205,19 +175,10 @@ typedef struct {
     uint32_t CanIfTxPduId; 
 
 
-    CanIfRxPduUserRxConfirmationUL CanIfTxPduUserTxConfirmationUL_i;
-
-    /** Reference to the "global" Pdu structure to allow harmonization of handle
-     *  IDs in the COM-Stack. */
+    CanIfRxPduUserRxConfirmationUL_t CanIfTxPduUserTxConfirmationUL;
 
 
-//Change the refrence to struct with index refrence
-
-    uint32_t CanIfTxPduRef; 
-
-//Adding Refrence to CanIfHthCfg_s  
-
-uint8_t CanIfHthCfgRef;
+    uint8_t CanIfHthCfgRef;
 
 } CanIfTxPduCfg_s;
 
