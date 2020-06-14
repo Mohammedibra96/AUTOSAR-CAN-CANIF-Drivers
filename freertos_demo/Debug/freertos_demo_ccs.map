@@ -1,0 +1,522 @@
+******************************************************************************
+                  TI ARM Linker PC v18.12.1                    
+******************************************************************************
+>> Linked Sun Jun 14 20:24:42 2020
+
+OUTPUT FILE NAME:   <freertos_demo.out>
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00001d65
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  FLASH                 00000000   00040000  00002318  0003dce8  R  X
+  SRAM                  20000000   00008000  00007e6a  00000196  RW X
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    00002318   00002318    r-x
+  00000000    00000000    0000026c   0000026c    r-- .intvecs
+  0000026c    0000026c    00001e6c   00001e6c    r-x .text
+  000020d8    000020d8    000001d8   000001d8    r-- .const
+  000022b0    000022b0    00000068   00000068    r-- .cinit
+20000000    20000000    00007e70   00000000    rw-
+  20000000    20000000    0000026c   00000000    rw- .vtable
+  2000026c    2000026c    000077b8   00000000    rw- .bss
+  20007a24    20007a24    00000246   00000000    rw- .data
+  20007c70    20007c70    00000200   00000000    rw- .stack
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.intvecs   0    00000000    0000026c     
+                  00000000    0000026c     startup_ccs.obj (.intvecs)
+
+.text      0    0000026c    00001e6c     
+                  0000026c    00000218     CanAUTO.obj (.text:Can_SetControllerMode)
+                  00000484    000001ea     uartstdio.obj (.text:UARTvprintf)
+                  0000066e    00000132     driverlib.lib : gpio.obj (.text:GPIOPadConfigSet)
+                  000007a0    00000130     can.obj (.text:CANMessageSet)
+                  000008d0    00000116     can.obj (.text:CANMessageGet)
+                  000009e6    00000002     startup_ccs.obj (.text:FaultISR)
+                  000009e8    00000110     driverlib.lib : sysctl.obj (.text:SysCtlClockGet)
+                  00000af8    00000104     tasks.obj (.text:xTaskIncrementTick)
+                  00000bfc    00000100     tasks.obj (.text:xTaskGenericCreate)
+                  00000cfc    000000f4     driverlib.lib : sysctl.obj (.text:SysCtlClockSet)
+                  00000df0    000000e4     tasks.obj (.text:xTaskResumeAll)
+                  00000ed4    000000dc     CanAUTO.obj (.text:Can_ConfigureHardwareObject)
+                  00000fb0    000000d2     portasm.obj (.text)
+                  00001082    00000002     startup_ccs.obj (.text:IntDefaultHandler)
+                  00001084    000000c8     CanAUTO.obj (.text:Can_Init)
+                  0000114c    000000ac     heap_2.obj (.text:pvPortMalloc)
+                  000011f8    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.asm.obj (.text)
+                  00001294    00000098     CanAUTO.obj (.text:Can_MainFunction_Read)
+                  0000132c    0000008c     tasks.obj (.text:vTaskSwitchContext)
+                  000013b8    00000080     CanAUTO.obj (.text:CAN_IRQHandler)
+                  00001438    0000007a     rtsv7M4_T_le_v4SPD16_eabi.lib : memset_t2.asm.obj (.text)
+                  000014b2    00000002     startup_ccs.obj (.text:NmiSR)
+                  000014b4    00000070     freertos_demo.obj (.text:main)
+                  00001524    00000068     driverlib.lib : interrupt.obj (.text:IntDisable)
+                  0000158c    00000068                   : interrupt.obj (.text:IntEnable)
+                  000015f4    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  0000165c    00000060     uartstdio.obj (.text:UARTStdioConfig)
+                  000016bc    00000060     tasks.obj (.text:prvInitialiseTaskLists)
+                  0000171c    00000060     tasks.obj (.text:vTaskStartScheduler)
+                  0000177c    0000005c     can.obj (.text:_CANIntNumberGet)
+                  000017d8    0000005c     tasks.obj (.text:vTaskDelay)
+                  00001834    00000058     tasks.obj (.text:prvCheckTasksWaitingTermination)
+                  0000188c    00000056     tasks.obj (.text:prvInitialiseTCBVariables)
+                  000018e2    00000052     can.obj (.text:CANBitTimingSet)
+                  00001934    00000050     main.obj (.text:Can_Mcu_Init)
+                  00001984    00000050     main.obj (.text:InitConsole)
+                  000019d4    00000050     driverlib.lib : sysctl.obj (.text:SysCtlPeripheralReset)
+                  00001a24    0000004c     tasks.obj (.text:prvAddCurrentTaskToDelayedList)
+                  00001a70    00000048     CanAUTO.obj (.text:Can_DisableControllerInterrupts)
+                  00001ab8    00000048     driverlib.lib : gpio.obj (.text:GPIOPinConfigure)
+                  00001b00    00000048     uartstdio.obj (.text:UARTwrite)
+                  00001b48    00000044     rtsv7M4_T_le_v4SPD16_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
+                  00001b8c    00000044     heap_2.obj (.text:vPortFree)
+                  00001bd0    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : u_divt2.asm.obj (.text)
+                  00001c10    00000040     port.obj (.text:xPortStartScheduler)
+                  00001c50    0000003a     can.obj (.text:CANInit)
+                  00001c8a    0000003a     tasks.obj (.text:prvAllocateTCBAndStack)
+                  00001cc4    00000038     list.obj (.text:vListInsert)
+                  00001cfc    00000034     driverlib.lib : interrupt.obj (.text:IntRegister)
+                  00001d30    00000034                   : sysctl.obj (.text:SysCtlPeripheralEnable)
+                  00001d64    00000034     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.text:_c_int00_noargs:_c_int00_noargs)
+                  00001d98    00000030     heap_2.obj (.text:prvHeapInit)
+                  00001dc8    0000002c     main.obj (.text:LED_ON)
+                  00001df4    0000002c     port.obj (.text:xPortSysTickHandler)
+                  00001e20    0000002a     driverlib.lib : gpio.obj (.text:GPIODirModeSet)
+                  00001e4a    0000002a     can.obj (.text:_CANDataRegRead)
+                  00001e74    00000028     tasks.obj (.text:prvResetNextTaskUnblockTime)
+                  00001e9c    00000028     port.obj (.text:pxPortInitialiseStack)
+                  00001ec4    00000024     can.obj (.text:_CANDataRegWrite)
+                  00001ee8    00000022     can.obj (.text:CANIntClear)
+                  00001f0a    00000020     can.obj (.text:CANIntStatus)
+                  00001f2a    00000020     list.obj (.text:uxListRemove)
+                  00001f4a    00000002     rtsv7M4_T_le_v4SPD16_eabi.lib : div0.asm.obj (.text)
+                  00001f4c    0000001c     port.obj (.text:vPortEnterCritical)
+                  00001f68    0000001a     uartstdio.obj (.text:UARTprintf)
+                  00001f82    00000018     can.obj (.text:CANIntRegister)
+                  00001f9a    00000018     list.obj (.text:vListInsertEnd)
+                  00001fb2    00000002     freertos_demo.obj (.text:vApplicationStackOverflowHook)
+                  00001fb4    00000018     port.obj (.text:vPortExitCritical)
+                  00001fcc    00000016     list.obj (.text:vListInitialise)
+                  00001fe2    00000002     --HOLE-- [fill = 0]
+                  00001fe4    00000014     port.obj (.text:vPortSetupTimerInterrupt)
+                  00001ff8    00000012     driverlib.lib : gpio.obj (.text:GPIOPinTypeCAN)
+                  0000200a    00000012                   : gpio.obj (.text:GPIOPinTypeUART)
+                  0000201c    00000012     tasks.obj (.text:prvDeleteTCB)
+                  0000202e    00000010     port.obj (.text:prvTaskExitError)
+                  0000203e    00000002     --HOLE-- [fill = 0]
+                  00002040    00000010     tasks.obj (.text:vTaskSuspendAll)
+                  00002050    0000000e     freertos_demo.obj (.text:Read_Task)
+                  0000205e    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  0000206c    0000000c                                   : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init)
+                  00002078    0000000a     can.obj (.text:CANDisable)
+                  00002082    0000000a     can.obj (.text:CANEnable)
+                  0000208c    0000000a     can.obj (.text:CANIntDisable)
+                  00002096    00000008     can.obj (.text:CANIntEnable)
+                  0000209e    00000008     tasks.obj (.text:prvIdleTask)
+                  000020a6    00000006     Can_interrupt.obj (.text:Can0_InterruptHandler)
+                  000020ac    00000006     Can_interrupt.obj (.text:Can1_InterruptHandler)
+                  000020b2    00000006     driverlib.lib : gpio.obj (.text:GPIOPinWrite)
+                  000020b8    00000006     startup_ccs.obj (.text:ResetISR)
+                  000020be    00000006     driverlib.lib : sysctl.obj (.text:SysCtlDelay)
+                  000020c4    00000006                   : uart.obj (.text:UARTClockSourceSet)
+                  000020ca    00000006     list.obj (.text:vListInitialiseItem)
+                  000020d0    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  000020d4    00000004                                   : exit.c.obj (.text:abort:abort)
+
+.const     0    000020d8    000001d8     
+                  000020d8    00000090     driverlib.lib : gpio.obj (.const:g_pui32GPIOBaseAddrs)
+                  00002168    00000070                   : interrupt.obj (.const)
+                  000021d8    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
+                  00002244    00000048     Can_lcfg.obj (.const:CanControllerBaudrateConfig)
+                  0000228c    0000000c     uartstdio.obj (.const:g_ui32UARTBase)
+                  00002298    0000000c     uartstdio.obj (.const:g_ui32UARTPeriph)
+                  000022a4    00000008     freertos_demo.obj (.const:.string:$P$T0$1)
+                  000022ac    00000004     port.obj (.const)
+
+.cinit     0    000022b0    00000068     
+                  000022b0    0000002d     (.cinit..data.load) [load image, compression = lzss]
+                  000022dd    00000003     --HOLE-- [fill = 0]
+                  000022e0    0000000c     (__TI_handler_table)
+                  000022ec    00000004     --HOLE-- [fill = 0]
+                  000022f0    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  000022f8    00000008     (.cinit..vtable.load) [load image, compression = zero_init]
+                  00002300    00000018     (__TI_cinit_table)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.vtable    0    20000000    0000026c     UNINITIALIZED
+                  20000000    0000026c     driverlib.lib : interrupt.obj (.vtable)
+
+.bss       0    2000026c    000077b8     UNINITIALIZED
+                  2000026c    00007530     heap_2.obj (.bss:ucHeap)
+                  2000779c    00000140     tasks.obj (.bss:pxReadyTasksLists)
+                  200078dc    000000c0     CanAUTO.obj (.bss:Can_MailBoxLookUpTables)
+                  2000799c    00000014     tasks.obj (.bss:xDelayedTaskList1)
+                  200079b0    00000014     tasks.obj (.bss:xDelayedTaskList2)
+                  200079c4    00000014     tasks.obj (.bss:xPendingReadyList)
+                  200079d8    00000014     tasks.obj (.bss:xSuspendedTaskList)
+                  200079ec    00000014     tasks.obj (.bss:xTasksWaitingTermination)
+                  20007a00    00000008     tasks.obj (.bss)
+                  20007a08    00000008     heap_2.obj (.bss:xEnd)
+                  20007a10    00000008     heap_2.obj (.bss:xStart)
+                  20007a18    00000004     CanAUTO.obj (.bss:Can_ControllerMode)
+                  20007a1c    00000004     CanAUTO.obj (.bss:IntDisableCount)
+                  20007a20    00000004     CanAUTO.obj (.bss:InterruptStatus)
+
+.data      0    20007a24    00000246     UNINITIALIZED
+                  20007a24    000001e0     Can_lcfg.obj (.data:CanHardwareObject)
+                  20007c04    00000030     tasks.obj (.data)
+                  20007c34    00000020     Can_lcfg.obj (.data:CanController)
+                  20007c54    00000008     heap_2.obj (.data)
+                  20007c5c    00000005     uartstdio.obj (.data)
+                  20007c61    00000002     CanAUTO.obj (.data)
+                  20007c63    00000001     main.obj (.data)
+                  20007c64    00000004     port.obj (.data)
+                  20007c68    00000002     CanAUTO.obj (.data:state_transition_flag)
+
+.stack     0    20007c70    00000200     UNINITIALIZED
+                  20007c70    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
+                  20007c74    000001fc     --HOLE--
+
+MODULE SUMMARY
+
+       Module                       code   ro data   rw data
+       ------                       ----   -------   -------
+    .\
+       CanAUTO.obj                  1308   0         208    
+       can.obj                      1020   0         0      
+       startup_ccs.obj              12     620       0      
+       Can_lcfg.obj                 0      72        512    
+       main.obj                     204    0         1      
+       freertos_demo.obj            128    8         0      
+       Can_interrupt.obj            12     0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       2684   700       721    
+                                                            
+    .\third_party\FreeRTOS\Source\
+       tasks.obj                    1558   0         476    
+       list.obj                     140    0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       1698   0         476    
+                                                            
+    .\third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\
+       port.obj                     236    4         4      
+       portasm.obj                  210    0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       446    4         4      
+                                                            
+    .\third_party\FreeRTOS\Source\portable\MemMang\
+       heap_2.obj                   288    0         30024  
+    +--+----------------------------+------+---------+---------+
+       Total:                       288    0         30024  
+                                                            
+    .\utils\
+       uartstdio.obj                684    24        5      
+    +--+----------------------------+------+---------+---------+
+       Total:                       684    24        5      
+                                                            
+    C:\ti\ccs901\ccs\tools\compiler\ti-cgt-arm_18.12.1.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+       memcpy_t2.asm.obj            156    0         0      
+       memset_t2.asm.obj            122    0         0      
+       copy_decompress_lzss.c.obj   104    0         0      
+       autoinit.c.obj               68     0         0      
+       u_divt2.asm.obj              64     0         0      
+       boot_cortex_m.c.obj          52     0         0      
+       copy_decompress_none.c.obj   14     0         0      
+       copy_zero_init.c.obj         12     0         0      
+       exit.c.obj                   4      0         0      
+       pre_init.c.obj               4      0         0      
+       div0.asm.obj                 2      0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       602    0         0      
+                                                            
+    D:/ITI/AUTO SAR/Code Composer/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/driverlib.lib
+       interrupt.obj                260    112       620    
+       sysctl.obj                   654    108       0      
+       gpio.obj                     462    144       0      
+       uart.obj                     6      0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       1382   364       620    
+                                                            
+       Stack:                       0      0         512    
+       Linker Generated:            0      97        0      
+    +--+----------------------------+------+---------+---------+
+       Grand Total:                 7784   1189      32362  
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 00002300 records: 3, size/record: 8, table size: 24
+	.data: load addr=000022b0, load size=0000002d bytes, run addr=20007a24, run size=00000246 bytes, compression=lzss
+	.bss: load addr=000022f0, load size=00000008 bytes, run addr=2000026c, run size=000077b8 bytes, compression=zero_init
+	.vtable: load addr=000022f8, load size=00000008 bytes, run addr=20000000, run size=0000026c bytes, compression=zero_init
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 000022e0 records: 3, size/record: 4, table size: 12
+	index: 0, handler: __TI_zero_init
+	index: 1, handler: __TI_decompress_lzss
+	index: 2, handler: __TI_decompress_none
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                           
+-------   ----                           
+000020d5  C$$EXIT                        
+000018e3  CANBitTimingSet                
+00002079  CANDisable                     
+00002083  CANEnable                      
+00001c51  CANInit                        
+00001ee9  CANIntClear                    
+0000208d  CANIntDisable                  
+00002097  CANIntEnable                   
+00001f83  CANIntRegister                 
+00001f0b  CANIntStatus                   
+000008d1  CANMessageGet                  
+000007a1  CANMessageSet                  
+000013b9  CAN_IRQHandler                 
+000020a7  Can0_InterruptHandler          
+000020ad  Can1_InterruptHandler          
+20007c34  CanController                  
+00002244  CanControllerBaudrateConfig    
+20007a24  CanHardwareObject              
+00001a71  Can_DisableControllerInterrupts
+00001085  Can_Init                       
+00001295  Can_MainFunction_Read          
+00001935  Can_Mcu_Init                   
+0000026d  Can_SetControllerMode          
+00001e21  GPIODirModeSet                 
+0000066f  GPIOPadConfigSet               
+00001ab9  GPIOPinConfigure               
+00001ff9  GPIOPinTypeCAN                 
+0000200b  GPIOPinTypeUART                
+000020b3  GPIOPinWrite                   
+00001985  InitConsole                    
+00001525  IntDisable                     
+0000158d  IntEnable                      
+00001cfd  IntRegister                    
+00001dc9  LED_ON                         
+000009e9  Mcu_GetSysCloock               
+00002051  Read_Task                      
+000020b9  ResetISR                       
+000009e9  SysCtlClockGet                 
+00000cfd  SysCtlClockSet                 
+000020bf  SysCtlDelay                    
+00001d31  SysCtlPeripheralEnable         
+000019d5  SysCtlPeripheralReset          
+000020c5  UARTClockSourceSet             
+0000165d  UARTStdioConfig                
+00001f69  UARTprintf                     
+00000485  UARTvprintf                    
+00001b01  UARTwrite                      
+20007e70  __STACK_END                    
+00000200  __STACK_SIZE                   
+20007e70  __STACK_TOP                    
+00002300  __TI_CINIT_Base                
+00002318  __TI_CINIT_Limit               
+000022e0  __TI_Handler_Table_Base        
+000022ec  __TI_Handler_Table_Limit       
+00001b49  __TI_auto_init_nobinit_nopinit 
+000015f5  __TI_decompress_lzss           
+0000205f  __TI_decompress_none           
+ffffffff  __TI_pprof_out_hndl            
+ffffffff  __TI_prof_data_size            
+ffffffff  __TI_prof_data_start           
+00000000  __TI_static_base__             
+0000206d  __TI_zero_init                 
+00001f4b  __aeabi_idiv0                  
+00001f4b  __aeabi_ldiv0                  
+00001439  __aeabi_memclr                 
+00001439  __aeabi_memclr4                
+00001439  __aeabi_memclr8                
+000011f9  __aeabi_memcpy                 
+000011f9  __aeabi_memcpy4                
+000011f9  __aeabi_memcpy8                
+0000143b  __aeabi_memset                 
+0000143b  __aeabi_memset4                
+0000143b  __aeabi_memset8                
+00001bd1  __aeabi_uidiv                  
+00001bd1  __aeabi_uidivmod               
+ffffffff  __binit__                      
+ffffffff  __c_args__                     
+UNDEFED   __mpu_init                     
+20007c70  __stack                        
+00001d65  _c_int00_noargs                
+UNDEFED   _system_post_cinit             
+000020d1  _system_pre_init               
+000020d5  abort                          
+ffffffff  binit                          
+20000000  g_pfnRAMVectors                
+00000000  g_pfnVectors                   
+000014b5  main                           
+000011f9  memcpy                         
+00001441  memset                         
+0000114d  pvPortMalloc                   
+20007c04  pxCurrentTCB                   
+00001e9d  pxPortInitialiseStack          
+000022ac  ulMaxSyscallInterruptPriority  
+00000fc1  ulPortGetIPSR                  
+00001f2b  uxListRemove                   
+00001fb3  vApplicationStackOverflowHook  
+00001fcd  vListInitialise                
+000020cb  vListInitialiseItem            
+00001cc5  vListInsert                    
+00001f9b  vListInsertEnd                 
+00001075  vPortEnableVFP                 
+00001f4d  vPortEnterCritical             
+00001fb5  vPortExitCritical              
+00001b8d  vPortFree                      
+00001039  vPortSVCHandler                
+00001fe5  vPortSetupTimerInterrupt       
+00001059  vPortStartFirstTask            
+000017d9  vTaskDelay                     
+0000171d  vTaskStartScheduler            
+00002041  vTaskSuspendAll                
+0000132d  vTaskSwitchContext             
+00000fd9  xPortPendSVHandler             
+00001c11  xPortStartScheduler            
+00001df5  xPortSysTickHandler            
+00000bfd  xTaskGenericCreate             
+00000af9  xTaskIncrementTick             
+00000df1  xTaskResumeAll                 
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                           
+-------   ----                           
+00000000  __TI_static_base__             
+00000000  g_pfnVectors                   
+00000200  __STACK_SIZE                   
+0000026d  Can_SetControllerMode          
+00000485  UARTvprintf                    
+0000066f  GPIOPadConfigSet               
+000007a1  CANMessageSet                  
+000008d1  CANMessageGet                  
+000009e9  Mcu_GetSysCloock               
+000009e9  SysCtlClockGet                 
+00000af9  xTaskIncrementTick             
+00000bfd  xTaskGenericCreate             
+00000cfd  SysCtlClockSet                 
+00000df1  xTaskResumeAll                 
+00000fc1  ulPortGetIPSR                  
+00000fd9  xPortPendSVHandler             
+00001039  vPortSVCHandler                
+00001059  vPortStartFirstTask            
+00001075  vPortEnableVFP                 
+00001085  Can_Init                       
+0000114d  pvPortMalloc                   
+000011f9  __aeabi_memcpy                 
+000011f9  __aeabi_memcpy4                
+000011f9  __aeabi_memcpy8                
+000011f9  memcpy                         
+00001295  Can_MainFunction_Read          
+0000132d  vTaskSwitchContext             
+000013b9  CAN_IRQHandler                 
+00001439  __aeabi_memclr                 
+00001439  __aeabi_memclr4                
+00001439  __aeabi_memclr8                
+0000143b  __aeabi_memset                 
+0000143b  __aeabi_memset4                
+0000143b  __aeabi_memset8                
+00001441  memset                         
+000014b5  main                           
+00001525  IntDisable                     
+0000158d  IntEnable                      
+000015f5  __TI_decompress_lzss           
+0000165d  UARTStdioConfig                
+0000171d  vTaskStartScheduler            
+000017d9  vTaskDelay                     
+000018e3  CANBitTimingSet                
+00001935  Can_Mcu_Init                   
+00001985  InitConsole                    
+000019d5  SysCtlPeripheralReset          
+00001a71  Can_DisableControllerInterrupts
+00001ab9  GPIOPinConfigure               
+00001b01  UARTwrite                      
+00001b49  __TI_auto_init_nobinit_nopinit 
+00001b8d  vPortFree                      
+00001bd1  __aeabi_uidiv                  
+00001bd1  __aeabi_uidivmod               
+00001c11  xPortStartScheduler            
+00001c51  CANInit                        
+00001cc5  vListInsert                    
+00001cfd  IntRegister                    
+00001d31  SysCtlPeripheralEnable         
+00001d65  _c_int00_noargs                
+00001dc9  LED_ON                         
+00001df5  xPortSysTickHandler            
+00001e21  GPIODirModeSet                 
+00001e9d  pxPortInitialiseStack          
+00001ee9  CANIntClear                    
+00001f0b  CANIntStatus                   
+00001f2b  uxListRemove                   
+00001f4b  __aeabi_idiv0                  
+00001f4b  __aeabi_ldiv0                  
+00001f4d  vPortEnterCritical             
+00001f69  UARTprintf                     
+00001f83  CANIntRegister                 
+00001f9b  vListInsertEnd                 
+00001fb3  vApplicationStackOverflowHook  
+00001fb5  vPortExitCritical              
+00001fcd  vListInitialise                
+00001fe5  vPortSetupTimerInterrupt       
+00001ff9  GPIOPinTypeCAN                 
+0000200b  GPIOPinTypeUART                
+00002041  vTaskSuspendAll                
+00002051  Read_Task                      
+0000205f  __TI_decompress_none           
+0000206d  __TI_zero_init                 
+00002079  CANDisable                     
+00002083  CANEnable                      
+0000208d  CANIntDisable                  
+00002097  CANIntEnable                   
+000020a7  Can0_InterruptHandler          
+000020ad  Can1_InterruptHandler          
+000020b3  GPIOPinWrite                   
+000020b9  ResetISR                       
+000020bf  SysCtlDelay                    
+000020c5  UARTClockSourceSet             
+000020cb  vListInitialiseItem            
+000020d1  _system_pre_init               
+000020d5  C$$EXIT                        
+000020d5  abort                          
+00002244  CanControllerBaudrateConfig    
+000022ac  ulMaxSyscallInterruptPriority  
+000022e0  __TI_Handler_Table_Base        
+000022ec  __TI_Handler_Table_Limit       
+00002300  __TI_CINIT_Base                
+00002318  __TI_CINIT_Limit               
+20000000  g_pfnRAMVectors                
+20007a24  CanHardwareObject              
+20007c04  pxCurrentTCB                   
+20007c34  CanController                  
+20007c70  __stack                        
+20007e70  __STACK_END                    
+20007e70  __STACK_TOP                    
+ffffffff  __TI_pprof_out_hndl            
+ffffffff  __TI_prof_data_size            
+ffffffff  __TI_prof_data_start           
+ffffffff  __binit__                      
+ffffffff  __c_args__                     
+ffffffff  binit                          
+UNDEFED   __mpu_init                     
+UNDEFED   _system_post_cinit             
+
+[117 symbols]

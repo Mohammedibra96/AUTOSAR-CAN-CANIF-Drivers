@@ -1,1 +1,0 @@
-"./CanAUTO.obj" "./Can_interrupt.obj" "./Can_lcfg.obj" "./MCU.obj" "./can.obj" "./main.obj" "./tm4c123gh6pm_startup_ccs.obj" "./uartstdio.obj" "../driverlib.lib" "../tm4c123gh6pm.cmd" -llibc.a 

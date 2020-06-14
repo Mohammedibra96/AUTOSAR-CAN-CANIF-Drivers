@@ -18,7 +18,7 @@
 #define INCLUDES_CAN_H_
 
 
-
+#include"Compiler.h"
 #include "ComStack_Types.h"
 #include "Std_Types.h"
 #include "Mcu_Cfg.h"
@@ -27,7 +27,16 @@
 #include "Can_Cfg.h"
 
 
-#define  MAX_NUM_OF_BAUDRATES  6U
+
+
+
+#define CAN_CONTROLLER_ZERO 0U
+#define CAN_CONTROLLER_ONE  1U
+
+
+#define CAN_DISABLE_INTERRUPT_NOT_CALLED     0
+
+
 
 #if defined(CFG_PPC)
 
@@ -52,31 +61,27 @@
 #define CAN_CTRL_ERROR_PROCESSING_INTERRUPT    (1UL<<7)
 #define CAN_CTRL_ERROR_PROCESSING_POLLING      0
 
-#define CAN_DISABLE_INTERRUPT_NEVER_CALLED     0
-#define CAN_ENABLE_INTERRUPT_NEVER_CALLED     0
 
 #endif
 
-extern const Can_ConfigType CanContainer;
-extern const Can_ConfigType MailboxCfg_MAP;
 
-void Can_Init(Can_ConfigType* Config);
-void Can_DeInit(void);
-Std_ReturnType Can_SetBaudrate(uint8_t Controller, uint16_t BaudRateConfigID );
-Std_ReturnType Can_SetControllerMode( uint8_t Controller,Can_StateTransitionType Transition );
-Std_ReturnType Can_GetControllerMode( uint8_t Controller, Can_ControllerStateType* ControllerModePtr);
+
+FUNC(void,CAN_CODE) Can_Init(Can_ConfigType* Config);
+FUNC(void,CAN_CODE) Can_DeInit(void);
+FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,VAR(uint16_t,AUTOMATIC) BaudRateConfigID );Std_ReturnType Can_SetControllerMode( uint8_t Controller,Can_StateTransitionType Transition );
+FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, Can_ControllerStateType* ControllerModePtr);
 
 
 
-void Can_EnableControllerInterrupts(uint8_t Controller);
-void Can_DisableControllerInterrupts(uint8_t Controller);
-void Can_MainFunction_Mode(void);
-void  Can_Main_Function_Read(void);
+FUNC(void,CAN_CODE)  Can_EnableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller);
+FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller);
+FUNC(void,CAN_CODE) Can_MainFunction_Mode( void );
+FUNC (void,CAN_CODE)  Can_MainFunction_Read(void);
 
 
-Std_ReturnType Can_Write( Can_HwHandleType HTH, Can_PduType* PduInfo );
-void  Can_Main_Function_Write(void);
-Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr);
+FUNC(Std_ReturnType,CAN_CODE) Can_Write(Can_HwHandleType HTH , Can_PduType* PduInfo);
+FUNC(void,CAN_CODE)  Can_MainFunction_Write(void);
+FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC) ControllerId, Can_ErrorStateType* ErrorStatePtr );
 
 
 
@@ -107,16 +112,6 @@ Std_ReturnType Can_GetControllerErrorState( uint8_t ControllerId, Can_ErrorState
 #define CAN_SW_MINOR_VERSION 	0
 #define CAN_SW_PATCH_VERSION	0
 
-#define CAN_E_PARAM_POINTER    0x01
-#define CAN_E_PARAM_HANDLE     0x02
-#define CAN_E_PARAM_DLC        0x03
-#define CAN_E_PARAM_CONTROLLER 0x04
-// API service used without initialization
-#define CAN_E_UNINIT           0x05
-// Init transition for current mode
-#define CAN_E_TRANSITION       0x06
-
-#define CAN_E_DATALOST         0x07     /** @req 4.0.3/CAN395 */
 
 /** @name Service id's */
 //@{
