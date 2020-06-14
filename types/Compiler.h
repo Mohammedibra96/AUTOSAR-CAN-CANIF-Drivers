@@ -45,6 +45,22 @@
 /*****************************************************************************/
 #define LOCAL_INLINE static inline
 
+
+/*****************************************************************************/
+/* Define:       LOCAL 		                                                 */
+/* Description:  Abstraction of keyword inline with static scope.            */
+/*****************************************************************************/
+#define LOCAL static
+
+/*****************************************************************************/
+/* Macro name: P2VAR                                                         */
+/* Parameters: ptrtype     type of the referenced variable                   */
+/*             memclass    classification of the pointer's variable itself   */
+/*             ptrclass    defines the classification of the pointer's       */
+/*                         distance                                          */
+/*****************************************************************************/
+#define P2VAR(ptrtype, memclass, ptrclass) ptrtype *
+
 /*****************************************************************************/
 /* Macro name: FUNC                                                          */
 /* Parameters: rettype     return type of the function                       */
@@ -60,6 +76,7 @@
 /*                         distance                                          */
 /*****************************************************************************/
 #define FUNC_P2VAR(ptrtype, memclass, ptrclass) ptrtype *
+
 
 /*****************************************************************************/
 /* Macro name: P2CONST                                                       */

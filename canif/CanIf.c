@@ -51,6 +51,32 @@
 
 
 
+#define CANIF_INIT_ID                0x01
+#define CANIF_INIT_CONTROLLER_ID     0x02
+#define CANIF_SET_CONTROLLER_MODE_ID 0x03
+#define CANIF_GET_CONTROLLER_MODE_ID 0x04
+#define CANIF_TRANSMIT_ID            0x05
+#define CANIF_READTXPDUDATA_ID       0x06
+#define CANIF_READTXNOTIFSTATUS_ID   0x07
+#define CANIF_READRXNOTIFSTATUS_ID   0x08
+#define CANIF_SETPDUMODE_ID          0x09
+#define CANIF_GETPDUMODE_ID          0x0A
+#define CANIF_SETDYNAMICTX_ID        0x0C
+#define CANIF_SET_TRANSCEIVERMODE_ID     0x0D
+#define CANIF_GET_TRANSCEIVERMODE_ID     0x0E
+#define CANIF_GET_TRCVMODEREASON_ID      0x0F
+#define CANIF_SET_TRANSCEIVERWAKEMODE_ID 0x10
+#define CANIF_CHECKWAKEUP_ID          0x11
+#define CANIF_CHECKVALIDATION_ID      0x12
+#define CANIF_TXCONFIRMATION_ID       0x13
+#define CANIF_RXINDICATION_ID         0x14
+#define CANIF_CANCELTXCONFIRMATION_ID 0x15
+#define CANIF_CONTROLLER_BUSOFF_ID    0x16
+
+#define CANIF_SETWAKEUPEVENT_ID       0x40
+#define CANIF_ARCERROR_ID           0x41
+
+
 
 /********************************************************************************************************/
 /********************************************************************************************************/
@@ -141,8 +167,8 @@ FUNC(void,CANIF_CODE) CanIf_Init(const CanIf_ConfigType* ConfigPtr)
 /*   NOT SURE IF THIS IS CORRECT   */
 FUNC(void,CANIF_CODE) CanIf_DeInit(void)
 {
-    CanIf_ConfigPtr = ConfigPtr    ;
-    CanIf_Global.initRun = FALSE;
+	CanIf_ConfigPtr = ConfigPtr    ;
+	CanIf_Global.initRun = FALSE;
 }
 
 
@@ -232,7 +258,7 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) C
 
 
 
-FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) ControllerId, Can_ControllerStateType* ControllerModePtr)
+FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) ControllerId, P2VAR(Can_ControllerStateType,AUTOMATIC,) ControllerModePtr)
 {
 	VAR(Std_ReturnType,AUTOMATIC) ErrorStatus           = E_OK                              ;
 	CanIf_ChannelIdType channel_CanIf_GetControllerMode = (CanIf_ChannelIdType) ControllerId;
@@ -279,15 +305,52 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) 
 }
 
 
+#define CAN_GET_CONTROLLER_ERROR_STATE_SID    0x4B
+
 FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr)
 {
-
-	/************************************	To be done	********************************/
-
-
-	//implement
-
-	/***********************************************************************************/
+	VAR(Std_ReturnType,AUTOMATIC) ErrorStatus           = E_OK                              ;
+	CanIf_ChannelIdType channel_CanIf_GetControllerMode = (CanIf_ChannelIdType) ControllerId;
+	if( CanIf_Global.initRun == FALSE )
+	{
+		ErrorStatus = E_NOT_OK;
+	}
+	else 
+	{
+		/*MISRA*/
+	}
+	if(ControllerId >= CANIF_CHANNEL_CNT)
+	{
+		/*[SWS_CANIF_00898] If parameter ControllerId of CanIf_GetControllerMode() has an invalid, the CanIf shall report 
+		development error code CANIF_E_PARAM_CONTROLLERID to the Det_ReportError service of the DET, when 
+		CanIf_GetControllerMode() is called.*/
+		ErrorStatus = E_NOT_OK;
+		/*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_ERROR_STATE_SID,CANIF_E_PARAM_CONTROLLERID);*/
+	}
+	else 
+	{
+		/*MISRA*/
+	}
+	if(ErrorStatePtr == NULL)
+	{
+		/* [SWS_CANIF_00899] If parameter ErrorStatePtr of CanIf_GetControllerError
+		development error code CANIF_E_PARAM_POINTER to the Det_ReportError service of the DET, when
+		CanIf_GetControllerErrorState() is called.*/
+		ErrorStatus = E_NOT_OK;
+		/*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_MODE_SID,CANIF_E_PARAM_POINTER);*/
+	}	else 
+	{
+		/*MISRA*/
+	}
+	if ( ErrorStatus == E_OK )
+	{
+		ErrorStatus = Can_GetControllerErrorState( ControllerId, ErrorStatePtr ); 
+	}	
+	else 
+	{
+		/*MISRA*/
+	}
+	return ErrorStatus ;
 }
 
 
@@ -345,102 +408,102 @@ FUNC(Std_ReturnType,CANIF) CanIf_Transmit(PduIdType TxPduId, const PduInfoType* 
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(uint8_t ControllerId, CanIf_PduModeType PduModeRequest)
 {
-    VAR(uint8_t,AUTOMATIC)                  canIfDevError = E_OK;
-    VAR(Std_ReturnType,AUTOMATIC)           toBeReturned  = E_OK;
-    VAR(Can_ControllerStateType,AUTOMATIC)  Can_ControllerState ;
+	VAR(uint8_t,AUTOMATIC)                  canIfDevError = E_OK;
+	VAR(Std_ReturnType,AUTOMATIC)           toBeReturned  = E_OK;
+	VAR(Can_ControllerStateType,AUTOMATIC)  Can_ControllerState ;
 
 
-    if(CanIf_Global.initRun == TRUE)
-    {
-        if(ControllerId < CANIF_CHANNEL_CNT)
-        {
+	if(CanIf_Global.initRun == TRUE)
+	{
+		if(ControllerId < CANIF_CHANNEL_CNT)
+		{
         /*[SWS_CANIF_00874] The service CanIf_SetPduMode() shall not accept any request
          *                  and shall return E_NOT_OK, if the controller mode referenced by ControllerId
          *                  is not in state CAN_CS_STARTED
          */
-            Can_GetControllerMode(ControllerId, &Can_ControllerState);
-            if(Can_ControllerState == CAN_CS_STARTED)
-            {
-                if(IS_PDU_MODE(PduModeRequest))
-                {
-                    switch(PduModeRequest)
-                    {
-                        case CANIF_OFFLINE:
-                        CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_OFFLINE;
-                        break;
+			Can_GetControllerMode(ControllerId, &Can_ControllerState);
+			if(Can_ControllerState == CAN_CS_STARTED)
+			{
+				if(IS_PDU_MODE(PduModeRequest))
+				{
+					switch(PduModeRequest)
+					{
+						case CANIF_OFFLINE:
+						CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_OFFLINE;
+						break;
 
-                        case CANIF_TX_OFFLINE:
-                        CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_TX_OFFLINE;
-                        break;
+						case CANIF_TX_OFFLINE:
+						CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_TX_OFFLINE;
+						break;
 
-                        case CANIF_TX_OFFLINE_ACTIVE:
-                        CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_TX_OFFLINE_ACTIVE;
-                        break;
+						case CANIF_TX_OFFLINE_ACTIVE:
+						CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_TX_OFFLINE_ACTIVE;
+						break;
 
 
-                        case CANIF_ONLINE:
-                        CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_ONLINE;
-                        break;
+						case CANIF_ONLINE:
+						CanIf_Global.channelData[channel_CanIf_SetPduMode].PduMode = CANIF_ONLINE;
+						break;
 
-                        default:
-                        break;
-                    }
-                }
-                else
-                {
-                    toBeReturned = E_NOT_OK;
+						default:
+						break;
+					}
+				}
+				else
+				{
+					toBeReturned = E_NOT_OK;
                     /*   report det CANIF_E_PARAM_PDU_MODE   */
-                }
-            }
-            else
-            {
-                toBeReturned = E_NOT_OK;
-            }
-        }
-        else
-        {
-            canIfDevError = CANIF_E_PARAM_CONTROLLERID;
-            toBeReturned = E_NOT_OK;
-        }
+				}
+			}
+			else
+			{
+				toBeReturned = E_NOT_OK;
+			}
+		}
+		else
+		{
+			canIfDevError = CANIF_E_PARAM_CONTROLLERID;
+			toBeReturned = E_NOT_OK;
+		}
 
-    }
-    else
-    {
-        toBeReturned = E_NOT_OK;
-    }
+	}
+	else
+	{
+		toBeReturned = E_NOT_OK;
+	}
 
-    return toRet;
+	return toRet;
 }
 
 
 FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduModeType* PduModePtr)
 {
-    VAR(Std_ReturnType,AUTOMATIC) toRet = E_OK;
-    if(CanIf_Global.initRun == TRUE)
-    {
-        if(ControllerId < CANIF_CHANNEL_CNT)
-        {
-            if(PduModePtr != NULL)
-            {
-                *PduModePtr = CanIf_Global.channelData[CanIf_GetPduMode_local].PduMode;
-            }
-            else
-            {
-                toRet = E_NOT_OK;
+	VAR(Std_ReturnType,AUTOMATIC) toRet = E_OK;
+	if(CanIf_Global.initRun == TRUE)
+	{
+		if(ControllerId < CANIF_CHANNEL_CNT)
+		{
+			if(PduModePtr != NULL)
+			{
+				*PduModePtr = CanIf_Global.channelData[CanIf_GetPduMode_local].PduMode;
+			}
+			else
+			{
+				toRet = E_NOT_OK;
                 /*    report det  CANIF_E_PARAM_POINTER */
-            }
-        }
-        else
-        {
-            toRet = E_NOT_OK;
+			}
+		}
+		else
+		{
+			toRet = E_NOT_OK;
             /*    report det  CANIF_E_PARAM_CONTROLLERID */
-        }
-    }
-    else
-    {
-        toRet = E_NOT_OK;
-    }        
-    return toRet;
+		}
+	}
+	else
+	{
+		toRet = E_NOT_OK;
+	}        
+	return toRet;
 }
 
 const CanIfTxPduCfg * CanIf_FindTxPduEntry(PduIdType TxPduId)
