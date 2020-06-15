@@ -29,16 +29,16 @@
 #define CANIF_GET_OFFLINE                         0
 /** Receive path of the corresponding channel is enabled and
 *transmit path is disabled */
-#deifne CANIF_GET_RX_ONLINE                       1
+#define CANIF_GET_RX_ONLINE                       1
 /** Transmit path of the corresponding channel is enabled and
 *receive path is disabled */
-#deifne CANIF_GET_TX_ONLINE                       2
+#define CANIF_GET_TX_ONLINE                       2
 /** Channel is in the online mode ==> full operation mode */
-#deifne CANIF_GET_ONLINE                          3
+#define CANIF_GET_ONLINE                          3
 /** Transmit path of the corresponding channel is in
 *the offline mode ==> transmit notifications are processed but
 *transmit requests are blocked. The receiver path is disabled. */
-#deifne CANIF_GET_OFFLINE_ACTIVE                  4
+#define CANIF_GET_OFFLINE_ACTIVE                  4
 /** Transmit path of the corresponding channel is in the offline
 *active mode ==> transmit notifications are processed but transmit
 *requests are blocked. The receive path is enabled. */
@@ -72,7 +72,7 @@ typedef struct{
      * 0..number of configured controllers of all CAN Driver modules */
     uint8_t CanIfCtrlId               ;
 
-    CanController* CanIfCtrlCanCtrlRef;
+    uint8_t CanIfCtrlCanCtrlRef;
 }CanIfCtrlCfg_s;
 
 
@@ -116,7 +116,7 @@ typedef struct {
    *  PDU transmission.
      *  EXTENDED_CAN  The CANID is of type Extended (29 bits)
    *  STANDARD_CAN  The CANID is of type Standard (11 bits) */
-    CanIfRxPduCanIdType CanIfRxPduCanId; //
+    uint8_t CanIfRxPduCanId; //
 
 
   /** Data Length code of received CAN L-PDUs used by the CAN Interface.
@@ -134,7 +134,7 @@ typedef struct {
         layer (UL) module is configured, no <User_RxIndication> has to be
         called in case of an Rx indication event of the CANRXPDUID from the
         CAN Driver module. */
-    CanIfRxPduUserRxConfirmationUL_t CanIfRxPduUserRxIndicationUL;
+    uint8_t CanIfRxPduUserRxIndicationUL;
 
 
 
@@ -162,12 +162,6 @@ typedef struct {
      *  Extended CAN identifier */
     uint32_t CanIfTxPduCanId;   ///
 
-/*
-*Type of CAN Identifier of the transmit CAN L-PDU used by the CAN
-*Driver module for CAN L-PDU transmission.
-* Standard or Extended or FD
-*/
-    CanIfTxPduCanIdType CanIfTxPduCanIdType; ///
 
     /** ECU wide unique, symbolic handle for transmit CAN L-PDU. The
      *  CanIfCanTxPduId is configurable at pre-compile and post-built time.
@@ -175,7 +169,7 @@ typedef struct {
     uint32_t CanIfTxPduId; 
 
 
-    CanIfRxPduUserRxConfirmationUL_t CanIfTxPduUserTxConfirmationUL;
+    uint8_t CanIfTxPduUserTxConfirmationUL;
 
 
     uint8_t CanIfHthCfgRef;
@@ -185,9 +179,10 @@ typedef struct {
 
 /****************************   Types Not in SWS    *************************************/
 
+typedef uint8_t CanIf_ConfigType;
 typedef struct{
     Can_ControllerStateType Controller_Mode;
-    CanIf_ChannelGetModeType PduMode;
+    CanIf_PduModeType PduMode;
 }CanIf_ChannelPrivateType;
 
 typedef struct {

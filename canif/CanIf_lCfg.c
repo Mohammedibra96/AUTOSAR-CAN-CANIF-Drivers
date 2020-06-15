@@ -28,16 +28,16 @@ VAR(CanIfRxPduCfg_s ,AUTOMATIC) CanIfRxPduCfg[MAX_NUM_RX_PDU] = {
 VAR(CanIfTxPduCfg_s ,AUTOMATIC) CanIfTxPduCfg[MAX_NUM_TX_PDU] = {
 	{
 		.CanIfTxPduCanId = 6,
-		.CanIfTxPduCanIdType = STANDARD_CAN,
+		.CanIfTxPduCanId = STANDARD_CAN,
 		.CanIfTxPduId = 5,
-		.CanIfRxPduUserRxConfirmationUL = ,
+		.CanIfTxPduUserTxConfirmationUL = CAN_TP,
 		.CanIfHthCfgRef = 0
 	},
 	{
 		.CanIfTxPduCanId = 7,
-		.CanIfTxPduCanIdType = STANDARD_CAN,
+		.CanIfTxPduCanId = STANDARD_CAN,
 		.CanIfTxPduId = 9,
-		.CanIfRxPduUserRxConfirmationUL = ,
+		.CanIfTxPduUserTxConfirmationUL = PDUR,
 		.CanIfHthCfgRef = 1
 	},
 };

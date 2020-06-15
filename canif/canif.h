@@ -33,12 +33,12 @@
 #include "Det.h"
 #endif
 #include "CanIf_Types.h"
-#include "CanIf_SpecialPdus.h"
 #include "CanIf_Cfg.h"
 
-#include "CanIf_ConfigTypes.h"
+#define IS_PDU_MODE(PDU_MODE)   (PDU_MODE == CANIF_OFFLINE) || (PDU_MODE == CANIF_TX_OFFLINE) || (PDU_MODE == CANIF_TX_OFFLINE_ACTIVE) || (PDU_MODE == CANIF_ONLINE)
 
-#define	IS_PDU_MODE(PDU_MODE)	(PDU_MODE == CANIF_OFFLINE) || (PDU_MODE == CANIF_TX_OFFLINE) || (PDU_MODE == CANIF_TX_OFFLINE_ACTIVE) || (PDU_MODE == CANIF_ONLINE)
+
+
 
 FUNC(void,CANIF_CODE) CanIf_Init(const CanIf_ConfigType* ConfigPtr);
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) ControllerId,VAR(Can_ControllerStateType , AUTOMATIC) ControllerMode);
@@ -56,9 +56,7 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(uint8_t ControllerId, CanIf_Pdu
 
 FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduModeType* PduModePtr);
 
-FUNC(sint8_t,CANIF) CanIf_FindRxPduEntry(const Can_HwType* Mailbox);
-
-FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
+FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr);
 
 FUNC(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId);
 
