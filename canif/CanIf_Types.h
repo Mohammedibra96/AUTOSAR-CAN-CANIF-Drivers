@@ -170,7 +170,7 @@ typedef struct {
      *  Range: 0..max. number of CantTxPduIds   PduIdType   CanTxPduId; */
     uint32_t CanIfTxPduId; 
 
-
+    /*   This parameter contains the upper layer of each indivdual pdu   */
     uint8_t CanIfTxPduUserTxConfirmationUL;
 
 

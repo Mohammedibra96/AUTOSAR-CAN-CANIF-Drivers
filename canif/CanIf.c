@@ -537,7 +537,33 @@ FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInf
 
 FUNC(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId)
 {
+	uint8_t upperLayer = CanIfTxPduCfg[CanTxPduId].CanIfTxPduUserTxConfirmationUL;
+    if(CanIf_Global.initRun == TRUE)
+    {
 
+    	/*	which Tx confirmation should be called	*/
+    	switch(upperLayer)
+    	{
+    case CAN_TP:
+    	/*	the first parameter is the pduid in the upperlayer.
+			Since the can only indicates the canif when the data is sent,
+			the CanIf_TxConfirmation will only confirm with E_OK.
+			E_NOT_OK should be sent through the timeout api which is not supported in this driver
+    		*/
+        CanTp_TxConfirmation(CanIfTxPduCfg[CanTxPduId]CanIfTxPduId., E_OK);
+
+        break;
+    case PDUR:
+
+        PDUr_TxConfirmation(CanIfTxPduCfg[CanTxPduId]CanIfTxPduId, E_OK);
+
+        break;
+    	}
+    }
+	else
+	{
+		/*	det error	*/
+	}
 }
 
 
