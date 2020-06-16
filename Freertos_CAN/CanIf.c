@@ -360,66 +360,14 @@ FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, C
         /*MISRA*/
     }
     return ErrorStatus ;
-}
+                }
 
 
 
 FUNC(Std_ReturnType,CANIF) CanIf_Transmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
-{
-	VAR(Std_ReturnType, AUTOMATIC) toBeReturned = E_OK;
-    VAR(Can_ControllerStateType,AUTOMATIC)  Can_ControllerState ;
-    VAR(uint8_t, AUTOMATIC) HTH;
-    VAR(uint8_t, AUTOMATIC) HTHIndex;
+                {
 
-	if(CanIf_Global. initRun == False)
-	{
-		toBeReturned = E_NOT_OK;
-	}
-	else
-	{/*MISRA*/}
-	if ( PduInfoPtr == NULL )
-	{
-		toBeReturned = E_NOT_OK;
-	}
-	else{/*MISRA*/}
-	if( TxPduId >= MAX_NUM_PDU)
-	{
-		toBeReturned = E_NOT_OK;
-	}
-	else{/*MISRA*/}
-
-	/*	[SWS_CANIF_00317] 
-	 * The service CanIf_Transmit() shall not accept a transmit
-	 * request, if the controller mode referenced by ControllerId is different to
-	 * CAN_CS_STARTED and the channel mode at least for the transmit path is not online
-	 * or offline active	
-	 */
-
-	/*		*/
-    Can_GetControllerMode(ControllerId, &Can_ControllerState);
-
-	if(Can_ControllerState == CAN_CS_STARTED)
-    {
-    	if( CanIf_Global.channelData[ControllerId].PduMode != CANIF_TX_OFFLINE_ACTIVE || CanIf_Global.channelData[ControllerId].PduMode != CANIF_ONLINE)
-    	{
-			toBeReturned = E_NOT_OK;
-    	}
-    	else{}
-    }
-    else
-    {
-		toBeReturned = E_NOT_OK;
-    }
-	
-	if(toBeReturned == E_OK)
-	{
-		HTHIndex = CanIfTxPduCfg[/*	pducfgIndex	*/].CanIfHthCfgRef;
-		HTH = CanIfHthCfg[HTHIndex].CanIfHthCanCtrlIdRef;
-		toBeReturned = Can_Write( HTH, PduInfoPtr);
-	}
-	else{}
-		return toBeReturned;
-}
+                }
 
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(uint8_t ControllerId, CanIf_PduModeType PduModeRequest)
@@ -529,16 +477,16 @@ FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduMode
 
 
 FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
-{
+                {
 
 
 
 }
 
 FUNC(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId)
-{
+                {
 
-}
+                }
 
 
 

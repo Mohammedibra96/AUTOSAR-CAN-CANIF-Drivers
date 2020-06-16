@@ -70,19 +70,13 @@ typedef struct{
      * Controller. Each controller of all connected CAN Driver modules shall
      * be assigned to one specific ControllerId of the CanIf. Range:
      * 0..number of configured controllers of all CAN Driver modules */
-    
-    /*   this is the ind3ex of the can drivers beneth   */
-    uint8_t CanIfCtrlId;
+    uint8_t CanIfCtrlId               ;
 
-
-    /*  TODO: add ctrlr index    */
     uint8_t CanIfCtrlCanCtrlRef;
-
 }CanIfCtrlCfg_s;
 
 
-typedef struct 
-{
+typedef struct {
 
     /** Selects the hardware receive objects by using the HRH range/list from
      *  CAN Driver configuration to define, for which HRH a software filtering has
@@ -115,18 +109,22 @@ typedef struct{
 
 
 
-typedef struct 
-{
+typedef struct {
+
+
   /** CAN Identifier of receive CAN L-PDUs used by the CAN Driver for CAN L-
    *  PDU transmission.
      *  EXTENDED_CAN  The CANID is of type Extended (29 bits)
    *  STANDARD_CAN  The CANID is of type Standard (11 bits) */
     uint8_t CanIfRxPduCanId; //
 
+
   /** Data Length code of received CAN L-PDUs used by the CAN Interface.
    *  Exa: DLC check. The data area size of a CAN L-PDU can have a range
    *  from 0 to 8 bytes.*/
     uint16_t CanIfRxPduDataLength;  //
+
+
 
     /*This parameter defines the upper layer (UL) module to which the
         indication of the successfully received CANRXPDUID has to be routed
@@ -138,18 +136,22 @@ typedef struct
         CAN Driver module. */
     uint8_t CanIfRxPduUserRxIndicationUL;
 
+
+
+
+
   /** The HRH to which Rx L-PDU belongs to, is referred through this
    *  parameter. */
-    uint8_t  CanIfRxPduHrhIdRef;  //
+    uint8_t  CanIfRxPduHrhIdRef;  //Refrence as index 
 
   /** Reference to the "global" Pdu structure to allow harmonization of handle
    *  IDs in the COM-Stack. */
-   /*     this is the ECUC, if it is not in the look up table then you use it instead of the pduid      */
+   //Change the refrence to struct with index refrence
+
+
+   
     uint32_t  CanIfRxPduRef;
 
-/*ECU wide unique, symbolic handle for receive CAN L-SDU. It shall
-fulfill ANSI/AUTOSAR definitions for constant defines.*/
-    uint32_t CanIfRxPduId ;
 }CanIfRxPduCfg_s;
 
 
@@ -158,11 +160,7 @@ typedef struct {
     /** CAN Identifier of transmit CAN L-PDUs used by the CAN Driver for CAN L-
      *  PDU transmission. Range: 11 Bit For Standard CAN Identifier ... 29 Bit For
      *  Extended CAN identifier */
-    uint32_t CanIfTxPduCanId;
-
-
-
-    uint8_t CanIfTxPduCanIdType; 
+    uint32_t CanIfTxPduCanId;   ///
 
 
     /** ECU wide unique, symbolic handle for transmit CAN L-PDU. The
@@ -181,11 +179,7 @@ typedef struct {
 
 /****************************   Types Not in SWS    *************************************/
 
-typedef struct 
-{
-    
-} CanIf_ConfigType_s;
-
+typedef uint8_t CanIf_ConfigType;
 typedef struct{
     Can_ControllerStateType Controller_Mode;
     CanIf_PduModeType PduMode;
