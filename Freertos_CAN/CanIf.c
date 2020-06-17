@@ -13,7 +13,7 @@
 #include "include/PduR.h"
 #include "include/CanIf_CanTp.h"
 #include "include/PduR_CanIf.h"
-#include"include/Can.h"
+#include "include/Can.h"
 
 #if defined(USE_PDUR)
 #include "PduR.h"
@@ -31,58 +31,52 @@
 /********************************************************************************************************/
 /*TODO:void CanIf_ControllerModeIndication(0U,Can_ControllerMode [0U])*/
 
-#define CANIF_CODE                       1
-#define CANIF_UNINIT                     0
+#define CANIF_CODE                           1
+#define CANIF_UNINIT                         0
 
-#define MAX_DATA_SIZE                    8U
+#define CANIF_MODULE_ID                      MODULE_ID_CANIF
+#define CANIF_INSTANCE_ID                    0
+
+#define MAX_DATA_SIZE                        8U
 
 /* Det defines */
 
-#define CANIF_E_PARAM_CANID             10
-#define CANIF_E_PARAM_HOH               12
-#define CANIF_E_PARAM_LPDU              13
-#define CANIF_E_PARAM_CONTROLLERID      15
-#define CANIF_E_PARAM_WAKEUPSOURCE      16
-#define CANIF_E_PARAM_TRCV              17
-#define CANIF_E_PARAM_TRCVMODE          18
-#define CANIF_E_PARAM_TRCVWAKEUPMODE    19
-#define CANIF_E_PARAM_CTRLMODE          21
-#define CANIF_E_PARAM_PDU_MODE          22
-#define CANIF_E_PARAM_POINTER           20
-#define CANIF_E_UNINIT                  30
-#define CANIF_E_INVALID_TXPDUID         50
-#define CANIF_E_INVALID_RXPDUID         60
-#define CANIF_E_INIT_FAILED             80
+#define CANIF_E_PARAM_CANID                  10
+#define CANIF_E_PARAM_HOH                    12
+#define CANIF_E_PARAM_LPDU                   13
+#define CANIF_E_PARAM_CONTROLLERID           15
+#define CANIF_E_PARAM_WAKEUPSOURCE           16
+#define CANIF_E_PARAM_TRCV                   17
+#define CANIF_E_PARAM_TRCVMODE               18
+#define CANIF_E_PARAM_TRCVWAKEUPMODE         19
+#define CANIF_E_PARAM_CTRLMODE               21
+#define CANIF_E_PARAM_PDU_MODE               22
+#define CANIF_E_PARAM_POINTER                20
+#define CANIF_E_UNINIT                       30
+#define CANIF_E_INVALID_TXPDUID              50
+#define CANIF_E_INVALID_RXPDUID              60
+#define CANIF_E_INIT_FAILED                  80
 
 
 
-#define CanIfPrivateSoftwareFilterType   MASK
-#define CanIfPrivateDataLengthCheck      FALSE
+#define CanIfPrivateSoftwareFilterType       MASK
+#define CanIfPrivateDataLengthCheck          FALSE
 
 
-#define CANIF_INIT_ID                0x01
-#define CANIF_INIT_CONTROLLER_ID     0x02
-#define CANIF_SET_CONTROLLER_MODE_ID 0x03
-#define CANIF_GET_CONTROLLER_MODE_ID 0x04
-#define CANIF_TRANSMIT_ID            0x05
-#define CANIF_READTXPDUDATA_ID       0x06
-#define CANIF_READTXNOTIFSTATUS_ID   0x07
-#define CANIF_READRXNOTIFSTATUS_ID   0x08
-#define CANIF_SETPDUMODE_ID          0x09
-#define CANIF_GETPDUMODE_ID          0x0A
-#define CANIF_SETDYNAMICTX_ID        0x0C
-#define CANIF_SET_TRANSCEIVERMODE_ID     0x0D
-#define CANIF_GET_TRANSCEIVERMODE_ID     0x0E
-#define CANIF_GET_TRCVMODEREASON_ID      0x0F
-#define CANIF_SET_TRANSCEIVERWAKEMODE_ID 0x10
-#define CANIF_CHECKWAKEUP_ID          0x11
-#define CANIF_CHECKVALIDATION_ID      0x12
-#define CANIF_TXCONFIRMATION_ID       0x13
-#define CANIF_RXINDICATION_ID         0x14
-#define CANIF_CANCELTXCONFIRMATION_ID 0x15
-#define CANIF_CONTROLLER_BUSOFF_ID    0x16
-#define CANIF_SETWAKEUPEVENT_ID       0x40
-#define CANIF_ARCERROR_ID           0x41
+#define CANIF_INIT_ID                        0x01
+#define CANIF_INIT_CONTROLLER_ID             0x02
+#define CANIF_SET_CONTROLLER_MODE_ID         0x03
+#define CANIF_GET_CONTROLLER_MODE_ID         0x04
+#define CANIF_GET_CONTROLLER_ERROR_STATE_ID  0x4B
+#define CANIF_TRANSMIT_ID                    0x05
+#define CANIF_READTXPDUDATA_ID               0x06
+#define CANIF_READTXNOTIFSTATUS_ID           0x07
+#define CANIF_READRXNOTIFSTATUS_ID           0x08
+#define CANIF_SET_PDU_MODE_ID                0x09
+#define CANIF_GET_PDU_MODE_ID                0x0A
+#define CANIF_CHECKVALIDATION_ID             0x12
+#define CANIF_TX_CONFIRMATION_ID             0x13
+#define CANIF_RX_INDICATION_ID               0x14
 
 
 
@@ -131,8 +125,9 @@ extern VAR(CanIfHrhCfg_s ,AUTOMATIC) CanIfHrhCfg[MAX_NUM_HRH];
 
 
 FUNC(void,CANIF_CODE) CanIf_Init(CONSTP2VAR(CanIf_ConfigType_s,CANIF_CODE,AUTOMATIC) ConfigPtr)
-                                                                                                                                                {
+{
     VAR(uint8_t ,AUTOMATIC)  Controller   ;
+
     /* [SWS_CANIF_00085] The service CanIf_Init() shall initialize the global variablesand data structures of
 	the CanIf including flags and buffers.*/
     for ( Controller = 0; Controller <  MAX_NUM_CHANNELS; Controller++ )
@@ -142,7 +137,7 @@ FUNC(void,CANIF_CODE) CanIf_Init(CONSTP2VAR(CanIf_ConfigType_s,CANIF_CODE,AUTOMA
     }
 
     CanIf_Global.initRun = TRUE;
-                                                                                                                                                }
+}
 
 /********************************************************************************************************/
 /********************************************************************************************************/
@@ -153,16 +148,17 @@ FUNC(void,CANIF_CODE) CanIf_Init(CONSTP2VAR(CanIf_ConfigType_s,CANIF_CODE,AUTOMA
 
 /*   NOT SURE IF THIS IS CORRECT   */
 FUNC(void,CANIF_CODE) CanIf_DeInit(void)
-                                                                                                                                                {
+{
     CanIf_Global.initRun = FALSE;
-                                                                                                                                                }
+}
 
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) ControllerId,VAR(Can_ControllerStateType , AUTOMATIC) ControllerMode)
-                                                                                                                                                {
-    VAR(uint8_t,AUTOMATIC) CanDevolpmentErrorType    = E_OK            ;
-    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus        = E_OK            ;
+{
+    VAR(uint8_t,AUTOMATIC) CanDevolpmentErrorType                    = E_OK                          ;
+    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus                        = E_OK                          ;
     VAR(CanIf_Channel_t ,AUTOMATIC ) channel_CanIf_SetControllerMode = (CanIf_Channel_t) ControllerId;
+
 
     if( CanIf_Global.initRun == FALSE )
     {
@@ -172,15 +168,16 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) C
     {
         /*MISRA*/
     }
+
     if(channel_CanIf_SetControllerMode >= MAX_NUM_CHANNELS)
     {
         /*[SWS_CANIF_00311] If parameter ControllerId of CanIf_SetControllerMode() has an invalid value,
 		the CanIf shall report development error code CANIF_E_PARAM_CONTROLLERID to the Det_ReportError
 		service of the DET module, when CanIf_SetControllerMode() is called.*/
-        ErrorStatus = E_NOT_OK                              ;
+        ErrorStatus            = E_NOT_OK                   ;
 #if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
         CanDevolpmentErrorType = CANIF_E_PARAM_CONTROLLERID ;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_SET_CONTROLLER_MODE_SID,CanDevolpmentErrorType);*/
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_SET_CONTROLLER_MODE_ID,CANIF_E_PARAM_CONTROLLERID);
 #endif	 
     }
     else
@@ -192,10 +189,10 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) C
         /* [SWS_CANIF_00774] If parameter ControllerMode of CanIf_SetControllerMode() has an invalid value (not CAN_CS_STARTED,
 		CAN_CS_SLEEP or CAN_CS_STOPPED), the CanIfshall report development error code CANIF_E_PARAM_CTRLMODE 
 		to the Det_ReportError service of the DET module, when CanIf_SetControllerMode() is called.*/
-        ErrorStatus = E_NOT_OK                              ;
+        ErrorStatus            = E_NOT_OK               ;
 #if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
         CanDevolpmentErrorType = CANIF_E_PARAM_CTRLMODE ;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_SET_CONTROLLER_MODE_SID,CanDevolpmentErrorType);*/
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_SET_CONTROLLER_MODE_ID,CANIF_E_PARAM_CTRLMODE);
 
 #endif	 
     }
@@ -239,15 +236,15 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) C
         /*MISRA*/
     }
     return ErrorStatus ;
-                                                                                                                                                }
-
+}
 
 
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) ControllerId, P2VAR(Can_ControllerStateType,AUTOMATIC,) ControllerModePtr)
-                                                                                                                                                {
-    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus           = E_OK                              ;
+{
+    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus                      = E_OK                          ;
     VAR(CanIf_Channel_t,AUTOMATIC) channel_CanIf_GetControllerMode = (CanIf_Channel_t) ControllerId;
+
     if( CanIf_Global.initRun == FALSE )
     {
         ErrorStatus = E_NOT_OK;
@@ -262,20 +259,24 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) 
 		development error code CANIF_E_PARAM_CONTROLLERID to the Det_ReportError service of the DET, when 
 		CanIf_GetControllerMode() is called.*/
         ErrorStatus = E_NOT_OK;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_MODE_SID,CANIF_E_PARAM_CONTROLLERID);*/
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_CONTROLLER_MODE_ID,CANIF_E_PARAM_CONTROLLERID);
+#endif
     }
     else
     {
         /*MISRA*/
     }
+
     if(ControllerModePtr == NULL)
     {
         /* [SWS_CANIF_00656] If parameter ControllerModePtr of CanIf_GetControllerMode() has an invalid value,
 		the CanIf shall report development error code CANIF_E_PARAM_POINTER to the Det_ReportError service of
 		the DET, when CanIf_GetControllerMode() is called.*/
         ErrorStatus = E_NOT_OK;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_MODE_SID,CANIF_E_PARAM_POINTER);*/
-
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_CONTROLLER_MODE_ID,CANIF_E_PARAM_POINTER);
+#endif
     }	else
     {
         /*MISRA*/
@@ -288,13 +289,12 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) 
         /*MISRA*/
     }
     return ErrorStatus ;
-                                                                                                                                                }
-
+}
 
 
 FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR( Can_ErrorStateType,CANIF_CODE,AUTOMATIC) ErrorStatePtr)
-                                                                                                                                                {
-    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus           = E_OK                              ;
+{
+    VAR(Std_ReturnType,AUTOMATIC) ErrorStatus = E_OK  ;
     if( CanIf_Global.initRun == FALSE )
     {
         ErrorStatus = E_NOT_OK;
@@ -309,7 +309,9 @@ FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) 
 		development error code CANIF_E_PARAM_CONTROLLERID to the Det_ReportError service of the DET, when 
 		CanIf_GetControllerMode() is called.*/
         ErrorStatus = E_NOT_OK;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_ERROR_STATE_SID,CANIF_E_PARAM_CONTROLLERID);*/
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_CONTROLLER_ERROR_STATE_ID,CANIF_E_PARAM_CONTROLLERID);
+#endif
     }
     else
     {
@@ -321,11 +323,15 @@ FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) 
 		development error code CANIF_E_PARAM_POINTER to the Det_ReportError service of the DET, when
 		CanIf_GetControllerErrorState() is called.*/
         ErrorStatus = E_NOT_OK;
-        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,CAN_GET_CONTROLLER_MODE_SID,CANIF_E_PARAM_POINTER);*/
-    }	else
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_CONTROLLER_ERROR_STATE_ID,CANIF_E_PARAM_POINTER);
+#endif
+    }
+    else
     {
         /*MISRA*/
     }
+
     if ( ErrorStatus == E_OK )
     {
         ErrorStatus = Can_GetControllerErrorState( ControllerId, ErrorStatePtr );
@@ -335,37 +341,41 @@ FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) 
         /*MISRA*/
     }
     return ErrorStatus ;
-                                                                                                                                                }
+}
 
 
 
 FUNC(Std_ReturnType,CANIF) CanIf_Transmit(VAR(PduIdType,AUTOMATIC) TxPduId,  CONSTP2VAR(PduInfoType,CANIF_CODE,AUTOMATIC) PduInfoPtr)
-                                                                                                                                {
-    VAR(Std_ReturnType, AUTOMATIC) toBeReturned = E_OK;
+{
+    VAR(Std_ReturnType, AUTOMATIC)          toBeReturned = E_OK ;
     VAR(Can_ControllerStateType,AUTOMATIC)  Can_ControllerState ;
-    VAR(uint8_t, AUTOMATIC) HTH                 ;
-    VAR(uint8_t, AUTOMATIC) HTHIndex            ;
-    VAR(uint8_t, AUTOMATIC) ControllerId        ;
-
-    VAR(Can_PduType,AUTOMATIC) PduInfo ;
+    VAR(uint8_t, AUTOMATIC)                 HTH                 ;
+    VAR(uint8_t, AUTOMATIC)                 HTHIndex            ;
+    VAR(uint8_t, AUTOMATIC)                 ControllerId        ;
+    VAR(Can_PduType,AUTOMATIC)              PduInfo             ;
 
     if(CanIf_Global. initRun == False)
     {
-        UARTprintf("Init\n");
         toBeReturned = E_NOT_OK;
     }
     else
     {/*MISRA*/}
+
     if ( PduInfoPtr == NULL )
     {
-        UARTprintf("NULL\n");
         toBeReturned = E_NOT_OK;
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_TRANSMIT_ID,CANIF_E_PARAM_POINTER);
+#endif
     }
     else{/*MISRA*/}
+
     if( TxPduId >= MAX_NUM_TX_PDU )
     {
-        UARTprintf("MAX_NUM\n");
         toBeReturned = E_NOT_OK;
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_TRANSMIT_ID,CANIF_E_INVALID_TXPDUID);
+#endif
     }
     else{/*MISRA*/}
 
@@ -375,7 +385,6 @@ FUNC(Std_ReturnType,CANIF) CanIf_Transmit(VAR(PduIdType,AUTOMATIC) TxPduId,  CON
      * CAN_CS_STARTED and the channel mode at least for the transmit path is not online
      * or offline active
      */
-
     ControllerId = CanIfHthCfg[CanIfTxPduCfg[TxPduId].CanIfHthCfgRef].CanIfHthCanCtrlIdRef;
 
     if( Can_GetControllerMode(ControllerId, &Can_ControllerState) == E_OK  && toBeReturned == E_OK)
@@ -384,18 +393,16 @@ FUNC(Std_ReturnType,CANIF) CanIf_Transmit(VAR(PduIdType,AUTOMATIC) TxPduId,  CON
         {
             if( CanIf_Global.channelData[ControllerId].PduMode != CANIF_TX_OFFLINE_ACTIVE && CanIf_Global.channelData[ControllerId].PduMode != CANIF_ONLINE)
             {
-                UARTprintf("NotActive \n");
-
                 toBeReturned = E_NOT_OK;
             }
-            else{
+            else
+            {
 
             }
         }
         else
         {
             toBeReturned = E_NOT_OK;
-            UARTprintf("CS_started\n");
         }
 
         if(toBeReturned == E_OK)
@@ -409,24 +416,22 @@ FUNC(Std_ReturnType,CANIF) CanIf_Transmit(VAR(PduIdType,AUTOMATIC) TxPduId,  CON
 
             toBeReturned = Can_Write( HTHIndex , &PduInfo);
         }
-        else{
-            UARTprintf("NOT OK \n");
-        }
+        else
+        {/*  MISRA   */}
     }
     else
     {
 
     }
-    return toBeReturned;
-                                                                                                                                }
 
+    return toBeReturned;
+}
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(VAR(uint8_t,AUTOMATIC) ControllerId,VAR( CanIf_PduModeType, AUTOMATIC) PduModeRequest)
-                                                                                                                                                {
+{
     VAR(uint8_t,AUTOMATIC)                  canIfDevError = E_OK;
     VAR(Std_ReturnType,AUTOMATIC)           toBeReturned  = E_OK;
     VAR(Can_ControllerStateType,AUTOMATIC)  Can_ControllerState ;
-
 
     if(CanIf_Global.initRun == TRUE)
     {
@@ -447,7 +452,9 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(VAR(uint8_t,AUTOMATIC) Controll
             else
             {
                 toBeReturned = E_NOT_OK;
-                /*   report det CANIF_E_PARAM_PDU_MODE   */
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_SET_PDU_MODE_ID,CANIF_E_PARAM_PDU_MODE);
+#endif
             }
         }
         else
@@ -461,12 +468,12 @@ FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(VAR(uint8_t,AUTOMATIC) Controll
         toBeReturned = E_NOT_OK;
     }
     return toBeReturned;
-                                                                                                                                                }
+}
 
+FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR(CanIf_PduModeType,CANIF_CODE,AUTOMATIC)  PduModePtr)
+{
+    VAR(Std_ReturnType,AUTOMATIC) toBeRetrurned = E_OK;
 
-FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduModeType* PduModePtr)
-                                                                                                                                                {
-    VAR(Std_ReturnType,AUTOMATIC) toRet = E_OK;
     if(CanIf_Global.initRun == TRUE)
     {
         if(ControllerId < MAX_NUM_CHANNELS)
@@ -477,22 +484,26 @@ FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduMode
             }
             else
             {
-                toRet = E_NOT_OK;
-                /*    report det  CANIF_E_PARAM_POINTER */
+                toBeRetrurned = E_NOT_OK;
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_PDU_MODE_ID,CANIF_E_PARAM_POINTER);
+#endif
             }
         }
         else
         {
-            toRet = E_NOT_OK;
-            /*    report det  CANIF_E_PARAM_CONTROLLERID */
+            toBeRetrurned = E_NOT_OK;
+#if CAN_GENERAL_CAN_DEV_ERROR_DETECT == STD_ON
+        Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_GET_PDU_MODE_ID,CANIF_E_PARAM_PDU_MODE);
+#endif
         }
     }
     else
     {
-        toRet = E_NOT_OK;
+        toBeRetrurned = E_NOT_OK;
     }
-    return toRet;
-                                                                                                                                                }
+    return toBeRetrurned;
+}
 
 
 
@@ -505,7 +516,7 @@ CANIF_RXPDU_READ_NOTIFYSTATUS (ECUC_CanIf_00595) for the Received L-PDU are set 
 is called, the CanIf shall set the notification status for the Received*/
 
 #if CANIF_PUBLIC_READRXPDU_NOTIFY_STATUS_API == TRUE && CANIF_RXPDU_READ_NOTIFYSTATUS == TRUE
-void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
+void CanIf_RxIndication(CONSTP2VAR(Can_HwType,CANIF_CODE,AUTOMATIC) Mailbox, CONSTP2VAR(PduInfoType,CANIF_CODE,AUTOMATIC) PduInfoPtr)
 {
 
     /*
@@ -513,20 +524,16 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
      *
      *
      * */
-
-
-
-    VAR(uint8_t,AUTOMATIC)                  canIfDevError = E_OK ;
-    VAR(uint8_t,AUTOMATIC)                  PduIndex = 0         ;
-    VAR(uint8_t,AUTOMATIC)                  Controller = 0       ;
-    VAR(uint8_t,AUTOMATIC)                  PduMode = 0          ;
-    VAR(PduInfoType,AUTOMATIC)                  pduInfo          ;
-
+    VAR(uint8_t,AUTOMATIC)     canIfDevError = E_OK ;
+    VAR(uint8_t,AUTOMATIC)     PduIndex      = 0    ;
+    VAR(uint8_t,AUTOMATIC)     Controller    = 0    ;
+    VAR(uint8_t,AUTOMATIC)     PduMode       = 0    ;
+    VAR(PduInfoType,AUTOMATIC) pduInfo              ;
 
     if(CanIf_Global.initRun == TRUE )
     {
-        /*SWS_CANIF_00421] d If CanIf was not initialized before calling CanIf_RxIndication(), CanIf shall not execute
-     Rx indication handling, when CanIf_RxIndication(), is called.*/
+        /*SWS_CANIF_00421]   If CanIf was not initialized before calling CanIf_RxIndication(), CanIf shall not execute
+                             Rx indication handling, when CanIf_RxIndication(), is called.*/
         if (Mailbox == NULL || PduInfoPtr == NULL)
         {
             /*SWS_CANIF_00419] d If parameter PduInfoPtr or Mailbox of
@@ -535,7 +542,7 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
 
             canIfDevError =E_NOT_OK ;
 #if CANIF_DEV_ERROR_DETECT == TRUE
-            /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_POINTER);*/
+            Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_RX_INDICATION_ID,CANIF_E_PARAM_POINTER);
 #endif 
         }
         else 
@@ -543,11 +550,11 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
             if ( Mailbox->Ho >= MAX_NUM_HTH )
             {
                 /*[SWS_CANIF_00416]  If parameter Mailbox->Hoh of CanIf_RxIndication() has an invalid value,
-    CanIf shall report development error code CANIF_E_PARAM_HOH to the Det_ReportError service of 
-    the DET module, when CanIf_RxIndication() is called.*/
+                                     CanIf shall report development error code CANIF_E_PARAM_HOH to the Det_ReportError service of
+                                     the DET module, when CanIf_RxIndication() is called.*/
                 canIfDevError =E_NOT_OK ;
 #if CANIF_DEV_ERROR_DETECT == TRUE
-                /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_HOH);*/
+                Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_RX_INDICATION_ID,CANIF_E_PARAM_HOH);
 #endif 
             }
             else 
@@ -558,10 +565,10 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
             if (PduInfoPtr -> SduLength > MAX_DATA_SIZE )
             {
                 /*If CanIf_RxIndication() is called with invalid PduInfoPtr->SduLength, runtime error CANIF_E_INVALID_DATA_LENGTH is reported (see
-        [SWS_CANIF_00168]).*/
+                [SWS_CANIF_00168]).*/
                 canIfDevError =E_NOT_OK ;
 #if CANIF_DEV_ERROR_DETECT == TRUE
-                /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_INVALID_DATA_LENGTH);*/
+                Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_RX_INDICATION_ID,CANIF_E_INVALID_DATA_LENGTH);
 #endif   
             }
             else 
@@ -600,27 +607,25 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
             }
             else 
             {
-
-                static int counter = 0 ;
-                        counter ++;
-                        UARTprintf("Rx:%d\n",counter);
                 switch( CanIfRxPduCfg[PduIndex].CanIfRxPduUserRxIndicationUL)
                 {
                 case CAN_TP:
                 {
-//                    UARTprintf("Canif_RxTP :CanId=%u \n",CanIfRxPduCfg[PduIndex].CanIfRxPduCanId );
                     PduInfoType CanTpRxPdu;
                     CanTpRxPdu.SduLength = PduInfoPtr->SduLength;
                     CanTpRxPdu.SduDataPtr = (uint8_t *)PduInfoPtr->SduDataPtr;
-                    //                    CanTp_RxIndication( CanIfRxPduCfg[PduIndex].CanIfRxPduId , &CanTpRxPdu );
+#if 0
+                    CanTp_RxIndication( CanIfRxPduCfg[PduIndex].CanIfRxPduId , &CanTpRxPdu );
+#endif
                     break;
                 }
                 case PDUR:
                 {
-//                    UARTprintf("Canif_Rx_pdur :CanId=%u \n",CanIfRxPduCfg[PduIndex].CanIfRxPduCanId );
                     pduInfo.SduLength  = PduInfoPtr->SduLength;
                     pduInfo.SduDataPtr = PduInfoPtr->SduDataPtr;
-                    //                    PduR_CanIfRxIndication(CanIfRxPduCfg[PduIndex].CanIfRxPduId,&pduInfo);
+#if 0
+                    PduR_CanIfRxIndication(CanIfRxPduCfg[PduIndex].CanIfRxPduId,&pduInfo);
+#endif
                     break;
                 }
                 }/*Swich End */
@@ -633,7 +638,7 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
                 module, when CanIf_RxIndication() is called. */
             canIfDevError =E_NOT_OK ;
 #if CANIF_DEV_ERROR_DETECT == TRUE
-            /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_CANID);*/
+            Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_RX_INDICATION_ID,CANIF_E_PARAM_CANID);
 #endif
         }
     }
@@ -644,41 +649,45 @@ void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr
 }
 #endif
 
-FUNC(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId)
+FUNC(void,CANIF_CODE) CanIf_TxConfirmation(VAR(PduIdType,AUTOMATIC) CanTxPduId)
                                                                                                                                 {
-    uint8_t upperLayer = CanIfTxPduCfg[CanTxPduId].CanIfTxPduUserTxConfirmationUL;
+    VAR(uint8_t,AUTOMATIC) upperLayer = CanIfTxPduCfg[CanTxPduId].CanIfTxPduUserTxConfirmationUL;
     if(CanIf_Global.initRun == TRUE)
     {
-
-        static int counter = 0 ;
-        counter ++;
-        UARTprintf("Conf:%d\n",counter);
-        /*	which Tx confirmation should be called	*/
-        switch(upperLayer)
+        if(CanTxPduId >= MAX_NUM_TX_PDU)
         {
-        case CAN_TP:
-            /*	the first parameter is the pduid in the upperlayer.
-			Since the can only indicates the canif when the data is sent,
-			the CanIf_TxConfirmation will only confirm with E_OK.
-			E_NOT_OK should be sent through the timeout api which is not supported in this driver
-             */
-            //            UARTprintf("Canif_Tx_TP :=%u \n",CanIfTxPduCfg[CanTxPduId].CanIfTxPduCanId );
-
-            //            CanTp_TxConfirmation(CanIfTxPduCfg[CanTxPduId].CanIfTxPduId, E_OK);
-
-            break;
-        case PDUR:
-            //            UARTprintf("Canif_Tx_PDUR :=%u \n",CanIfTxPduCfg[CanTxPduId].CanIfTxPduCanId );
-            //            PDUr_TxConfirmation(CanIfTxPduCfg[CanTxPduId].CanIfTxPduId, E_OK);
-
-            break;
+                   /*  which Tx confirmation should be called  */
+                   switch(upperLayer)
+                   {
+                   case CAN_TP:
+                       /*  the first parameter is the pduid in the upperlayer.
+                       Since the can only indicates the canif when the data is sent,
+                       the CanIf_TxConfirmation will only confirm with E_OK.
+                       E_NOT_OK should be sent through the timeout api which is not supported in this driver
+                        */
+#if 0
+                       CanTp_TxConfirmation(CanIfTxPduCfg[CanTxPduId].CanIfTxPduId, E_OK);
+#endif
+                       break;
+                   case PDUR:
+#if 0
+                       PDUr_TxConfirmation(CanIfTxPduCfg[CanTxPduId].CanIfTxPduId, E_OK);
+#endif
+                       break;
+                   }
+            }
+            else
+            {
+#if CANIF_DEV_ERROR_DETECT == TRUE
+                Det_ReportError(CANIF_MODULE_ID,CANIF_INSTANCE_ID,CANIF_TX_CONFIRMATION_ID,CANIF_E_PARAM_LPDU);
+#endif
+            }
         }
-    }
-    else
-    {
-        /*	det error	*/
-    }
-                                                                                                                                }
+        else
+        {
+        }
+
+}
 
 
 
