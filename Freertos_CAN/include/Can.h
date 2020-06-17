@@ -99,7 +99,6 @@ FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC
 #include "Modules.h"
 
 #define CAN_VENDOR_ID			    VENDOR_ID_ARCCORE
-#define CAN_MODULE_ID			    MODULE_ID_CAN
 #define CAN_AR_MAJOR_VERSION	3
 #define CAN_AR_MINOR_VERSION	1
 #define CAN_AR_PATCH_VERSION	5
@@ -109,21 +108,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC
 #define CAN_SW_PATCH_VERSION	0
 
 
-/** @name Service id's */
-//@{
-#define CAN_INIT_SERVICE_ID                         0x00
-#define CAN_MAINFUNCTION_WRITE_SERVICE_ID           0x01
-#define CAN_INITCONTROLLER_SERVICE_ID               0x02
-#define CAN_SETCONTROLLERMODE_SERVICE_ID            0x03
-#define CAN_DISABLECONTROLLERINTERRUPTS_SERVICE_ID  0x04
-#define CAN_ENABLECONTROLLERINTERRUPTS_SERVICE_ID   0x05
-#define CAN_WRITE_SERVICE_ID                        0x06
-#define CAN_GETVERSIONINFO_SERVICE_ID               0x07
-#define CAN_MAINFUNCTION_READ_SERVICE_ID            0x08
-#define CAN_MAINFUNCTION_BUSOFF_SERVICE_ID          0x09
-#define CAN_MAINFUNCTION_WAKEUP_SERVICE_ID          0x0a
-#define CAN_CBK_CHECKWAKEUP_SERVICE_ID              0x0b
-//@}
+
 
 
 
