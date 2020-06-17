@@ -525,15 +525,140 @@ FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduMode
 
 
 
+/*This service indicates a successful reception of a received CAN Rx LPDU
+to the CanIf after passing all filters and validation checks.*/
 
-
-
-FUNC(void,CANIF_CODE) CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
+/*[SWS_CANIF_00392]  If configuration parameters CANIF_PUBLIC_READRXPDU_NOTIFY_STATUS_API (ECUC_CanIf_00608) and
+CANIF_RXPDU_READ_NOTIFYSTATUS (ECUC_CanIf_00595) for the Received L-PDU are set to TRUE, and if CanIf_RxIndication() 
+is called, the CanIf shall set the notification status for the Received*/
+#if CANIF_PUBLIC_READRXPDU_NOTIFY_STATUS_API == TRUE && CANIF_RXPDU_READ_NOTIFYSTATUS == TRUE
+void CanIf_RxIndication(const Can_HwType* Mailbox, const PduInfoType *PduInfoPtr)
 {
+    VAR(uint8_t,AUTOMATIC)                  canIfDevError = E_OK ;
+    VAR(uint8_t,AUTOMATIC)                  PduIndex = 0         ;
+    VAR(uint8_t,AUTOMATIC)                  Controller = 0       ;
+    VAR(uint8_t,AUTOMATIC)                  PduMode = 0       ;
 
+    if(CanIf_Global.initRun == TRUE )
+    {
+     /*SWS_CANIF_00421] d If CanIf was not initialized before calling CanIf_RxIndication(), CanIf shall not execute 
+     Rx indication handling, when CanIf_RxIndication(), is called.*/
+        if (Mailbox == NULL || PduInfoPtr == NULL)
+        {
+        /*SWS_CANIF_00419] d If parameter PduInfoPtr or Mailbox of
+          CanIf_RxIndication() has an invalid value, CanIf shall report development error code CANIF_E_PARAM_POINTER to the Det_ReportError 
+          service of the DET module, when CanIf_RxIndication() is called*/
 
+            canIfDevError =E_NOT_OK ;
+#if CANIF_DEV_ERROR_DETECT == TRUE
+        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_POINTER);*/
+#endif 
+        }
+        else 
+        {
+            if ( Mailbox->Hoh >= MAX_NUM_HTH )
+            {
+    /*[SWS_CANIF_00416]  If parameter Mailbox->Hoh of CanIf_RxIndication() has an invalid value, 
+    CanIf shall report development error code CANIF_E_PARAM_HOH to the Det_ReportError service of 
+    the DET module, when CanIf_RxIndication() is called.*/
+                canIfDevError =E_NOT_OK ;
+#if CANIF_DEV_ERROR_DETECT == TRUE
+        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_HOH);*/
+#endif 
+            }
+            else 
+            {
+                /*MISRA*/
+            }
+            else 
+            {
+    /*MISRA*/
+            }
+            if (PduInfoPtr -> SduLength > MAX_DATA_SIZE )
+            {
+/*If CanIf_RxIndication() is called with invalid PduInfoPtr->SduLength, runtime error CANIF_E_INVALID_DATA_LENGTH is reported (see
+        [SWS_CANIF_00168]).*/
+                canIfDevError =E_NOT_OK ;
+#if CANIF_DEV_ERROR_DETECT == TRUE
+        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_INVALID_DATA_LENGTH);*/
+#endif   
+            }
+            else 
+            {
+    /*MISRA*/
+            }
 
+        }
+    }
+    else 
+    {
+    /*MISRA*/
+    }
+    if (canIfDevError == E_OK )
+    {
+    /*[SWS_CANIF_00423]  Configuration of CanIf_RxIndication(): Each Rx L-PDU (see ECUC_CanIf_00249) has to be configured with 
+    a corresponding receive indication service of an upper layer module (see [SWS_CANIF_00012]) which is called in
+    CanIf_RxIndication().*/
+    /*[SWS_CANIF_00415]  Within the service CanIf_RxIndication() the CanIf
+    routes this indication to the configured upper layer target service(s).*/
+
+        for(PduIndex =0;PduIndex < MAX_NUM_RX_PDU ;PduIndex++)
+        {
+            if ( Mailbox ->CanId == CanIfRxPduCfg[PduIndex].CanIfRxPduCanId )
+            {
+                break;
+            }
+        }
+        if ( PduIndex <MAX_NUM_RX_PDU )
+        {
+            Controller = CanIfHrhCfg[CanIfRxPduCfg[PduIndex].CanIfRxPduHrhIdRef].CanIfHrhCanCtrlIdRef ;
+            PduMode    = CanIf_Global.channelData[Controller].PduMode;
+            if(((PduMode == CANIF_OFFLINE) || (PduMode == CANIF_TX_OFFLINE) || (PduMode == CANIF_TX_OFFLINE_ACTIVE) ) )
+            {
+                    /*Not Valid pdu mode */
+            }
+            else 
+            {
+                switch( CanIfRxPduCfg[PduIndex].CanIfRxPduUserRxIndicationUL)
+                {
+                    case CAN_TP:
+                    {
+                        PduInfoType CanTpRxPdu;
+                        CanTpRxPdu.SduLength = PduInfoPtr->SduLength;
+                        CanTpRxPdu.SduDataPtr = (uint8_t *)PduInfoPtr->SduDataPtr;
+                        CanTp_RxIndication(canif_cantp_value[CanIfRxPduCfg[PduIndex].CanIfRxPduRef],&CanTpRxPdu);
+                        break;
+                    }
+
+                    case PDUR:
+                    {
+                        PduInfoType pduInfo;
+                        pduInfo.SduLength  = PduInfoPtr->SduLength;
+                        pduInfo.SduDataPtr = PduInfoPtr->SduDataPtr;
+                        PduR_CanIfRxIndication(canif_PduR_Value[CanIfRxPduCfg[PduIndex].CanIfRxPduRef],&pduInfo);
+                        break;
+                    }
+                }/*Swich End */         
+                }
+            }
+            else 
+            {
+                /*[SWS_CANIF_00417]  If parameter Mailbox->CanId of CanIf_RxIndication() has an invalid value, 
+                CanIf shall report development error code CANIF_E_PARAM_CANID to the Det_ReportError service of the DET
+                module, when CanIf_RxIndication() is called. */
+                canIfDevError =E_NOT_OK ;
+#if CANIF_DEV_ERROR_DETECT == TRUE
+        /*Det_ReportError(CANIF_MODULE_ID,CAN_INSTANCE_ID,SID=0x14,CANIF_E_PARAM_CANID);*/
+#endif
+            }
+        }
+    }
+    else 
+    {
+    /*MISRA*/
+    }
 }
+#endif
 
 FUNC(void,CANIF_CODE) CanIf_TxConfirmation(PduIdType CanTxPduId)
 {

@@ -32,6 +32,9 @@ main.obj: ../include/Mcu_Cfg.h
 main.obj: ../include/Can_GeneralTypes.h
 main.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h
 main.obj: ../include/Modules.h
+main.obj: ../include/CanIf.h
+main.obj: ../include/CanIf_Types.h
+main.obj: ../include/CanIf_Cfg.h
 main.obj: ../include/MCU.h
 
 ../main.c: 
@@ -66,4 +69,7 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h:
 ../include/Can_GeneralTypes.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h: 
 ../include/Modules.h: 
+../include/CanIf.h: 
+../include/CanIf_Types.h: 
+../include/CanIf_Cfg.h: 
 ../include/MCU.h: 

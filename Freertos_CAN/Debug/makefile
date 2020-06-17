@@ -12,6 +12,7 @@ GEN_CMDS__FLAG :=
 ORDERED_OBJS += \
 "./CanAUTO.obj" \
 "./CanIf.obj" \
+"./CanIf_lCfg.obj" \
 "./Can_interrupt.obj" \
 "./Can_lcfg.obj" \
 "./MCU.obj" \
@@ -22,8 +23,6 @@ ORDERED_OBJS += \
 "./startup_ccs.obj" \
 "./drivers/buttons.obj" \
 "./drivers/rgb.obj" \
-"./include/CanIf_Sec_cfg.obj" \
-"./include/CanIf_lCfg.obj" \
 "./third_party/FreeRTOS/Source/list.obj" \
 "./third_party/FreeRTOS/Source/queue.obj" \
 "./third_party/FreeRTOS/Source/tasks.obj" \
@@ -46,14 +45,12 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include drivers/subdir_vars.mk
--include include/subdir_vars.mk
 -include third_party/FreeRTOS/Source/subdir_vars.mk
 -include third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_vars.mk
 -include third_party/FreeRTOS/Source/portable/MemMang/subdir_vars.mk
 -include utils/subdir_vars.mk
 -include subdir_rules.mk
 -include drivers/subdir_rules.mk
--include include/subdir_rules.mk
 -include third_party/FreeRTOS/Source/subdir_rules.mk
 -include third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_rules.mk
 -include third_party/FreeRTOS/Source/portable/MemMang/subdir_rules.mk
@@ -189,8 +186,8 @@ Freertos_CAN.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "CanAUTO.obj" "CanIf.obj" "Can_interrupt.obj" "Can_lcfg.obj" "MCU.obj" "can.obj" "freertos_demo.obj" "led_task.obj" "main.obj" "startup_ccs.obj" "drivers\buttons.obj" "drivers\rgb.obj" "include\CanIf_Sec_cfg.obj" "include\CanIf_lCfg.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.obj" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
-	-$(RM) "CanAUTO.d" "CanIf.d" "Can_interrupt.d" "Can_lcfg.d" "MCU.d" "can.d" "freertos_demo.d" "led_task.d" "main.d" "startup_ccs.d" "drivers\buttons.d" "drivers\rgb.d" "include\CanIf_Sec_cfg.d" "include\CanIf_lCfg.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" "utils\uartstdio.d" "utils\ustdlib.d" 
+	-$(RM) "CanAUTO.obj" "CanIf.obj" "CanIf_lCfg.obj" "Can_interrupt.obj" "Can_lcfg.obj" "MCU.obj" "can.obj" "freertos_demo.obj" "led_task.obj" "main.obj" "startup_ccs.obj" "drivers\buttons.obj" "drivers\rgb.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.obj" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
+	-$(RM) "CanAUTO.d" "CanIf.d" "CanIf_lCfg.d" "Can_interrupt.d" "Can_lcfg.d" "MCU.d" "can.d" "freertos_demo.d" "led_task.d" "main.d" "startup_ccs.d" "drivers\buttons.d" "drivers\rgb.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" "utils\uartstdio.d" "utils\ustdlib.d" 
 	-$(RM) "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

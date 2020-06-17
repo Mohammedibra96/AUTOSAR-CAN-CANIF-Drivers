@@ -11,6 +11,7 @@ CMD_SRCS += \
 C_SRCS += \
 ../CanAUTO.c \
 ../CanIf.c \
+../CanIf_lCfg.c \
 ../Can_interrupt.c \
 ../Can_lcfg.c \
 ../MCU.c \
@@ -23,6 +24,7 @@ C_SRCS += \
 C_DEPS += \
 ./CanAUTO.d \
 ./CanIf.d \
+./CanIf_lCfg.d \
 ./Can_interrupt.d \
 ./Can_lcfg.d \
 ./MCU.d \
@@ -35,6 +37,7 @@ C_DEPS += \
 OBJS += \
 ./CanAUTO.obj \
 ./CanIf.obj \
+./CanIf_lCfg.obj \
 ./Can_interrupt.obj \
 ./Can_lcfg.obj \
 ./MCU.obj \
@@ -47,6 +50,7 @@ OBJS += \
 OBJS__QUOTED += \
 "CanAUTO.obj" \
 "CanIf.obj" \
+"CanIf_lCfg.obj" \
 "Can_interrupt.obj" \
 "Can_lcfg.obj" \
 "MCU.obj" \
@@ -59,6 +63,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "CanAUTO.d" \
 "CanIf.d" \
+"CanIf_lCfg.d" \
 "Can_interrupt.d" \
 "Can_lcfg.d" \
 "MCU.d" \
@@ -71,6 +76,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../CanAUTO.c" \
 "../CanIf.c" \
+"../CanIf_lCfg.c" \
 "../Can_interrupt.c" \
 "../Can_lcfg.c" \
 "../MCU.c" \

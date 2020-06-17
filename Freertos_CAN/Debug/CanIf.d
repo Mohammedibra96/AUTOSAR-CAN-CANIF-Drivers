@@ -37,6 +37,7 @@ CanIf.obj: ../include/CanTP_Cfg.h
 CanIf.obj: ../include/Com_Cbk.h
 CanIf.obj: ../include/CanIf_CanTp.h
 CanIf.obj: ../include/PduR_CanIf.h
+CanIf.obj: ../include/Can.h
 
 ../CanIf.c: 
 ../include/CanIf.h: 
@@ -75,3 +76,4 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h:
 ../include/Com_Cbk.h: 
 ../include/CanIf_CanTp.h: 
 ../include/PduR_CanIf.h: 
+../include/Can.h: 

@@ -94,7 +94,7 @@
 /*             ptrclass    defines the classification of the pointer's       */
 /*                         distance                                          */
 /*****************************************************************************/
-#define CONSTP2VAR(ptrtype, memclass, ptrclass) ptrtype * const
+#define P2CONST(ptrtype, memclass, ptrclass) ptrtype * const
 
 
 
@@ -106,6 +106,15 @@
 /*                         distance                                          */
 /*****************************************************************************/
 #define CONSTP2CONST(ptrtype, memclass, ptrclass) const ptrtype * const
+
+/*****************************************************************************/
+/* Macro name: CONSTP2VAR                                                       */
+/* Parameters: ptrtype     type of the referenced variable                   */
+/*             memclass    classification of the pointer's constant itself   */
+/*             ptrclass    defines the classification of the pointer's       */
+/*                         distance                                          */
+/*****************************************************************************/
+#define CONSTP2VAR(ptrtype, memclass, ptrclass) const ptrtype *
 
 /*****************************************************************************/
 /* Macro name: P2FUNC                                                        */

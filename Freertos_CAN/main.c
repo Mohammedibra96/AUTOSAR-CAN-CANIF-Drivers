@@ -9,10 +9,11 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
-
 #include "utils/uartstdio.h"
 
 #include"include/Can.h"
+#include"include/CanIf.h"
+
 #include"include/MCU.h"
 
 
@@ -27,67 +28,93 @@ uint32_t ui32Loop;
 int main(void)
 {
     SysCtlPeripheralReset(SYSCTL_PERIPH_CAN0);
-
     LED_Init();
-    uint8_t Data[]={1,2,3,4,5,6,7,8};
+    uint8_t Data[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
 
-    Can_PduType Can_Pdu[4]={
-                            {
-                             .swPduHandle = 5    ,
-                             .length      = 2    ,
-                             .id          = 0    ,
-                             .sdu         = &Data[0]
-                            },{
-
-                               .swPduHandle = 5    ,
-                               .length      = 2    ,
-                               .id          = 1    ,
-                               .sdu         = &Data[2]
-                            },
-                            {
-                             .swPduHandle = 5    ,
-                             .length      = 2    ,
-                             .id          = 2    ,
-                             .sdu         = &Data[4]
-                            },
-                            {
-                             .swPduHandle = 5    ,
-                             .length      = 2    ,
-                             .id          = 3    ,
-                             .sdu         = &Data[6]
-                            }
+    VAR(PduInfoType,AUTOMATIC) PduInfoPtr[] =
+    {
+     {
+      .MetaDataPtr = NULL,
+      .SduDataPtr  = &Data[0],
+      .SduLength   = 2
+     },
+     {
+      .MetaDataPtr = NULL,
+      .SduDataPtr  = &Data[2],
+      .SduLength   = 2
+     },
+     {
+      .MetaDataPtr = NULL,
+      .SduDataPtr  = &Data[4],
+      .SduLength   = 2
+     },
+     {
+      .MetaDataPtr = NULL,
+      .SduDataPtr  = &Data[6],
+      .SduLength   = 2
+     }
     };
+
+
+    const Can_PduType Can_Pdu[4]={
+                                  {
+                                   .swPduHandle = 0    ,
+                                   .length      = 2    ,
+                                   .id          = 8    ,
+                                   .sdu         = &Data[0]
+                                  },{
+
+                                     .swPduHandle = 1    ,
+                                     .length      = 2    ,
+                                     .id          = 7    ,
+                                     .sdu         = &Data[2]
+                                  },
+                                  {
+                                   .swPduHandle = 5    ,
+                                   .length      = 2    ,
+                                   .id          = 2    ,
+                                   .sdu         = &Data[4]
+                                  },
+                                  {
+                                   .swPduHandle = 5    ,
+                                   .length      = 2    ,
+                                   .id          = 3    ,
+                                   .sdu         = &Data[6]
+                                  }
+    };
+
+
+
     Can_Mcu_Init();
     InitConsole() ;
     Can_Init(0)   ;
-
+    CanIf_Init(0) ;
+    Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_T_START );
+    CanIf_SetPduMode(0, CANIF_ONLINE);
     UARTprintf("Welcome\n");
 
 
-//    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//
-//
-//    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
-//    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
 
-    Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_T_START );
+    //    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
+    //    Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
 
-   // Can_SetBaudrate(CAN_CONTROLLER_ZERO ,1 );
+    // Can_SetBaudrate(CAN_CONTROLLER_ZERO ,1 );
 
-    Can_SetBaudrate(CAN_CONTROLLER_ZERO ,2 );
+    //    Can_SetBaudrate(CAN_CONTROLLER_ZERO ,2 );
     while(1)
     {
         uint8_t i ;
         //LED_ON();
-//        for ( i = 1 ; i<=4 ; i++)
-//        {
-//            Can_Write( i , &Can_Pdu[i-1]);
-//            SimpleDelay();
-//        }
+        for ( i = 0 ; i<2 ; i++)
+        {
+            CanIf_Transmit(i, &PduInfoPtr[i]);
+            SimpleDelay();
+        }
     }
     return 0;
 

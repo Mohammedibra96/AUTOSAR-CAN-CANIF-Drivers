@@ -18,7 +18,6 @@
 /********************************************************************************************************/
 /********************************************************************************************************/
 
-
 #define EXTENDED_CAN                              0
 #define EXTENDED_FD_CAN                           1
 #define STANDARD_CAN                              2
@@ -50,33 +49,52 @@
 
 /********************************************************************************************************/
 /********************************************************************************************************/
-/************************************     Statnadrd types in SWS     ************************************/
+/************************************     Standard types in SWS     ************************************/
 /********************************************************************************************************/
 /********************************************************************************************************/
 
 
 typedef enum
 {
-    CANIF_OFFLINE,                  /*Transmit and receive path of the corresponding channel are disabled => no communicationmode*/
+    CANIF_OFFLINE,                  /*Transmit and receive path of the corresponding channel are disabled => no communication mode*/
     CANIF_TX_OFFLINE,               /* Transmit path of the corresponding channel is disabled. The receive path is enabled */
-    CANIF_TX_OFFLINE_ACTIVE,        /* Transmit path of the corresponding channel is in offline active mode. 
+    CANIF_TX_OFFLINE_ACTIVE,        /* Transmit path of the corresponding channel is in off line active mode.
                                        The receive path is disabled. This mode requires CanIfTxOfflineActiveSupport = TRUE */
     CANIF_ONLINE                    /* Transmit and receive path of the corresponding channel are enabled => full operation mode */
 }CanIf_PduModeType;
 
 
-typedef struct{
-    /* This parameter abstracts from the CAN Driver specific parameter
-     * Controller. Each controller of all connected CAN Driver modules shall
-     * be assigned to one specific ControllerId of the CanIf. Range:
-     * 0..number of configured controllers of all CAN Driver modules */
-    uint8_t CanIfCtrlId               ;
 
-    uint8_t CanIfCtrlCanCtrlRef;
-}CanIfCtrlCfg_s;
+typedef enum {
+    CAN_TP ,
+    CDD,
+    CAN_NM,
+    J1939TP,
+    PDUR,
+    XCP,
+    J1939NM,
+    CAN_TSYN
+}CanIfRxPduUserRxConfirmationUL;
 
 
-typedef struct {
+
+// TOBEASKED:Can we remove this struct
+//typedef struct{
+//    /* This parameter abstracts from the CAN Driver specific parameter
+//     * Controller. Each controller of all connected CAN Driver modules shall
+//     * be assigned to one specific ControllerId of the CanIf. Range:
+//     * 0..number of configured controllers of all CAN Driver modules */
+//
+//    /*   this is the ind3ex of the can drivers beneth   */
+//    uint8_t CanIfCtrlId;
+//
+//
+//    uint8_t CanIfCtrlCanCtrlRef;
+//
+//}CanIfCtrlCfg_s;
+
+typedef struct 
+{
 
     /** Selects the hardware receive objects by using the HRH range/list from
      *  CAN Driver configuration to define, for which HRH a software filtering has
@@ -94,7 +112,6 @@ typedef struct {
     
 } CanIfHrhCfg_s;
 
-/* CanIfHrhCfg_s CanIfHrhCfg[MAX_HRH_OBJECTS];  */
 
 
 typedef struct{
@@ -109,22 +126,18 @@ typedef struct{
 
 
 
-typedef struct {
-
-
+typedef struct 
+{
   /** CAN Identifier of receive CAN L-PDUs used by the CAN Driver for CAN L-
    *  PDU transmission.
      *  EXTENDED_CAN  The CANID is of type Extended (29 bits)
    *  STANDARD_CAN  The CANID is of type Standard (11 bits) */
     uint8_t CanIfRxPduCanId; //
 
-
   /** Data Length code of received CAN L-PDUs used by the CAN Interface.
    *  Exa: DLC check. The data area size of a CAN L-PDU can have a range
    *  from 0 to 8 bytes.*/
     uint16_t CanIfRxPduDataLength;  //
-
-
 
     /*This parameter defines the upper layer (UL) module to which the
         indication of the successfully received CANRXPDUID has to be routed
@@ -136,21 +149,14 @@ typedef struct {
         CAN Driver module. */
     uint8_t CanIfRxPduUserRxIndicationUL;
 
-
-
-
-
   /** The HRH to which Rx L-PDU belongs to, is referred through this
    *  parameter. */
-    uint8_t  CanIfRxPduHrhIdRef;  //Refrence as index 
-
-  /** Reference to the "global" Pdu structure to allow harmonization of handle
-   *  IDs in the COM-Stack. */
-   //Change the refrence to struct with index refrence
+    uint8_t  CanIfRxPduHrhIdRef;  //
 
 
-   
-    uint32_t  CanIfRxPduRef;
+/*ECU wide unique, symbolic handle for receive CAN L-SDU. It shall
+fulfill ANSI/AUTOSAR definitions for constant defines.*/
+    uint32_t CanIfRxPduId ;
 
 }CanIfRxPduCfg_s;
 
@@ -160,7 +166,11 @@ typedef struct {
     /** CAN Identifier of transmit CAN L-PDUs used by the CAN Driver for CAN L-
      *  PDU transmission. Range: 11 Bit For Standard CAN Identifier ... 29 Bit For
      *  Extended CAN identifier */
-    uint32_t CanIfTxPduCanId;   ///
+    uint32_t CanIfTxPduCanId;
+
+/*TOBEASKED:what is the usage of  CanIfTxPduCanIdType ?*/
+
+    uint8_t CanIfTxPduCanIdType; 
 
 
     /** ECU wide unique, symbolic handle for transmit CAN L-PDU. The
@@ -168,7 +178,7 @@ typedef struct {
      *  Range: 0..max. number of CantTxPduIds   PduIdType   CanTxPduId; */
     uint32_t CanIfTxPduId; 
 
-
+    /*   This parameter contains the upper layer of each indivdual pdu   */
     uint8_t CanIfTxPduUserTxConfirmationUL;
 
 
@@ -176,10 +186,20 @@ typedef struct {
 
 } CanIfTxPduCfg_s;
 
+typedef struct
+{
+
+} CanIf_ConfigType_s;
 
 /****************************   Types Not in SWS    *************************************/
 
-typedef uint8_t CanIf_ConfigType;
+typedef enum {
+    CANIF_CHANNEL_1,
+    CANIF_CHANNEL_2,
+    MAX_NUM_CHANNELS
+}CanIf_Channel_t;
+
+
 typedef struct{
     Can_ControllerStateType Controller_Mode;
     CanIf_PduModeType PduMode;
@@ -187,7 +207,7 @@ typedef struct{
 
 typedef struct {
     boolean initRun;
-    CanIf_ChannelPrivateType channelData[CANIF_CHANNEL_CNT];
+    CanIf_ChannelPrivateType channelData[MAX_NUM_CHANNELS];
 }CanIf_GlobalType;
 
 

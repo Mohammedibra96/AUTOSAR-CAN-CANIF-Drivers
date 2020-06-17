@@ -17,6 +17,8 @@
 #define MAX_NUM_HRH                         4
 
 
+#define CANIF_DEV_ERROR_DETECT   TRUE
+
 
 
 

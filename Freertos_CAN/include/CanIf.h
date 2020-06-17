@@ -9,25 +9,14 @@
 #include "PduR.h"
 #endif
 
-#if defined(USE_COM)
+#if CANIF_DEV_ERROR_DETECT == STD_ON
 #include "Com.h"
 #endif
 
-#define CANIF_TESTING_TRANSMIT_NADAANDAHMED 1
 #define CANIF_VENDOR_ID          (VENDOR_ID_ARCCORE)
 #define CANIF_MODULE_ID          (MODULE_ID_CANIF)
-#define CANIF_AR_MAJOR_VERSION   3
-#define CANIF_AR_MINOR_VERSION   1
-#define CANIF_AR_PATCH_VERSION   5
 
-#define CANIF_SW_MAJOR_VERSION   1
-#define CANIF_SW_MINOR_VERSION   3
-#define CANIF_SW_PATCH_VERSION   0
 
-/* Configuration Macros */
-
-/*From the configuration tool as the sum of all the buffers*/
-#define CANIF_BUFFER_POOL_SIZE 40
 
 #if defined(USE_DET)
 #include "Det.h"
@@ -40,19 +29,19 @@
 
 
 
-FUNC(void,CANIF_CODE) CanIf_Init(const CanIf_ConfigType* ConfigPtr);
+FUNC(void,CANIF_CODE) CanIf_Init(CONSTP2VAR(CanIf_ConfigType_s,CANIF_CODE,AUTOMATIC) ConfigPtr);
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetControllerMode(VAR(uint8_t,AUTOMATIC) ControllerId,VAR(Can_ControllerStateType , AUTOMATIC) ControllerMode);
 
 FUNC(Std_ReturnType,CANIF_CODE) CanIf_GetControllerMode(VAR(uint8_t ,AUTOMATIC) ControllerId, Can_ControllerStateType* ControllerModePtr);
 
 
-FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr);
+FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR( Can_ErrorStateType,CANIF_CODE,AUTOMATIC) ErrorStatePtr);
 
-FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(uint8_t ControllerId, Can_ErrorStateType* ErrorStatePtr);
+FUNC(Std_ReturnType,CANIF) CanIf_GetControllerErrorState(VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR( Can_ErrorStateType,CANIF_CODE,AUTOMATIC) ErrorStatePtr);
 
-FUNC(Std_ReturnType,CANIF) CanIf_Transmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr);
+FUNC(Std_ReturnType,CANIF) CanIf_Transmit(VAR(PduIdType,AUTOMATIC) TxPduId,  CONSTP2VAR(PduInfoType,CANIF_CODE,AUTOMATIC) PduInfoPtr);
 
-FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(uint8_t ControllerId, CanIf_PduModeType PduModeRequest);
+FUNC(Std_ReturnType,CANIF_CODE) CanIf_SetPduMode(VAR(uint8_t,AUTOMATIC) ControllerId,VAR( CanIf_PduModeType, AUTOMATIC) PduModeRequest);
 
 FUNC(Std_ReturnType ,CANIF) CanIf_GetPduMode(uint8_t ControllerId, CanIf_PduModeType* PduModePtr);
 

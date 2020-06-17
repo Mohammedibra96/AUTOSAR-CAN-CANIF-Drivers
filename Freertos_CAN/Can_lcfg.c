@@ -82,52 +82,84 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
 {
  {
   .CanHandleType    = BASIC,
-  .CanHwObjectCount = 3,
+  .CanHwObjectCount = 6,
   .CanIdType        = STANDARD,
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
  },
+
  {
   .CanHandleType    = FULL,
-  .CanObjectType    = TRANSMIT,
-  .CanIdType        = STANDARD,
   .CanHwObjectCount = 1,
+  .CanIdType        = STANDARD,
+  .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
-
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
  },
+
+ {
+  .CanHandleType    = BASIC,
+  .CanHwObjectCount = 5,
+  .CanIdType        = STANDARD,
+  .CanObjectType    = TRANSMIT,
+  .CanControllerRef = 0,
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
+ },
+
  {
   .CanHandleType    = FULL,
-  .CanObjectType    = TRANSMIT,
-  .CanIdType        = STANDARD,
   .CanHwObjectCount = 1,
-  .CanControllerRef = 0,
-
- },
- {
-  .CanHandleType    = FULL,
-  .CanObjectType    = TRANSMIT,
   .CanIdType        = STANDARD,
-  .CanHwObjectCount = 1,
-  .CanControllerRef = 0,
-
- },
- {
-  .CanHandleType    = FULL,
   .CanObjectType    = TRANSMIT,
-  .CanIdType        = STANDARD,
-  .CanHwObjectCount = 1,
   .CanControllerRef = 0,
-
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
  },
  {
   .CanHandleType    = BASIC,
-  .CanObjectType    = RECEIVE,
+  .CanHwObjectCount = 6,
   .CanIdType        = STANDARD,
-  .CanHwObjectCount = 7,
+  .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
-  .CanHwFilterCode  = 5,
-  .CanHwFilterMask  = 0x7F9,
- }
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
+ },
+
+ {
+  .CanHandleType    = FULL,
+  .CanHwObjectCount = 1,
+  .CanIdType        = STANDARD,
+  .CanObjectType    = RECEIVE,
+  .CanControllerRef = 0,
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
+ },
+
+ {
+  .CanHandleType    = BASIC,
+  .CanHwObjectCount = 5,
+  .CanIdType        = STANDARD,
+  .CanObjectType    = RECEIVE,
+  .CanControllerRef = 0,
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
+ },
+
+ {
+  .CanHandleType    = FULL,
+  .CanHwObjectCount = 3,
+  .CanIdType        = STANDARD,
+  .CanObjectType    = RECEIVE,
+  .CanControllerRef = 0,
+  .CanHwFilterCode  = 0,
+  .CanHwFilterMask  = 0,
+ },
+
+
 };
 
 

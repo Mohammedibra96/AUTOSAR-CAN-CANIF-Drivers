@@ -66,22 +66,18 @@
 
 
 
-FUNC(void,CAN_CODE) Can_Init(Can_ConfigType* Config);
+FUNC(void,CAN_CODE) Can_Init(P2VAR(Can_ConfigType,CAN_CODE,AUTOMATIC)  Config);
 FUNC(void,CAN_CODE) Can_DeInit(void);
-FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,VAR(uint16_t,AUTOMATIC) BaudRateConfigID );Std_ReturnType Can_SetControllerMode( uint8_t Controller,Can_StateTransitionType Transition );
-FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, Can_ControllerStateType* ControllerModePtr);
-
-
-
+FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,VAR(uint16_t,AUTOMATIC) BaudRateConfigID );
+FUNC(Std_ReturnType,CAN_CODE) Can_SetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, VAR(Can_StateTransitionType,AUTOMATIC) Transition );
+FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, P2VAR(Can_ControllerStateType,CAN_CODE,AUTOMATIC)  ControllerModePtr);
 FUNC(void,CAN_CODE)  Can_EnableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller);
 FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller);
 FUNC(void,CAN_CODE) Can_MainFunction_Mode( void );
 FUNC (void,CAN_CODE)  Can_MainFunction_Read(void);
-
-
-FUNC(Std_ReturnType,CAN_CODE) Can_Write(Can_HwHandleType HTH , Can_PduType* PduInfo);
+FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CONSTP2VAR(Can_PduType,CAN_CODE,AUTOMATIC) PduInfo);
 FUNC(void,CAN_CODE)  Can_MainFunction_Write(void);
-FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC) ControllerId, Can_ErrorStateType* ErrorStatePtr );
+FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR(Can_ErrorStateType,CAN_CODE,AUTOMATIC)  ErrorStatePtr );
 
 
 
