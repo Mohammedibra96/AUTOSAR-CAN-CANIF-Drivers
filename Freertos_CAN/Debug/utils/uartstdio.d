@@ -7,10 +7,12 @@ utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/incl
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
 utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
+utils/uartstdio.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
 utils/uartstdio.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_ints.h
 utils/uartstdio.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_memmap.h
 utils/uartstdio.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_types.h
@@ -30,10 +32,12 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_ints.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_memmap.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_types.h: 

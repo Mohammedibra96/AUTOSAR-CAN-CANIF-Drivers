@@ -1,35 +1,44 @@
 #include "include/CanIf.h"
 #include "include/Canif_cfg.h"
 
+/* TODO:Check from ENg.ABdel7ai CanIfRxPduId can be generated from the tool or not  */
 
 VAR(CanIfRxPduCfg_s ,AUTOMATIC) CanIfRxPduCfg[MAX_NUM_RX_PDU] = {
                                                                  {
+                                                                  .CanIfRxPduCanIdType = STANDARD_CAN,
                                                                   .CanIfRxPduCanId      = 1           ,
                                                                   .CanIfRxPduDataLength = 4           ,
+                                                                  .CanIfRxPduUserRxIndicationName=NULL_PTR,
                                                                   .CanIfRxPduUserRxIndicationUL = PDUR,
                                                                   .CanIfRxPduHrhIdRef = 0             ,
                                                                   .CanIfRxPduId = 2
                                                                  },
                                                                  {
+                                                                  .CanIfRxPduCanIdType = STANDARD_CAN,
                                                                   .CanIfRxPduCanId = 2 ,
                                                                   .CanIfRxPduDataLength = 8,
+                                                                  .CanIfRxPduUserRxIndicationName=NULL_PTR,
                                                                   .CanIfRxPduUserRxIndicationUL = CAN_TP,
                                                                   .CanIfRxPduHrhIdRef = 1,
                                                                   .CanIfRxPduId = 3
                                                                  },
                                                                  {
+                                                                  .CanIfRxPduCanIdType = STANDARD_CAN,
                                                                   .CanIfRxPduCanId = 3,
                                                                   .CanIfRxPduDataLength = 8,
+                                                                  .CanIfRxPduUserRxIndicationName=NULL_PTR,
                                                                   .CanIfRxPduUserRxIndicationUL = PDUR,
                                                                   .CanIfRxPduHrhIdRef = 2,
                                                                   .CanIfRxPduId = 5
                                                                  },
                                                                  {
-                                                                     .CanIfRxPduCanId = 4,
-                                                                             .CanIfRxPduDataLength = 8,
-                                                                             .CanIfRxPduUserRxIndicationUL = PDUR,
-                                                                             .CanIfRxPduHrhIdRef = 3,
-                                                                             .CanIfRxPduId = 5
+                                                                  .CanIfRxPduCanIdType = STANDARD_CAN,
+                                                                  .CanIfRxPduCanId = 4,
+                                                                  .CanIfRxPduDataLength = 8,
+                                                                  .CanIfRxPduUserRxIndicationName=NULL_PTR,
+                                                                  .CanIfRxPduUserRxIndicationUL = PDUR,
+                                                                  .CanIfRxPduHrhIdRef = 3,
+                                                                  .CanIfRxPduId = 5
                                                                  }
 };
 
@@ -69,24 +78,21 @@ VAR(CanIfTxPduCfg_s ,AUTOMATIC) CanIfTxPduCfg[MAX_NUM_TX_PDU] = {
 
 VAR(CanIfHrhCfg_s ,AUTOMATIC) CanIfHrhCfg[MAX_NUM_HRH]={
                                                         {
-                                                         .CanIfHrhSoftwareFilter = TRUE,
+
                                                          .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
                                                          .CanIfHrhIdSymRef = 4
                                                         },
                                                         {
-                                                         .CanIfHrhSoftwareFilter = FALSE,
                                                          .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
                                                          .CanIfHrhIdSymRef = 5
                                                         },
                                                         {
-                                                         .CanIfHrhSoftwareFilter = FALSE,
                                                          .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
                                                          .CanIfHrhIdSymRef = 6
                                                         },
                                                         {
-                                                            .CanIfHrhSoftwareFilter = FALSE,
-                                                                    .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                                    .CanIfHrhIdSymRef = 7
+                                                         .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                         .CanIfHrhIdSymRef = 7
                                                         }
 };
 
@@ -101,11 +107,11 @@ VAR(CanIfHthCfg_s ,AUTOMATIC) CanIfHthCfg[MAX_NUM_HTH] = {
                                                            .CanIfHthIdSymRef = 1
                                                           },
                                                           {
-                                                              .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                                      .CanIfHthIdSymRef = 2
+                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthIdSymRef = 2
                                                           },
                                                           {
-                                                              .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                                      .CanIfHthIdSymRef = 3
+                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthIdSymRef = 3
                                                           }
 };

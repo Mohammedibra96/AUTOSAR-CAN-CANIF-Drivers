@@ -14,6 +14,7 @@ C_SRCS += \
 ../CanIf_lCfg.c \
 ../Can_interrupt.c \
 ../Can_lcfg.c \
+../Det.c \
 ../MCU.c \
 ../can.c \
 ../freertos_demo.c \
@@ -27,6 +28,7 @@ C_DEPS += \
 ./CanIf_lCfg.d \
 ./Can_interrupt.d \
 ./Can_lcfg.d \
+./Det.d \
 ./MCU.d \
 ./can.d \
 ./freertos_demo.d \
@@ -40,6 +42,7 @@ OBJS += \
 ./CanIf_lCfg.obj \
 ./Can_interrupt.obj \
 ./Can_lcfg.obj \
+./Det.obj \
 ./MCU.obj \
 ./can.obj \
 ./freertos_demo.obj \
@@ -53,6 +56,7 @@ OBJS__QUOTED += \
 "CanIf_lCfg.obj" \
 "Can_interrupt.obj" \
 "Can_lcfg.obj" \
+"Det.obj" \
 "MCU.obj" \
 "can.obj" \
 "freertos_demo.obj" \
@@ -66,6 +70,7 @@ C_DEPS__QUOTED += \
 "CanIf_lCfg.d" \
 "Can_interrupt.d" \
 "Can_lcfg.d" \
+"Det.d" \
 "MCU.d" \
 "can.d" \
 "freertos_demo.d" \
@@ -79,6 +84,7 @@ C_SRCS__QUOTED += \
 "../CanIf_lCfg.c" \
 "../Can_interrupt.c" \
 "../Can_lcfg.c" \
+"../Det.c" \
 "../MCU.c" \
 "../can.c" \
 "../freertos_demo.c" \

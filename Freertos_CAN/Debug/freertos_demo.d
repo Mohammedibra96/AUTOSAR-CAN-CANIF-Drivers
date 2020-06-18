@@ -7,6 +7,7 @@ freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/includ
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
@@ -21,6 +22,7 @@ freertos_demo.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.1
 freertos_demo.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h
 freertos_demo.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
 freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
+freertos_demo.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
 freertos_demo.obj: ../include/Can.h
 freertos_demo.obj: ../include/Compiler.h
 freertos_demo.obj: ../include/Std_Types.h
@@ -28,10 +30,16 @@ freertos_demo.obj: ../include/Platform_Types.h
 freertos_demo.obj: ../include/Std_Types.h
 freertos_demo.obj: ../include/Compiler.h
 freertos_demo.obj: ../include/ComStack_Types.h
+freertos_demo.obj: ../include/Std_Types.h
+freertos_demo.obj: ../include/Std_Types.h
 freertos_demo.obj: ../include/Mcu_Cfg.h
 freertos_demo.obj: ../include/Can_GeneralTypes.h
 freertos_demo.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h
+freertos_demo.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Mcu_Cfg.h
+freertos_demo.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/ComStack_Types.h
+freertos_demo.obj: ../include/Can_Cfg.h
 freertos_demo.obj: ../include/Modules.h
+freertos_demo.obj: ../include/Std_Types.h
 freertos_demo.obj: ../include/MCU.h
 freertos_demo.obj: ../inc/hw_types.h
 freertos_demo.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/rom.h
@@ -57,6 +65,7 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 
@@ -71,6 +80,7 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/sysctl
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
 ../include/Can.h: 
 ../include/Compiler.h: 
 ../include/Std_Types.h: 
@@ -78,10 +88,16 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h:
 ../include/Std_Types.h: 
 ../include/Compiler.h: 
 ../include/ComStack_Types.h: 
+../include/Std_Types.h: 
+../include/Std_Types.h: 
 ../include/Mcu_Cfg.h: 
 ../include/Can_GeneralTypes.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Mcu_Cfg.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/ComStack_Types.h: 
+../include/Can_Cfg.h: 
 ../include/Modules.h: 
+../include/Std_Types.h: 
 ../include/MCU.h: 
 ../inc/hw_types.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/rom.h: 

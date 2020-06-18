@@ -10,6 +10,7 @@ third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/too
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
@@ -32,6 +33,7 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 

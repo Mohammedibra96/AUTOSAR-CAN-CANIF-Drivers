@@ -4,14 +4,20 @@ third_party/FreeRTOS/Source/tasks.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaW
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdlib.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/string.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/tasks.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/third_party/FreeRTOS/Source/include/FreeRTOS.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stddef.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 third_party/FreeRTOS/Source/tasks.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
@@ -30,14 +36,20 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/third_party/Free
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdlib.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/string.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/third_party/FreeRTOS/Source/include/FreeRTOS.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stddef.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 

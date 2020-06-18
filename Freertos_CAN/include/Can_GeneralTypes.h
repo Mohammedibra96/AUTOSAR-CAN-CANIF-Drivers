@@ -46,38 +46,32 @@ are shared among the AUTOSAR CAN modules Can, CanIf and CanTrcv.
 #define   POLLING                      2U
 
 
-#define     STANDARD      0
-#define     EXTENDED      1
+#define     STANDARD      (uint8_t)0
+#define     EXTENDED      (uint8_t)1
 
-#define     CONFIRMED         0
-#define     UNCONFIRMED       1
+#define     CONFIRMED         (uint8_t)0
+#define     UNCONFIRMED       (uint8_t)1
 
 /*   Handle Type */
-#define     FULL      0               
-#define     BASIC     1
+#define     FULL      (uint8_t)0
+#define     BASIC     (uint8_t)1
 
 /*  Can_ObjectTypeValues  */
 #define TRANSMIT  1
 #define RECEIVE   0
 
 
+
 /*  StateTransition  */
-#define     CAN_T_START     0
-#define     CAN_T_STOP      1
-#define     CAN_T_SLEEP     2
-#define     CAN_T_WAKEUP    3  
+#define     CAN_CS_UNINIT    (uint8_t)0
+#define     CAN_CS_STARTED     (uint8_t)1
+#define     CAN_CS_STOPPED      (uint8_t)2
+#define     CAN_CS_SLEEP     (uint8_t)3
+#define     CAN_CS_WAKEUP    (uint8_t)4
 
 /******************************************************     Standard Types needed in the can driver      ***********************************************************************/
 
-/***************************
-TODO
-add _t
-
-- GO with the Tx sequence and check if we need any further Look Up tables
-
-********************************/
-
-
+typedef uint8_t Can_ControllerStateType;
 typedef uint8_t Can_ConfigType;
 
 /*  [SWS_Can_00416]  */
@@ -85,7 +79,7 @@ typedef uint32_t Can_IdType;
 
 typedef uint8_t confirmation_t    ;
 typedef uint16_t Can_HwHandleType ;
-typedef uint8_t CanObjectType ;
+typedef uint8_t CanObjectType_t ;
 
 typedef uint8_t CanHandleType_t     ;
 typedef uint8_t Can_StateTransitionType;
@@ -96,13 +90,7 @@ typedef enum{
   CAN_ERRORSTATE_BUSOFF
 }Can_ErrorStateType;
 
-/*  [SWS_Can_91013]  */
-typedef enum {
-  CAN_CS_UNINIT  =  0x00,
-  CAN_CS_STARTED =  0x01,
-  CAN_CS_STOPPED =  0x02,
-  CAN_CS_SLEEP   =  0x03
-}Can_ControllerStateType;
+
 
 
 /*  [SWS_Can_00039]:
@@ -284,7 +272,7 @@ typedef struct CanHardwareObject
  * Specifies if the HardwareObject is used as Transmit or as Receive object
  *
  */
- CanObjectType CanObjectType;
+ CanObjectType_t CanObjectType;
 /*
  * Reference to CAN Controller to which the HOH is associated to.
  *

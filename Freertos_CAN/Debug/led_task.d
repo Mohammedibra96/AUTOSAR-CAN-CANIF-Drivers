@@ -7,6 +7,7 @@ led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_st
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
@@ -18,6 +19,7 @@ led_task.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/ex
 led_task.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl/drivers/buttons.h
 led_task.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
 led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
+led_task.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
 led_task.obj: ../led_task.h
 led_task.obj: ../priorities.h
 led_task.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/third_party/FreeRTOS/Source/include/FreeRTOS.h
@@ -42,6 +44,7 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 
@@ -53,6 +56,7 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/examples/boards/
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl/drivers/buttons.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
 ../led_task.h: 
 ../priorities.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/third_party/FreeRTOS/Source/include/FreeRTOS.h: 

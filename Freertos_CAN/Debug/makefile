@@ -15,6 +15,7 @@ ORDERED_OBJS += \
 "./CanIf_lCfg.obj" \
 "./Can_interrupt.obj" \
 "./Can_lcfg.obj" \
+"./Det.obj" \
 "./MCU.obj" \
 "./can.obj" \
 "./freertos_demo.obj" \
@@ -170,7 +171,7 @@ all: Freertos_CAN.out
 Freertos_CAN.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -O2 --advice:power=all -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --ual -z -m"freertos_demo_ccs.map" --stack_size=512 --heap_size=0 -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/lib" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Freertos_CAN_linkInfo.xml" --rom_model -o "Freertos_CAN.out" $(ORDERED_OBJS)
+	"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -O2 --check_misra="1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19.8,19.9,19.10,19.11,19.12,19.14,19.15,19.16,19.17,20" --advice:power=all -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --ual -z -m"freertos_demo_ccs.map" --stack_size=512 --heap_size=0 -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/lib" -i"C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Freertos_CAN_linkInfo.xml" --rom_model -o "Freertos_CAN.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -186,8 +187,8 @@ Freertos_CAN.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "CanAUTO.obj" "CanIf.obj" "CanIf_lCfg.obj" "Can_interrupt.obj" "Can_lcfg.obj" "MCU.obj" "can.obj" "freertos_demo.obj" "led_task.obj" "main.obj" "startup_ccs.obj" "drivers\buttons.obj" "drivers\rgb.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.obj" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
-	-$(RM) "CanAUTO.d" "CanIf.d" "CanIf_lCfg.d" "Can_interrupt.d" "Can_lcfg.d" "MCU.d" "can.d" "freertos_demo.d" "led_task.d" "main.d" "startup_ccs.d" "drivers\buttons.d" "drivers\rgb.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" "utils\uartstdio.d" "utils\ustdlib.d" 
+	-$(RM) "CanAUTO.obj" "CanIf.obj" "CanIf_lCfg.obj" "Can_interrupt.obj" "Can_lcfg.obj" "Det.obj" "MCU.obj" "can.obj" "freertos_demo.obj" "led_task.obj" "main.obj" "startup_ccs.obj" "drivers\buttons.obj" "drivers\rgb.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.obj" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
+	-$(RM) "CanAUTO.d" "CanIf.d" "CanIf_lCfg.d" "Can_interrupt.d" "Can_lcfg.d" "Det.d" "MCU.d" "can.d" "freertos_demo.d" "led_task.d" "main.d" "startup_ccs.d" "drivers\buttons.d" "drivers\rgb.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" "utils\uartstdio.d" "utils\ustdlib.d" 
 	-$(RM) "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

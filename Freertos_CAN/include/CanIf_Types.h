@@ -53,6 +53,7 @@
 /********************************************************************************************************/
 /********************************************************************************************************/
 
+typedef  void(*Pointer2Func)(void);
 
 typedef enum
 {
@@ -67,11 +68,11 @@ typedef enum
 
 typedef enum {
     CAN_TP ,
-    CDD,
-    CAN_NM,
+    CDD    ,/*Not standard  call upear layer handler in the struct */
+    CAN_NM ,
     J1939TP,
-    PDUR,
-    XCP,
+    PDUR   ,
+    XCP    ,
     J1939NM,
     CAN_TSYN
 }CanIfRxPduUserRxConfirmationUL;
@@ -95,12 +96,6 @@ typedef enum {
 
 typedef struct 
 {
-
-    /** Selects the hardware receive objects by using the HRH range/list from
-     *  CAN Driver configuration to define, for which HRH a software filtering has
-     *  to be performed at during receive processing. True: Software filtering is
-     *  enabled False: Software filtering is disabled */
-    bool CanIfHrhSoftwareFilter;
 
     /** Reference to controller Id to which the HRH belongs to. A controller can
      *  contain one or more HRHs. */
@@ -128,16 +123,20 @@ typedef struct{
 
 typedef struct 
 {
+
+    uint8_t CanIfRxPduCanIdType;
+
   /** CAN Identifier of receive CAN L-PDUs used by the CAN Driver for CAN L-
    *  PDU transmission.
      *  EXTENDED_CAN  The CANID is of type Extended (29 bits)
    *  STANDARD_CAN  The CANID is of type Standard (11 bits) */
-    uint8_t CanIfRxPduCanId; //
+    uint32_t CanIfRxPduCanId; //
 
   /** Data Length code of received CAN L-PDUs used by the CAN Interface.
    *  Exa: DLC check. The data area size of a CAN L-PDU can have a range
    *  from 0 to 8 bytes.*/
     uint16_t CanIfRxPduDataLength;  //
+Pointer2Func CanIfRxPduUserRxIndicationName;
 
     /*This parameter defines the upper layer (UL) module to which the
         indication of the successfully received CANRXPDUID has to be routed

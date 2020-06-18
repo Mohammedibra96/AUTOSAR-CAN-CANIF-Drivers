@@ -18,9 +18,6 @@
 #define  MAX_NUM_OF_CAN_CONTROLLERS       2U
 
 
-#define False 0U
-#define True  1U
-
 
 
 /*************  All these macros are parameters in the CanGeneral struct, but have been moved them out because we are using precombiled configurations   **************/
@@ -28,7 +25,7 @@
 #define  CAN_GENERAL_CAN_INDEX                              0U
 #define  CAN_GENERAL_CAN_MAIN_FUNCTION_MODE_PERIOD          0U
 #define  CAN_GENERAL_CAN_SET_BAUDRATE_API                   True
-#define  CAN_GENERAL_CAN_DEV_ERROR_DETECT                   TRUE
+#define  CAN_GENERAL_CAN_DEV_ERROR_DETECT                   STD_ON
 #define  CAN_GENERAL_CAN_TIMEOUT_DURATION                   0.5f
 
 

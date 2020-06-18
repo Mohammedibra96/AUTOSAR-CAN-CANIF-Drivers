@@ -89,7 +89,7 @@ int main(void)
     InitConsole() ;
     Can_Init(0)   ;
     CanIf_Init(0) ;
-    Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_T_START );
+    Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_CS_STARTED );
     CanIf_SetPduMode(0, CANIF_ONLINE);
     UARTprintf("Welcome\n");
 
@@ -267,7 +267,6 @@ void LED_Init(void)
 
 void LED_ON(void)
 {
-
     static uint8_t Flag = 0;
     if (Flag == 0)
     {

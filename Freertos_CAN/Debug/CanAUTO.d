@@ -11,27 +11,60 @@ CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_std
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
 CanAUTO.obj: ../include/Std_Types.h
 CanAUTO.obj: ../include/Compiler.h
 CanAUTO.obj: ../include/ComStack_Types.h
+CanAUTO.obj: ../include/Std_Types.h
+CanAUTO.obj: ../include/Std_Types.h
 CanAUTO.obj: ../include/Mcu_Cfg.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
 CanAUTO.obj: ../include/Can_GeneralTypes.h
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h
+CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Mcu_Cfg.h
+CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/ComStack_Types.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
+CanAUTO.obj: ../include/Can_Cfg.h
 CanAUTO.obj: ../include/Modules.h
+CanAUTO.obj: ../include/Std_Types.h
 CanAUTO.obj: ../include/CanIf_Cbk.h
 CanAUTO.obj: ../include/CanIf.h
+CanAUTO.obj: ../include/std_types.h
+CanAUTO.obj: ../include/Modules.h
+CanAUTO.obj: ../include/CanIf_Types.h
+CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_GeneralTypes.h
+CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h
+CanAUTO.obj: ../include/CanIf_Cfg.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
+CanAUTO.obj: ../include/Platform_Types.h
+CanAUTO.obj: ../include/ComStack_Types.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
+CanAUTO.obj: ../include/CanIf_Cfg.h
 CanAUTO.obj: ../include/CanIf_Types.h
 CanAUTO.obj: ../include/CanIf_Cfg.h
+CanAUTO.obj: ../include/ComStack_types.h
+CanAUTO.obj: ../include/Std_Types.h
+CanAUTO.obj: ../include/Can_GeneralTypes.h
 CanAUTO.obj: ../include/PduR.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
+CanAUTO.obj: ../include/ComStack_Types.h
+CanAUTO.obj: ../include/Std_Types.h
+CanAUTO.obj: ../include/CanIf.h
 CanAUTO.obj: ../include/CanTp.h
 CanAUTO.obj: ../include/CanTp_Types.h
+CanAUTO.obj: ../include/Std_Types.h
+CanAUTO.obj: ../include/ComStack_Types.h
 CanAUTO.obj: ../include/CanTpRuntime.h
+CanAUTO.obj: ../include/CanTp_Types.h
 CanAUTO.obj: ../include/CanTP_Cfg.h
+CanAUTO.obj: ../include/CanTp_Types.h
+CanAUTO.obj: ../include/Std_Types.h
 CanAUTO.obj: ../include/Com_Cbk.h
 CanAUTO.obj: ../include/Can_interrupt.h
+CanAUTO.obj: ../include/std_types.h
 CanAUTO.obj: ../include/PortingHW.h
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_memmap.h
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_types.h
@@ -43,8 +76,10 @@ CanAUTO.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/dri
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
 CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
+CanAUTO.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
 CanAUTO.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/tm4c123gh6pm.h
 CanAUTO.obj: ../include/MCU.h
+CanAUTO.obj: ../include/Det.h
 
 ../CanAUTO.c: 
 ../include/Can.h: 
@@ -57,27 +92,60 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h: 
 ../include/Std_Types.h: 
 ../include/Compiler.h: 
 ../include/ComStack_Types.h: 
+../include/Std_Types.h: 
+../include/Std_Types.h: 
 ../include/Mcu_Cfg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h: 
 ../include/Can_GeneralTypes.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Mcu_Cfg.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/ComStack_Types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
+../include/Can_Cfg.h: 
 ../include/Modules.h: 
+../include/Std_Types.h: 
 ../include/CanIf_Cbk.h: 
 ../include/CanIf.h: 
+../include/std_types.h: 
+../include/Modules.h: 
+../include/CanIf_Types.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_GeneralTypes.h: 
+D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/include/Can_Cfg.h: 
+../include/CanIf_Cfg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h: 
+../include/Platform_Types.h: 
+../include/ComStack_Types.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
+../include/CanIf_Cfg.h: 
 ../include/CanIf_Types.h: 
 ../include/CanIf_Cfg.h: 
+../include/ComStack_types.h: 
+../include/Std_Types.h: 
+../include/Can_GeneralTypes.h: 
 ../include/PduR.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h: 
+../include/ComStack_Types.h: 
+../include/Std_Types.h: 
+../include/CanIf.h: 
 ../include/CanTp.h: 
 ../include/CanTp_Types.h: 
+../include/Std_Types.h: 
+../include/ComStack_Types.h: 
 ../include/CanTpRuntime.h: 
+../include/CanTp_Types.h: 
 ../include/CanTP_Cfg.h: 
+../include/CanTp_Types.h: 
+../include/Std_Types.h: 
 ../include/Com_Cbk.h: 
 ../include/Can_interrupt.h: 
+../include/std_types.h: 
 ../include/PortingHW.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_memmap.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/hw_types.h: 
@@ -89,5 +157,7 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/sysctl
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h: 
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
+C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/inc/tm4c123gh6pm.h: 
 ../include/MCU.h: 
+../include/Det.h: 

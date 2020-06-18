@@ -82,7 +82,7 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
 {
  {
   .CanHandleType    = BASIC,
-  .CanHwObjectCount = 6,
+  .CanHwObjectCount = 3,
   .CanIdType        = STANDARD,
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
@@ -121,7 +121,7 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
  },
  {
   .CanHandleType    = BASIC,
-  .CanHwObjectCount = 6,
+  .CanHwObjectCount = 3,
   .CanIdType        = STANDARD,
   .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
