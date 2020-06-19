@@ -1,3 +1,6 @@
+#include <Can.h>
+#include <CanIf.h>
+#include <MCU.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "inc/hw_can.h"
@@ -11,10 +14,6 @@
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
 
-#include"include/Can.h"
-#include"include/CanIf.h"
-
-#include"include/MCU.h"
 
 
 void Can_Mcu_Init(void);

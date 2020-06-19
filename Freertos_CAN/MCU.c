@@ -1,7 +1,7 @@
-#include"include/Std_Types.h"
+#include <Std_Types.h>
+#include <MCU.h>
 #include "driverlib/sysctl.h"
 
-#include "include/MCU.h"
 
 
 

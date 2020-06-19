@@ -1,20 +1,20 @@
-#include "include/CanIf.h"
-#include "include/CanIf_Types.h"
-#include "include/CanIf_Cfg.h"
-#include "include/ComStack_types.h"
-#include "include/Std_Types.h"
-#include "include/Can_GeneralTypes.h"
+#include <Can.h>
+#include <Can_GeneralTypes.h>
+#include <CanIf.h>
+#include <CanIf_CanTp.h>
+#include <CanIf_Cfg.h>
+#include <CanIf_Types.h>
+#include <Det.h>
+#include <PduR.h>
+#include <PduR_CanIf.h>
+#include <Std_Types.h>
+#include "ComStack_types.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/gpio.h"
 #include "inc/hw_memmap.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
-#include "include/PduR.h"
-#include "include/CanIf_CanTp.h"
-#include "include/PduR_CanIf.h"
-#include "include/Can.h"
-#include"include/Det.h"
 #if defined(USE_PDUR)
 #include "PduR.h"
 #endif

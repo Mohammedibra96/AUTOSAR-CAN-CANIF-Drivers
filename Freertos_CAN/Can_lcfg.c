@@ -1,6 +1,6 @@
-#include "include/Can_GeneralTypes.h"
-#include "include/Can.h"
-#include "include/Can_Cfg.h"
+#include <Can.h>
+#include <Can_Cfg.h>
+#include <Can_GeneralTypes.h>
 
 
 
@@ -61,6 +61,8 @@ CONST(CanControllerBaudrateConfig_s ,AUTOMATIC )  CanControllerBaudrateConfig[MA
 /*
  * This container contains the configuration parameters of the CAN controller(s).
  */
+
+
 VAR(CanController_s ,AUTOMATIC ) CanController[MAX_NUM_OF_CAN_CONTROLLERS] =
 {
  {
@@ -87,7 +89,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -97,7 +100,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -107,7 +111,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -117,7 +122,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = TRANSMIT,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
  {
   .CanHandleType    = BASIC,
@@ -126,7 +132,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -136,7 +143,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -146,7 +154,8 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
  {
@@ -156,12 +165,19 @@ VAR(CanHardwareObject_s ,AUTOMATIC ) CanHardwareObject[ MAX_NUM_OF_HO ] =
   .CanObjectType    = RECEIVE,
   .CanControllerRef = 0,
   .CanHwFilterCode  = 0,
-  .CanHwFilterMask  = 0,
+  .FilterStartRef  = 0 ,
+  .NumberOfFilter  = 2 ,
  },
 
 
 };
 
+VAR(uint32_t,AUTOMATIC) CanHwFilterCfg[MAX_NUM_FILTERS] ={
+                                                          0x0,
+                                                          0x0,
+                                                          0x0,
+                                                          0x0
+};
 
 
 
