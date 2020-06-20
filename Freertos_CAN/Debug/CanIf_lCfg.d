@@ -35,6 +35,7 @@ CanIf_lCfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/s
 CanIf_lCfg.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
 CanIf_lCfg.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/CanIf_Cfg.h
 CanIf_lCfg.obj: ../Canif_cfg.h
+CanIf_lCfg.obj: ../CanIf_lcfg.h
 
 ../CanIf_lCfg.c: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/CanIf.h: 
@@ -71,3 +72,4 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/CanIf_Cfg.h: 
 ../Canif_cfg.h: 
+../CanIf_lcfg.h: 

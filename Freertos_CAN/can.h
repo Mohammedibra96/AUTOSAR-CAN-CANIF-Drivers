@@ -36,7 +36,7 @@
 
 #define CAN_DISABLE_INTERRUPT_NOT_CALLED     (0U)
 
-
+#define IS_VALID_HO(HO) ( (HO) < MAX_NUM_OF_HO )
 
 #if defined(CFG_PPC)
 

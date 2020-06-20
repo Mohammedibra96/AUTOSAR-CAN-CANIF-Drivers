@@ -15,8 +15,8 @@
 #include <PduR.h>
 #include <Std_Types.h>
 #include "ComStack_types.h"
-void CanIf_TxConfirmation(PduIdType CanTxPduId);
-extern void CanIf_RxIndication(const Can_HwType* Mailbox,const PduInfoType* PduInfoPtr);
+//void CanIf_TxConfirmation(PduIdType CanTxPduId);
+//extern void CanIf_RxIndication(const Can_HwType* Mailbox,const PduInfoType* PduInfoPtr);
 //void PduR_CanIfRxIndication(uint16 ,const PduInfoType*);
 //void CanTp_CanIfRxIndication(uint16 ,const PduInfoType*);
 

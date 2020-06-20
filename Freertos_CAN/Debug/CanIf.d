@@ -74,6 +74,8 @@ CanIf.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/drive
 CanIf.obj: D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
 CanIf.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h
 CanIf.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+CanIf.obj: ../CanIf_Det.h
+CanIf.obj: ../CanIf_lcfg.h
 
 ../CanIf.c: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Can.h: 
@@ -149,3 +151,5 @@ D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/driverlib/uart.h
 D:/ITI/AUTO//\ SAR/Code//\ Composer/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdarg.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h: 
+../CanIf_Det.h: 
+../CanIf_lcfg.h: 

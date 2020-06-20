@@ -12,6 +12,8 @@
 
 #define CANIF_DEV_ERROR_DETECT                   STD_ON
 
+
+#define DUBGE                                    TRUE
 #define CANIF_PRIVATE_DATA_LENGTH_CHECK          TRUE
 
 /* These macros shall be set to TRUE for enabling CanIf_RxIndication */

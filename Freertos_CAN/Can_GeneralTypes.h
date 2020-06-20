@@ -27,9 +27,6 @@ are shared among the AUTOSAR CAN modules Can, CanIf and CanTrcv.
 
 
 /************************************************************    MACROS   *************************************************************/
-#define   BOFF                         0xE0U
-#define   EPASS                        0x60U
-#define   EWARN                        0x40U
 
 
 
@@ -77,11 +74,8 @@ typedef uint8_t CanObjectType_t ;
 typedef uint8_t CanHandleType_t     ;
 typedef uint8_t Can_StateTransitionType;
 /*  [SWS_Can_91003]  */
-typedef enum{
-    CAN_ERRORSTATE_ACTIVE,
-    CAN_ERRORSTATE_PASSIVE,
-    CAN_ERRORSTATE_BUSOFF
-}Can_ErrorStateType;
+
+typedef uint8_t Can_ErrorStateType;
 
 
 

@@ -22,7 +22,7 @@
 
 #define  CAN_CONTROLLER_ACTIVATION                          True
 
-#define  CAN_CONTROLLER_CAN_TX_PROCESSING                   INTERRUPT
+#define  CAN_CONTROLLER_CAN_TX_PROCESSING                   POLLING
 #define  CAN_CONTROLLER_CAN_RX_PROCESSING                   POLLING
 #define  CAN_SET_BAUDRATE_API                               TRUE
 

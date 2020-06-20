@@ -1,6 +1,6 @@
 #include <CanIf.h>
 #include "Canif_cfg.h"
-
+#include "CanIf_lcfg.h"
 /* TODO:Check from ENg.ABdel7ai CanIfRxPduId can be generated from the tool or not  */
 
 VAR(CanIfRxPduCfg_s ,AUTOMATIC) CanIfRxPduCfg[MAX_NUM_RX_PDU] = {
