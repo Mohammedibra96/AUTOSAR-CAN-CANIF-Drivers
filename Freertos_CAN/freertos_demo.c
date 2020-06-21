@@ -36,7 +36,7 @@ __error__(char *pcFilename, uint32_t ui32Line)
 
 #endif
 
-#define MAIN_FUNCTION TRUE
+#define MAIN_FUNCTION FALSE
 
 void
 vApplicationStackOverflowHook(xTaskHandle *pxTask, char *pcTaskName)
@@ -135,15 +135,23 @@ int main(void)
 
     //        Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
     //        Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
-            Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
-
+#if MAIN_FUNCTION == TRUE
+    Can_DisableControllerInterrupts(CAN_CONTROLLER_ZERO);
+#endif
     //        Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
     //        Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
     //        Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
     //        Can_EnableControllerInterrupts(CAN_CONTROLLER_ZERO);
 
-    Can_SetControllerMode(CAN_CONTROLLER_ZERO , CAN_CS_STARTED );
-    CanIf_SetPduMode(0, CANIF_ONLINE);
+    Can_SetControllerMode( CAN_CONTROLLER_ONE , CAN_CS_STARTED );
+
+
+    CanIf_SetPduMode(0, CANIF_OFFLINE);
+    CanIf_SetPduMode(1, CANIF_ONLINE);
+    CanIf_SetPduMode(2, CANIF_OFFLINE);
+    CanIf_SetPduMode(4, CANIF_ONLINE);
+
+    CanIf_SetPduMode(3, CANIF_ONLINE);
     // Can_SetBaudrate(CAN_CONTROLLER_ZERO ,1 );
 
     //    Can_SetBaudrate(CAN_CONTROLLER_ZERO ,2 );
@@ -167,12 +175,12 @@ int main(void)
     while(1)
     {
         uint8_t i ;
-        for ( i = 0 ; i<2 ; i++)
+        for ( i = 0 ; i<4 ; i++)
         {
 
             CanIf_Transmit(i, &PduInfoPtr[i]);
             SimpleDelay();
-            Can_GetControllerErrorState( 0,&ErrorState );
+            Can_GetControllerErrorState( 1,&ErrorState );
             UARTprintf("Error status = %x",ErrorState)  ;
 
         }

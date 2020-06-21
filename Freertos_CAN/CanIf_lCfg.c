@@ -79,39 +79,65 @@ VAR(CanIfTxPduCfg_s ,AUTOMATIC) CanIfTxPduCfg[MAX_NUM_TX_PDU] = {
 VAR(CanIfHrhCfg_s ,AUTOMATIC) CanIfHrhCfg[MAX_NUM_HRH]={
                                                         {
 
-                                                         .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                         .CanIfHrhIdSymRef = 4
+                                                         .CanIfHrhCanCtrlIdRef = 0,
+                                                         .CanIfHrhIdSymRef     = 4
                                                         },
                                                         {
-                                                         .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                         .CanIfHrhIdSymRef = 5
+                                                         .CanIfHrhCanCtrlIdRef = 1,
+                                                         .CanIfHrhIdSymRef     = 5
                                                         },
                                                         {
-                                                         .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                         .CanIfHrhIdSymRef = 6
+                                                         .CanIfHrhCanCtrlIdRef = 2,
+                                                         .CanIfHrhIdSymRef     = 6
                                                         },
                                                         {
-                                                         .CanIfHrhCanCtrlIdRef = CANIF_CHANNEL_1,
-                                                         .CanIfHrhIdSymRef = 7
+                                                         .CanIfHrhCanCtrlIdRef = 4,
+                                                         .CanIfHrhIdSymRef     = 7
                                                         }
 };
 
 
+
 VAR(CanIfHthCfg_s ,AUTOMATIC) CanIfHthCfg[MAX_NUM_HTH] = {
                                                           {
-                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthCanCtrlIdRef = 3,
                                                            .CanIfHthIdSymRef = 0
                                                           },
                                                           {
-                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthCanCtrlIdRef = 3,
                                                            .CanIfHthIdSymRef = 1
                                                           },
                                                           {
-                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthCanCtrlIdRef = 3,
                                                            .CanIfHthIdSymRef = 2
                                                           },
                                                           {
-                                                           .CanIfHthCanCtrlIdRef = CANIF_CHANNEL_1,
+                                                           .CanIfHthCanCtrlIdRef = 3,
                                                            .CanIfHthIdSymRef = 3
                                                           }
 };
+
+
+VAR(CanIfCtrlCfg_s,AUTOMATIC) CanIfCtrlCfg[MAX_CANIF_CTRL] =
+                                           {
+    {
+      .CanIfCtrlId = 0,
+      .CanIfCtrlCanCtrlRef = 1,
+    },
+    {
+     .CanIfCtrlId = 1,
+     .CanIfCtrlCanCtrlRef = 1,
+    },
+    {
+     .CanIfCtrlId = 2,
+     .CanIfCtrlCanCtrlRef = 1,
+    },
+    {
+     .CanIfCtrlId = 3,
+     .CanIfCtrlCanCtrlRef = 1,
+    },
+    {
+     .CanIfCtrlId = 4,
+     .CanIfCtrlCanCtrlRef = 1,
+    }
+                 };

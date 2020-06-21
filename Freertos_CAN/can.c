@@ -52,6 +52,9 @@
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
 
+#define CAN_CONTROLLER_ZERO_BASE_ADDRESS 0x40040000U
+#define CAN_CONTROLLER_ONE_BASE_ADDRESS  0x40041000U
+
 #define BOFF                          CAN_STATUS_BUS_OFF
 #define CAN_ERRORSTATE_ACTIVE_TX_OK   CAN_STATUS_TXOK
 #define CAN_ERRORSTATE_ACTIVE_RX_OK   CAN_STATUS_RXOK
@@ -83,7 +86,7 @@
 #define CLR_WRNRD_BIT(Register) ( (Register)&= ((uint32_t)(~WRNRD_MASK)) )
 
 
-#define  IS_CONTROLLER_MODE_STARTED(Mode1,Mode2) ((Mode1!= CAN_CS_STARTED ) && ( Mode2!= CAN_CS_STARTED))
+#define  IS_CONTROLLER_MODE_STARTED(Mode1,Mode2) (((Mode1)!= CAN_CS_STARTED ) && ( (Mode2)!= CAN_CS_STARTED))
 
 #define  CAN_CTL_R_INIT_BIT      1U
 #define  MAX_NUM_OF_MAILBOXES    32U
@@ -118,7 +121,7 @@
 /*  Can_MailBoxLookUpTables shall be filled in Can_Init to map the mailboxes to corresponding hardware object and pdu id for the CanIf_TxXonfirmation()*/
 LOCAL Can_MailBoxLookUpTables_s Can_MailBoxLookUpTables[MAX_NUM_OF_CAN_CONTROLLERS][MAX_NUM_OF_MAILBOXES]  ;
 /*CanControllerModeStatus this indicated that Can controller mode has changed since last checked  */
-LOCAL VAR(uint8_t,AUTOMATIC) CanControllerModeStatus[2]={MODE_NOT_CHANGED,MODE_NOT_CHANGED}                ;
+LOCAL VAR(uint8_t,AUTOMATIC) CanControllerModeStatus[2]={ MODE_NOT_CHANGED,MODE_NOT_CHANGED }                ;
 /*CanControllerCurrentMode contains the current mode of the can controller */
 LOCAL Can_ControllerStateType CanControllerCurrentMode [MAX_NUM_OF_CAN_CONTROLLERS]                        ;
 /*CanControllerInterruptStatus contains the current interrupt status                            */
@@ -163,7 +166,7 @@ LOCAL FUNC(void,CAN_CODE) Can_ConfigureHardwareObject(void);
 
 
 FUNC(void,CAN_CODE) Can_Init(P2VAR(Can_ConfigType,CAN_CODE,AUTOMATIC)  Config)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           {
     VAR(uint8_t,AUTOMATIC)              CanDevolpmentErrorType    = E_OK      ;
     VAR(uint16_t,AUTOMATIC)             BaudrateId                = 0      ;
     VAR(uint32_t,AUTOMATIC)             CanControllerBaseAddress  = 0      ;
@@ -198,17 +201,21 @@ FUNC(void,CAN_CODE) Can_Init(P2VAR(Can_ConfigType,CAN_CODE,AUTOMATIC)  Config)
                 controller; specific CAN interrupt sources must be enabled using CANIntEnable().                                                              */
             /*TODO:we will remove with integration with os team
              * We need to check if the mode POLLING or INTERRUPT */
-            if ( CanControllerIndex == CAN_CONTROLLER_ZERO )
+            if ( CanController[CanControllerIndex].CanControllerBaseAddress == CAN_CONTROLLER_ZERO_BASE_ADDRESS )
             {
                 CANIntRegister(CanControllerBaseAddress,(&Can0_InterruptHandler))            ;
                 /*            initialize the CanInterruptId parameter in the Can_controller struct that shall interrupt masks that uses in Can_EnableControllerInterrupts       */
-                CanController[CAN_CONTROLLER_ZERO].CanInterruptId = (uint32_t)INT_CAN0    ;
+                CanController[CanControllerIndex].CanInterruptId = (uint32_t)INT_CAN0    ;
             }
-            else
+            else if (CanController[CanControllerIndex].CanControllerBaseAddress == CAN_CONTROLLER_ONE_BASE_ADDRESS)
             {
                 CANIntRegister(CanControllerBaseAddress,(&Can1_InterruptHandler))            ;
                 /*            initialize the CanInterruptId parameter in the Can_controller struct that shall interrupt masks that uses in Can_EnableControllerInterrupts       */
-                CanController[CAN_CONTROLLER_ONE ].CanInterruptId = (uint32_t)INT_CAN1    ;
+                CanController[CanControllerIndex ].CanInterruptId = (uint32_t)INT_CAN1    ;
+            }
+            else
+            {
+
             }
             /* only function can_Init can change controller state from uninit to stopped                                                                                     */
             /*[SWS_Can_00259]  The function Can_Init shall set all CAN controllers in the state STOPPED.  */
@@ -236,7 +243,7 @@ FUNC(void,CAN_CODE) Can_Init(P2VAR(Can_ConfigType,CAN_CODE,AUTOMATIC)  Config)
 #endif
     }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           }
 /* Can_ConfigureHardwareObject isn't included in SWS
  * It shall be called from Can_Init
  * to initialize the hardware object                 */
@@ -244,7 +251,7 @@ FUNC(void,CAN_CODE) Can_Init(P2VAR(Can_ConfigType,CAN_CODE,AUTOMATIC)  Config)
 
 
 LOCAL FUNC(void,CAN_CODE) Can_ConfigureHardwareObject(void)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
     VAR(uint8_t,AUTOMATIC) CanControllerId = 0                                       ;
     VAR(uint8_t,AUTOMATIC) canHardwareObjectIndex = FIRST_HO                                ;
     VAR(tCANMsgObject,AUTOMATIC) CANMessage                                      ;
@@ -284,7 +291,7 @@ LOCAL FUNC(void,CAN_CODE) Can_ConfigureHardwareObject(void)
                 /*Set psMsgObject->ui32MsgID to the full message ID, or a partial mask to use partial ID matching.(TivaWare)*/
                 CANMessage.ui32MsgID     =  CanHardwareObject[HO_Index].CanHwFilterCode ;
                 /*Get the Hardware filter related to this mail box  */
-                for (FilterIndex = CanHardwareObject[HO_Index].FilterStartRef ;FilterIndex <CanHardwareObject[HO_Index].FilterStartRef +CanHardwareObject[HO_Index].FilterStartRef ;FilterIndex++)
+                for (FilterIndex = CanHardwareObject[HO_Index].FilterStartRef ;FilterIndex <CanHardwareObject[HO_Index].FilterStartRef +CanHardwareObject[HO_Index].NumberOfFilter ;FilterIndex++)
                 {
                     CanFilterMask |= CanHwFilterCfg[FilterIndex];
                 }
@@ -321,7 +328,7 @@ LOCAL FUNC(void,CAN_CODE) Can_ConfigureHardwareObject(void)
         HO_Ref[CanControllerId]++;
 
     }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -334,7 +341,7 @@ LOCAL FUNC(void,CAN_CODE) Can_ConfigureHardwareObject(void)
 
 
 FUNC(void,CAN_CODE) Can_DeInit(void)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
     VAR(uint8_t,AUTOMATIC)         CanDevolpmentErrorType  = E_OK                       ;
     VAR(uint8_t,AUTOMATIC)         Controller              = CAN_CONTROLLER_ZERO        ;
 
@@ -370,7 +377,7 @@ FUNC(void,CAN_CODE) Can_DeInit(void)
         Det_ReportError(CAN_MODULE_ID,Controller,CAN_DEINIT_SID,CAN_E_TRANSITION);
 #endif
     }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 
 
@@ -387,7 +394,7 @@ FUNC(void,CAN_CODE) Can_DeInit(void)
 
 
 FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,VAR(uint16_t,AUTOMATIC) BaudRateConfigID )
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if CAN_SET_BAUDRATE_API == TRUE
 
     VAR( uint8_t , AUTOMATIC )         CanDevolpmentErrorType = E_OK     ;
@@ -448,13 +455,13 @@ FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,
                 CanControllerPropSeg;
         Bit_Time_Parameters.ui32Phase2Seg=CanControllerBaudrateConfig[BaudRateConfigID ].CanControllerSeg2;
         Bit_Time_Parameters.ui32SJW=CanControllerBaudrateConfig[BaudRateConfigID ].CanControllerSyncJumpWidth;
-        Bit_Time_Parameters.ui32QuantumPrescaler=SysCtlClockGet()/((Bit_Time_Parameters.ui32SyncPropPhase1Seg
+        Bit_Time_Parameters.ui32QuantumPrescaler= Mcu_GetSysCloock()/((Bit_Time_Parameters.ui32SyncPropPhase1Seg
                 +Bit_Time_Parameters.ui32Phase2Seg+1U)*
                 CanControllerBaudrateConfig[BaudRateConfigID ].CanControllerBaudRate*1000U);
 
 
         CANBitTimingSet(CanController[Controller].CanControllerBaseAddress,&Bit_Time_Parameters);
-        if( CanControllerCurrentMode [Controller]==CAN_CS_STOPPED||CanControllerCurrentMode [Controller]==CAN_CS_SLEEP)
+        if( CanControllerCurrentMode [Controller]== (uint8_t)CAN_CS_STOPPED||CanControllerCurrentMode [Controller]== (uint8_t)CAN_CS_SLEEP)
         {
             CANDisable(CanController[Controller].CanControllerBaseAddress);
         }else
@@ -469,7 +476,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,
     }
     return ErrorStatus ;
 #endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -486,10 +493,11 @@ FUNC(Std_ReturnType,CAN_CODE) Can_SetBaudrate(VAR(uint8_t,AUTOMATIC) Controller,
 
 
 FUNC(Std_ReturnType,CAN_CODE) Can_SetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, VAR(Can_StateTransitionType,AUTOMATIC) Transition )
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
     VAR(uint8_t,AUTOMATIC)        HwObject     = FIRST_HO           ;
     VAR(Std_ReturnType,AUTOMATIC) toBeReturned = E_OK               ;
     VAR(uint8_t,AUTOMATIC)        CanDevolpmentErrorType = E_OK     ;
+    /* Take a copy of Controller */
 
     /*  Check for the initialization of the Driver   */
     if(CanDriverStatus != CAN_UNINIT)
@@ -681,7 +689,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_SetControllerMode( VAR(uint8_t,AUTOMATIC) Cont
 a limited time until the CAN controller is really switched off. Compare to SWS_Can_00398.*/
 
     return toBeReturned;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -695,7 +703,7 @@ a limited time until the CAN controller is really switched off. Compare to SWS_C
 
 
 FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if CAN_CONTROLLER_CAN_TX_PROCESSING ==  INTERRUPT  || CAN_CONTROLLER_CAN_RX_PROCESSING ==  INTERRUPT
     VAR(uint8_t, AUTOMATIC) CanDevolpmentErrorType ;
     if(CanDriverStatus!=CAN_UNINIT)
@@ -709,7 +717,7 @@ FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Cont
 
             if( OUT_CAN_CONTROLLER_INTERRUPT_DISABLE() == TRUE)
             {
-                CANIntDisable(CanController[Controller].CanControllerBaseAddress, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
+                CANIntDisable(CanController[Controller].CanControllerBaseAddress, (uint32_t)CAN_INT_MASTER | (uint32_t)CAN_INT_ERROR | (uint32_t)CAN_INT_STATUS);
                 IntDisable(CanController[Controller].CanInterruptId);
                 CanControllerInterruptStatus[Controller] = INTERRUPT_DISABLE ;
             }
@@ -737,7 +745,7 @@ FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Cont
     }
 
 #endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -752,7 +760,7 @@ FUNC(void,CAN_CODE)  Can_DisableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Cont
 
 
 FUNC(void,CAN_CODE)  Can_EnableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Controller)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if CAN_CONTROLLER_CAN_TX_PROCESSING ==  INTERRUPT  || CAN_CONTROLLER_CAN_RX_PROCESSING ==  INTERRUPT
     VAR(uint8_t,AUTOMATIC) CanDevolpmentErrorType;
     if(CanDriverStatus!=CAN_UNINIT)
@@ -813,7 +821,7 @@ FUNC(void,CAN_CODE)  Can_EnableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Contr
 #endif
 
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -829,7 +837,7 @@ FUNC(void,CAN_CODE)  Can_EnableControllerInterrupts(VAR(uint8_t,AUTOMATIC) Contr
 
 
 FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC) ControllerId,P2VAR(Can_ErrorStateType,CAN_CODE,AUTOMATIC)  ErrorStatePtr )
-                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                {
 
     VAR(Std_ReturnType,AUTOMATIC) RetuenValue =  E_OK ;
     VAR(uint8_t,AUTOMATIC) CanDevolpmentErrorType = E_OK;
@@ -895,7 +903,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC
         /*MISRA*/
     }
     return RetuenValue ;
-                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -910,7 +918,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_GetControllerErrorState( VAR(uint8_t,AUTOMATIC
 
 /*[SWS_Can_91015] The service Can_GetControllerMode shall return the mode of the requested CAN controller.*/
 FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Controller, P2VAR(Can_ControllerStateType,CAN_CODE,AUTOMATIC)  ControllerModePtr)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
     VAR(Std_ReturnType,AUTOMATIC) toBeReturned = E_OK;
     VAR(uint8_t,AUTOMATIC) CanDevolpmentErrorType;
     /*  validating inputs  */
@@ -921,7 +929,7 @@ FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Con
             /*  check that the can has been initialized before  */
             if(CanDriverStatus == CAN_READY )
             {
-                *ControllerModePtr=CanControllerCurrentMode [Controller];
+                *ControllerModePtr= CanControllerCurrentMode [Controller];
             }
             else
             {
@@ -952,7 +960,7 @@ FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Con
 
     return toBeReturned;
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
@@ -966,7 +974,7 @@ FUNC (Std_ReturnType,CAN_CODE) Can_GetControllerMode( VAR(uint8_t,AUTOMATIC) Con
 
 /*[SWS_Can_00275] The function Can_Write shall be non-blocking.*/
 FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CONSTP2VAR(Can_PduType,CAN_CODE,AUTOMATIC) PduInfo)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
     VAR(uint8_t,AUTOMATIC)         CanDevolpmentErrorType = E_OK     ;
     VAR(tCANMsgObject,AUTOMATIC)    sCANMessage                          ;
     VAR(uint32_t,AUTOMATIC)        REGISTER_1                            ;
@@ -994,7 +1002,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CON
 #endif
         ErrorStatus            = E_NOT_OK     ;
     }
-    if ( HTH >= MAX_NUM_OF_HO  &&  CanHardwareObject[HTH].CanObjectType == RECEIVE )
+    if ( HTH >= (uint8_t)MAX_NUM_OF_HO  &&  CanHardwareObject[HTH].CanObjectType == RECEIVE )
     {
         /*[SWS_Can_00217] If development error detection for the Can module is enabled: The function Can_Write
                 shall raise the errorCAN_E_PARAM_HANDLE and shall return E_NOT_OK if the parameter Hth is not a
@@ -1058,7 +1066,6 @@ FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CON
                     Can_MailBoxLookUpTables [ CanControllerId ][ MailBoxIndex ] .Confirmation = UNCONFIRMED                ;
                     /* Map the mailboc to pdu for the Rxindation in the ISR                 */
                     Can_MailBoxLookUpTables [ CanControllerId ][ MailBoxIndex ] .pduId        = PduInfo->swPduHandle       ;
-
                     sCANMessage.ui32MsgID     =  (uint32_t)PduInfo ->id                                       ;
                     sCANMessage.ui32MsgIDMask =  (uint32_t)0U                                                 ;
                     sCANMessage.ui32MsgLen    =  (uint32_t)PduInfo->length                                    ;
@@ -1114,7 +1121,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CON
         /* MISRA */
     }
     return ErrorStatus ;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 
 
@@ -1131,7 +1138,7 @@ FUNC(Std_ReturnType,CAN_CODE) Can_Write(VAR(Can_HwHandleType,AUTOMATIC) HTH ,CON
 set to POLLING or mixed. In case of mixed processing only the hardware objects for which CanHardwareObjectUsesPolling is set
  to TRUE shall be polled (SRS_BSW_00432, SRS_BSW_00373, SRS_SPAL_00157)*/
 FUNC(void,CAN_CODE)  Can_MainFunction_Write(void)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if ( CAN_CONTROLLER_CAN_TX_PROCESSING == POLLING )
     VAR(uint8_t,AUTOMATIC) CanMailBoxIndex              ;
     P2VAR(uint16_t,CAN_CODE,AUTOMATIC) pollinRegister  ;
@@ -1207,7 +1214,7 @@ FUNC(void,CAN_CODE)  Can_MainFunction_Write(void)
         }/*End of For */
     }
 #endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 
 
@@ -1230,7 +1237,7 @@ FUNC(void,CAN_CODE)  Can_MainFunction_Write(void)
 
 
 FUNC (void,CAN_CODE)  Can_MainFunction_Read(void)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if (CAN_CONTROLLER_CAN_RX_PROCESSING == POLLING)
     VAR(uint32_t,AUTOMATIC) mailBoxIndex                  ;
     /*  Buffer to receive data in                                       */
@@ -1283,7 +1290,7 @@ FUNC (void,CAN_CODE)  Can_MainFunction_Read(void)
 #endif
 
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 
 /********************************************************************************************************************************/
@@ -1297,7 +1304,7 @@ FUNC (void,CAN_CODE)  Can_MainFunction_Read(void)
 
 
 FUNC(void,CAN_CODE) Can_MainFunction_Mode( void )
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 
     /*[SWS_Can_00369]  The function Can_MainFunction_Mode shall implement the polling
         of CAN status register flags to detect transition of CAN Controller state. Compare to chapter 7.3.2.*/
@@ -1341,7 +1348,7 @@ FUNC(void,CAN_CODE) Can_MainFunction_Mode( void )
         }
     }/*End of for*/
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }/*End of Can_MainFunction_Mode*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }/*End of Can_MainFunction_Mode*/
 
 
 
@@ -1359,7 +1366,7 @@ FUNC(void,CAN_CODE) Can_MainFunction_Mode( void )
 
 
 FUNC(void,CAN_CODE) CAN_IRQHandler(VAR(uint8_t, AUTOMATIC) Controller)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
 #if CAN_CONTROLLER_CAN_TX_PROCESSING == INTERRUPT ||  CAN_CONTROLLER_CAN_RX_PROCESSING == INTERRUPT
     /* Only for development debugging */
     VAR(uint8_t,AUTOMATIC) ErrorStatus = E_OK;
@@ -1426,7 +1433,7 @@ FUNC(void,CAN_CODE) CAN_IRQHandler(VAR(uint8_t, AUTOMATIC) Controller)
 
     }
 #endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
 
 

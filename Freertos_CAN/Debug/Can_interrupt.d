@@ -30,6 +30,7 @@ Can_interrupt.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/includ
 Can_interrupt.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Can_Cfg.h
 Can_interrupt.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Modules.h
 Can_interrupt.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Std_Types.h
+Can_interrupt.obj: ../Can_lcfg.h
 Can_interrupt.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Can_interrupt.h
 Can_interrupt.obj: D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/std_types.h
 
@@ -63,5 +64,6 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h:
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Can_Cfg.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Modules.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Std_Types.h: 
+../Can_lcfg.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/Can_interrupt.h: 
 D:/ITI/AUTO//\ SAR/projects/Freertos_CAN/std_types.h: 

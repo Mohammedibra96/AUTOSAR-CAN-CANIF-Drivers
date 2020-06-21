@@ -17,13 +17,11 @@
 /*************  All these macros are parameters in the CanGeneral struct, but have been moved them out because we are using precombiled configurations   **************/
 
 #define  CAN_GENERAL_CAN_DEV_ERROR_DETECT                   STD_ON
-#define  CAN_GENERAL_CAN_TIMEOUT_DURATION                   0.5f
-
 
 #define  CAN_CONTROLLER_ACTIVATION                          True
 
-#define  CAN_CONTROLLER_CAN_TX_PROCESSING                   POLLING
-#define  CAN_CONTROLLER_CAN_RX_PROCESSING                   POLLING
+#define  CAN_CONTROLLER_CAN_TX_PROCESSING                   INTERRUPT
+#define  CAN_CONTROLLER_CAN_RX_PROCESSING                   INTERRUPT
 #define  CAN_SET_BAUDRATE_API                               TRUE
 
 #define  MAX_NUM_OF_BAUDRATES  6U

@@ -79,20 +79,13 @@ typedef enum {
 
 
 
-// TOBEASKED:Can we remove this struct
-//typedef struct{
-//    /* This parameter abstracts from the CAN Driver specific parameter
-//     * Controller. Each controller of all connected CAN Driver modules shall
-//     * be assigned to one specific ControllerId of the CanIf. Range:
-//     * 0..number of configured controllers of all CAN Driver modules */
-//
-//    /*   this is the ind3ex of the can drivers beneth   */
-//    uint8_t CanIfCtrlId;
-//
-//
-//    uint8_t CanIfCtrlCanCtrlRef;
-//
-//}CanIfCtrlCfg_s;
+typedef struct
+{
+    uint8_t CanIfCtrlId;
+
+    uint8_t CanIfCtrlCanCtrlRef;
+
+}CanIfCtrlCfg_s;
 
 typedef struct 
 {
@@ -206,7 +199,7 @@ typedef struct{
 
 typedef struct {
     boolean initRun;
-    CanIf_ChannelPrivateType channelData[MAX_NUM_CHANNELS];
+    CanIf_ChannelPrivateType channelData[MAX_CANIF_CTRL];
 }CanIf_GlobalType;
 
 

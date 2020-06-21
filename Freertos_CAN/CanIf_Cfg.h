@@ -9,6 +9,8 @@
 #define MAX_NUM_HTH                         (uint8_t)5
 #define MAX_NUM_HRH                         (uint8_t)4
 
+#define MAX_CANIF_CTRL                      (uint8_t)10
+
 
 #define CANIF_DEV_ERROR_DETECT                   STD_ON
 
